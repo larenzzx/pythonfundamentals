@@ -66,10 +66,10 @@ print("============Activity Section==========")
 # Print their sum, difference, product, and quotient.
 num1 = 20
 num2 = 2
-print("Sum: ", num1 + num2)
-print("Difference: ", num1 - num2)
-print("Product: ", num1 * num2)
-print("Quotient: ", num1 / num2)
+print("Sum:", num1 + num2)
+print("Difference:", num1 - num2)
+print("Product:", num1 * num2)
+print("Quotient:", num1 / num2)
 
 
 # Exercise 2:
@@ -79,16 +79,16 @@ print("Quotient: ", num1 / num2)
 # Multiply by 2 using *=.
 # Print points after each change.
 points = 50
-print("Starting: ", points)
+print("Starting:", points)
 
 points += 10
-print("After += 10: ", points)
+print("After += 10:", points)
 
 points -= 5
-print("After -= 5: ", points)
+print("After -= 5:", points)
 
 points *= 2
-print("After *= 2: ", points)
+print("After *= 2:", points)
 
 # Exercise 3:
 # Create two variables called age1 and age2.
@@ -97,12 +97,12 @@ print("After *= 2: ", points)
 # Print each result with a clear label.
 age1 = 24
 age2 = 23
-print("age1 == age2: ", age1 == age2)
-print("age1 != age2: ", age1 != age2)
-print("age1 > age2: ", age1 > age2)
-print("age1 < age2: ", age1 < age2)
-print("age1 >= age2: ", age1 >= age2)
-print("age1 <= age2: ", age1 <= age2)
+print("age1 == age2:", age1 == age2)
+print("age1 != age2:", age1 != age2)
+print("age1 > age2:", age1 > age2)
+print("age1 < age2:", age1 < age2)
+print("age1 >= age2:", age1 >= age2)
+print("age1 <= age2:", age1 <= age2)
 
 # Exercise 4:
 # Create two boolean variables:
@@ -136,7 +136,7 @@ print("============Mini Challenge==========")
 # Item price: 25.50
 # Quantity: 3
 # Total cost: 76.5
-item_price = int(input("Item Price: "))
+item_price = float(input("Item Price: "))
 quantity = int(input("Quantity: "))
 total_cost = item_price * quantity
 
