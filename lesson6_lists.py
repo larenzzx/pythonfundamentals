@@ -120,4 +120,4 @@ shopping_list.append(item3)
 # or use extend() - takes an iterable (like list) and adds each element.
 # shopping_list.extend([item1, item2, item3])
 for shopping in shopping_list:
-    print("My Shopping lists:", shopping)
+    print("Shopping item:", shopping)
