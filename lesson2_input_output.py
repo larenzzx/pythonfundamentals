@@ -19,7 +19,7 @@ print("Course:", course)
 student_name = input("Enter your name: ")
 
 # input() always gives back a string.
-print("Hello,", student_name)
+print("Hello, " + student_name)
 
 # If you want a number, convert the input.
 # int() converts text to a whole number.
@@ -59,15 +59,14 @@ birth_year = int(input("Enter your birth year: "))
 # Exercise 4:
 # Ask the user to enter the price of any item.
 # Convert it to a float and store it in a variable called item_price.
-item_price = float(input("Enter price of any item: "))
-
+item_price = float(input("Enter price of the item: "))
 
 # Exercise 5:
 # Print all answers with clear labels.
 print("City:", city)
 print("Favorite color:", favorite_color)
-print("Birth year: ", birth_year)
-print("Price: ", item_price)
+print("Birth year:", birth_year)
+print("Item price:", item_price)
 
 # =========================
 # Mini Challenge
@@ -85,7 +84,7 @@ print("============Mini Challenge==========")
 # Example format:
 # Hello, my name is Ana. I am 19 years old and I enjoy drawing.
 first_name = input("Enter your first name: ")
-my_age = int(input("Enter your age: "))
-favorite_hobby = input("Enter your hobby: ")
+your_age = int(input("Enter your age: "))
+favorite_hobby = input("Enter your favorite hobby: ")
 
-print(f"Hello, my name is {first_name}. I am {my_age} years old and I enjoy {favorite_hobby}.")
+print(f"Hello, my name is {first_name}. I am {your_age} and I enjoy {favorite_hobby}.")

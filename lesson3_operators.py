@@ -96,13 +96,13 @@ print("After *= 2:", points)
 # ==, !=, >, <, >=, <=
 # Print each result with a clear label.
 age1 = 24
-age2 = 23
-print("age1 == age2:", age1 == age2)
-print("age1 != age2:", age1 != age2)
-print("age1 > age2:", age1 > age2)
-print("age1 < age2:", age1 < age2)
-print("age1 >= age2:", age1 >= age2)
-print("age1 <= age2:", age1 <= age2)
+age2 = 25
+print(f"{age1} is equal to {age2}:", age1 == age2)
+print(f"{age1} is not equal to {age2}:", age1 != age2)
+print(f"{age1} is greater than {age2}:", age1 > age2)
+print(f"{age1} is less than {age2}:", age1 < age2)
+print(f"{age1} is greater than or equal to {age2}:", age1 >= age2)
+print(f"{age1} is less than or equal to {age2}:", age1 <= age2)
 
 # Exercise 4:
 # Create two boolean variables:
@@ -115,10 +115,9 @@ print("age1 <= age2:", age1 <= age2)
 # not has_ticket
 has_ticket = False
 has_money = True
-print("has_ticket and has_money: ", has_ticket and has_money)
-print("has_ticket or has_money: ", has_ticket or has_money)
-print("not has_ticket: ", not has_ticket)
-
+print("Has ticket and has money:", has_ticket and has_money)
+print("Has ticket or has money:", has_ticket or has_money)
+print("Not has ticket:", not has_ticket)
 
 # =========================
 # Mini Challenge
@@ -136,10 +135,9 @@ print("============Mini Challenge==========")
 # Item price: 25.50
 # Quantity: 3
 # Total cost: 76.5
-item_price = float(input("Item Price: "))
-quantity = int(input("Quantity: "))
-total_cost = item_price * quantity
-
+item_price = float(input("Enter price: "))
+quantity = int(input("Enter quantity:"))
 print("Item price:", item_price)
 print("Quantity:", quantity)
+total_cost = item_price * quantity
 print("Total cost:", total_cost)
