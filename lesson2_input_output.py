@@ -43,31 +43,24 @@ print("============Activity Section==========")
 # Exercise 1:
 # Ask the user to enter their city.
 # Store the answer in a variable called city.
-city = input("Enter your City: ")
 
 # Exercise 2:
 # Ask the user to enter their favorite color.
 # Store the answer in a variable called favorite_color.
-favorite_color = input("Enter your favorite color: ")
 
 # Exercise 3:
 # Ask the user to enter their birth year.
 # Convert it to an integer and store it in a variable called birth_year.
-birth_year = int(input("Enter your birth year: "))
 
 
 # Exercise 4:
 # Ask the user to enter the price of any item.
 # Convert it to a float and store it in a variable called item_price.
-item_price = float(input("Enter price of any item: "))
 
 
 # Exercise 5:
 # Print all answers with clear labels.
-print("City:", city)
-print("Favorite color:", favorite_color)
-print("Birth year: ", birth_year)
-print("Price: ", item_price)
+
 
 # =========================
 # Mini Challenge
@@ -84,8 +77,3 @@ print("============Mini Challenge==========")
 #
 # Example format:
 # Hello, my name is Ana. I am 19 years old and I enjoy drawing.
-first_name = input("Enter your first name: ")
-my_age = int(input("Enter your age: "))
-favorite_hobby = input("Enter your hobby: ")
-
-print(f"Hello, my name is {first_name}. I am {my_age} years old and I enjoy {favorite_hobby}.")

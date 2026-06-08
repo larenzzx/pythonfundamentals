@@ -52,36 +52,25 @@ print("============Activity Section==========")
 
 # Exercise 1:
 # Use a for loop to print numbers from 1 to 10.
-for value in range(1, 11):
-    print("Count:", value)
+
 
 # Exercise 2:
 # Use a for loop to print each letter in your first name.
-myName = "Mark Larenz"
-for firstName in myName:
-    print(firstName)
+
 
 # Exercise 3:
 # Use a while loop to print numbers from 1 to 5.
-numbers = 1
-while numbers <= 5:
-    print("Numbers:", numbers)
-    numbers += 1
+
 
 # Exercise 4:
 # Use a for loop with range(1, 11).
 # Print only the even numbers.
 # Hint: A number is even if number % 2 == 0.
-for num in range(1, 11):
-    if num % 2 == 0:
-        print("Even Numbers:", num)
+
 
 # Exercise 5:
 # Use a while loop to count down from 5 to 1.
-revNum = 5
-while revNum >= 1:
-    print("Reverse Count:", revNum)
-    revNum -= 1
+
 
 # =========================
 # Mini Challenge
@@ -98,6 +87,3 @@ print("============Mini Challenge==========")
 # 3 x 2 = 6
 # 3 x 3 = 9
 # ... continue until 10
-x = int(input("Enter a number:"))
-for y in range(1, 11):
-    print(f"{x} X {y} = {x * y}")

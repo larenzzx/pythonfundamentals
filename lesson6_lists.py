@@ -68,35 +68,30 @@ print("============Activity Section==========")
 # Exercise 1:
 # Create a list called favorite_foods with three foods.
 # Print the whole list.
-favorite_foods = ["Chicken", "Pork", "Beef"]
-print("Favorite foods:", favorite_foods)
+
 
 # Exercise 2:
 # Print the first item in favorite_foods.
-print("First item:", favorite_foods[0])
+
 
 # Exercise 3:
 # Change the second item in favorite_foods to a new food.
 # Print the updated list.
-favorite_foods[1] = "Nuggets"
-print("Updated fav foods:", favorite_foods)
+
 
 # Exercise 4:
 # Add a new food to favorite_foods using append().
 # Print the updated list.
-favorite_foods.append("Fries")
-print("Added new fav food:", favorite_foods)
+
 
 # Exercise 5:
 # Remove one food from favorite_foods using remove().
 # Print the updated list.
-favorite_foods.remove("Beef")
-print("After remove:", favorite_foods)
+
 
 # Exercise 6:
 # Use a for loop to print each food in favorite_foods.
-for food in favorite_foods:
-    print("Fav Food:", food)
+
 
 # =========================
 # Mini Challenge
@@ -109,15 +104,7 @@ print("============Mini Challenge==========")
 # Add each item to shopping_list using append().
 # Print the final shopping list.
 # Then use a for loop to print each item one by one.
-shopping_list = []
-item1 = input("Enter item 1: ")
-item2 = input("Enter item 2: ")
-item3 = input("Enter item 3: ")
-shopping_list.append(item1)
-shopping_list.append(item2)
-shopping_list.append(item3)
+
 
 # or use extend() - takes an iterable (like list) and adds each element.
 # shopping_list.extend([item1, item2, item3])
-for shopping in shopping_list:
-    print("Shopping item:", shopping)

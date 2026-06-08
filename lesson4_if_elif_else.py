@@ -72,22 +72,12 @@ print("============Activity Section==========")
 # Ask the user to enter their age.
 # If the age is 18 or older, print "You can vote."
 # Otherwise, print "You cannot vote yet."
-my_age = int(input("Input your age: "))
-if my_age >= 18:
-    print("You can vote.")
-else:
-    print("You cannot vote yet.")
+
 
 # Exercise 2:
 # Ask the user to enter a number.
 # Print whether the number is positive, negative, or zero.
-numbers = float(input("Input a number: "))
-if numbers > 0:
-    print("Positive")
-elif numbers < 0:
-    print("Negative")
-else: 
-    print("Zero") 
+
 
 # Exercise 3:
 # Ask the user to enter their grade.
@@ -96,15 +86,7 @@ else:
 # 80 to 89: "Very good"
 # 75 to 79: "Passed"
 # Below 75: "Failed"
-my_grade = float(input("Enter Grade: "))
-if my_grade >= 90:
-    print("Excellent")
-elif my_grade >= 80:
-    print("Very good")
-elif my_grade >= 75:
-    print("Passed")
-else: 
-    print("Failed")
+
 
 # Exercise 4:
 # Create two boolean variables:
@@ -113,13 +95,7 @@ else:
 #
 # If both are True, print "Login allowed."
 # Otherwise, print "Login denied."
-has_username = True
-has_password = True
 
-if has_username and has_password:
-    print("Login allowed.")
-else: 
-    print("Login denied.")
 
 # =========================
 # Mini Challenge
@@ -139,10 +115,4 @@ print("============Mini Challenge==========")
 # Hint:
 # For membership, ask the user to type yes or no.
 # Then compare the answer to "yes".
-total_purchase = float(input("Total purchase amount: "))
-is_member = input("Are you a member? Yes or No: ")
 
-if total_purchase >= 1000 and is_member.lower() == "yes":
-    print("You get a discount.")
-else: 
-    print("No discount available.")    

@@ -78,31 +78,21 @@ print("============Activity Section==========")
 # Create a function called say_welcome.
 # It should print "Welcome to Python!"
 # Call the function.
-def say_welcome():
-    print("Welcome to Python!")
-    
-say_welcome()
+
 
 # Exercise 2:
 # Create a function called print_name.
 # It should have one parameter called name.
 # It should print the name with a clear label.
 # Call the function with your name.
-def print_name(name):
-    print("Name:", name)
-    
-print_name("Mark Larenz Tabotabo")
+
 
 # Exercise 3:
 # Create a function called multiply.
 # It should have two parameters called num1 and num2.
 # It should return their product.
 # Store the result in a variable and print it.
-def multiply(num1, num2):
-    return num1 * num2
 
-product = multiply(5, 2)
-print("Product:", product)
 
 # Exercise 4:
 # Create a function called check_number.
@@ -111,29 +101,14 @@ print("Product:", product)
 # If the number is negative, print "Negative".
 # Otherwise, print "Zero".
 # Call the function three times with different numbers.
-def check_number(number):
-    if number > 0:
-        print("Positive")
-    elif number < 0:
-        print("Negative")
-    else:
-        print("Zero")
 
-check_number(2)
-check_number(-111)
-check_number(0)
 
 # Exercise 5:
 # Create a function called print_colors.
 # It should have one parameter called colors.
 # Use a for loop to print each color in the list.
 # Create a list of three colors and pass it to the function.
-def print_colors(colors):
-    for color in colors:
-        print("Color:", color)
-        
-three_colors = ["White", "Black", "Green"] 
-print_colors(three_colors)
+
 
 # =========================
 # Mini Challenge
@@ -157,26 +132,3 @@ print("============Mini Challenge==========")
 # Subtraction: 5
 # Multiplication: 50
 # Division: 2.0
-def add(x, y):
-    return x + y
-
-def subtract(x, y):
-    return x - y
-
-def multiply_numbers(x, y):
-    return x * y
-
-def divide(x, y):
-    return x / y
-
-val1 = int(input("First number: "))
-val2 = int(input("Second number: "))
-ans1 = add(val1, val2)
-ans2 = subtract(val1, val2)
-ans3 = multiply_numbers(val1, val2)
-ans4 = divide(val1, val2)
-
-print("Addition:", ans1)
-print("Subtraction:", ans2)
-print("Multiplication:", ans3)
-print("Division:", ans4)
