@@ -68,25 +68,35 @@ print("============Activity Section==========")
 # Exercise 1:
 # Create a list called favorite_foods with three foods.
 # Print the whole list.
+favorite_foods = ["Chicken Wings", "Fries", "Sinigang"]
+print("Favorite Foods:", favorite_foods)
 
 # Exercise 2:
 # Print the first item in favorite_foods.
+print(favorite_foods[0])
 
 # Exercise 3:
 # Change the second item in favorite_foods to a new food.
 # Print the updated list.
+favorite_foods[1] = "Steak"
+print("Updated fav foods:", favorite_foods)
 
 # Exercise 4:
 # Add a new food to favorite_foods using append().
 # Print the updated list.
+favorite_foods.append("Burger")
+print("Updated fav foods:", favorite_foods)
 
 # Exercise 5:
 # Remove one food from favorite_foods using remove().
 # Print the updated list.
+favorite_foods.remove("Sinigang")
+print("Updated fav foods:", favorite_foods)
 
 # Exercise 6:
 # Use a for loop to print each food in favorite_foods.
-
+for fav in favorite_foods:
+    print("My favorite foods:", fav)
 
 # =========================
 # Mini Challenge
@@ -99,3 +109,13 @@ print("============Mini Challenge==========")
 # Add each item to shopping_list using append().
 # Print the final shopping list.
 # Then use a for loop to print each item one by one.
+shopping_list = []
+x = input("Enter a shopping item: ")
+y = input("Enter a shopping item: ")
+z = input("Enter a shopping item: ")
+shopping_list.append(x)
+shopping_list.append(y)
+shopping_list.append(z)
+print("Shopping lists:", shopping_list)
+for items in shopping_list:
+    print("Shopping item: ", items)
