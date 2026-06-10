@@ -78,26 +78,40 @@ print("============Activity Section==========")
 # Create a dictionary called favorite_movie.
 # It should have these keys: title, year, and genre.
 # Print the whole dictionary.
+favorite_movie = {
+    "title": "John Wick",
+    "year": 2014,
+    "genre": "Action"
+}
+print("Favorite Movie:", favorite_movie)
 
 # Exercise 2:
 # Print only the movie title using its key.
+print("Movie title:", favorite_movie["title"])
 
 # Exercise 3:
 # Change the year in favorite_movie to a different year.
 # Print the updated dictionary.
+favorite_movie["year"] = 2017
+print("After favorite movie update:", favorite_movie)
 
 # Exercise 4:
 # Add a new key called rating.
 # Give it a value from 1 to 10.
 # Print the updated dictionary.
+favorite_movie["rating"] = 10
+print("Updated favorite movie:", favorite_movie)
 
 # Exercise 5:
 # Remove the genre key using pop().
 # Print the updated dictionary.
+favorite_movie.pop("genre")
+print("After pop:", favorite_movie)
 
 # Exercise 6:
 # Use a for loop with items() to print each key and value.
-
+for key, value in favorite_movie.items():
+    print(key, ":", value )
 
 # =========================
 # Mini Challenge
@@ -111,3 +125,13 @@ print("============Mini Challenge==========")
 # name, phone, email
 # Print the final contact dictionary.
 # Then use a for loop with items() to print each key and value one by one.
+contact = {}
+name = input("Enter your name: ")
+number = int(input("Enter your number: "))
+email = input("Enter your email: ")
+contact["names"] = name
+contact["number"] = number
+contact["email"] = email
+print(contact)
+for key, value in contact.items():
+    print(key, ":", value)
