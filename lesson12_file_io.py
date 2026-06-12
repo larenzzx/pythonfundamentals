@@ -94,7 +94,7 @@ print("Is directory?", os.path.isdir("my_first_file.txt"))
 
 # Create a sample data file
 with open("scores.txt", "w") as file:
-    file.write("Mark:95\n")
+    file.write("Alex:95\n")
     file.write("Ana:88\n")
     file.write("Luis:92\n")
     file.write("Sara:78\n")
@@ -129,7 +129,7 @@ print(f"Highest: {highest_name} with {scores[highest_name]}")
 # Writing CSV data
 students = [
     ["Name", "Age", "Grade"],
-    ["Mark", "24", "A"],
+    ["Alex", "24", "A"],
     ["Ana", "22", "B+"],
     ["Luis", "25", "A-"],
 ]
@@ -158,8 +158,8 @@ import json
 
 # Writing JSON
 data = {
-    "name": "Mark",
-    "age": 24,
+    "name": "Alex",
+    "age": 20,
     "courses": ["Python", "DevOps", "AI"],
     "address": {
         "city": "New York",

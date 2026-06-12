@@ -53,7 +53,7 @@ for fruit in fruits:
 
 # Lists can store different data types.
 
-student = ["Mark", 24, True]
+student = ["Alex", 24, True]
 
 print("Student name:", student[0])
 print("Student age:", student[1])

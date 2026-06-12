@@ -115,7 +115,7 @@ print("Is 99 in set_a?", 99 in set_a)  # False
 
 # List of dictionaries
 students = [
-    {"name": "Mark", "grade": 95},
+    {"name": "Alex", "grade": 95},
     {"name": "Ana", "grade": 88},
     {"name": "Luis", "grade": 92},
 ]
@@ -123,8 +123,8 @@ print("First student:", students[0]["name"])
 
 # Dictionary of lists
 classroom = {
-    "math": ["Mark", "Ana"],
-    "science": ["Luis", "Mark"],
+    "math": ["Alex", "Ana"],
+    "science": ["Luis", "Alex"],
     "art": ["Ana"],
 }
 print("Math students:", classroom["math"])
@@ -143,7 +143,7 @@ company = {
 print("Engineering head:", company["engineering"]["head"])
 
 # List of tuples
-grades = [("Mark", 95), ("Ana", 88), ("Luis", 92)]
+grades = [("Alex", 95), ("Ana", 88), ("Luis", 92)]
 for name, score in grades:
     print(name, "scored", score)
 
@@ -168,7 +168,7 @@ def print_info(**kwargs):
     for key, value in kwargs.items():
         print(key, "=", value)
 
-print_info(name="Mark", age=24, city="New York")
+print_info(name="Alex", age=20, city="New York")
 
 # You can combine regular params, *args, and **kwargs.
 def full_function(name, *args, **kwargs):
@@ -176,7 +176,7 @@ def full_function(name, *args, **kwargs):
     print("Args:", args)
     print("Kwargs:", kwargs)
 
-full_function("Mark", 1, 2, 3, city="NYC", role="student")
+full_function("Alex", 1, 2, 3, city="NYC", role="student")
 
 # =============================================
 # ACTIVITY SECTION
@@ -190,7 +190,7 @@ print("============Activity Section==========")
 
 # Exercise 2: Set Operations
 # Create two sets:
-#   python_students = {"Mark", "Ana", "Luis", "Sara"}
+#   python_students = {"Alex", "Ana", "Luis", "Sara"}
 #   java_students = {"Ana", "Sara", "Tom", "Joe"}
 # Print:
 #   - Students in BOTH courses (intersection)

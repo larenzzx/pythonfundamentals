@@ -44,7 +44,7 @@ print("replace():", sentence.replace("Python", "Java"))
 print("replace() once:", sentence.replace("Python", "Java", 1))
 
 # Splitting and joining
-csv_line = "Mark,24,New York,Student"
+csv_line = "Alex,20,New York,Student"
 parts = csv_line.split(",")
 print("split():", parts)
 
@@ -79,7 +79,7 @@ print(word[:-2])    # "Pyth" (everything except last 2)
 # PART 3: STRING FORMATTING (3 WAYS)
 # =============================================
 
-name = "Mark"
+name = "Alex"
 age = 24
 score = 95.567
 
@@ -128,7 +128,7 @@ print("Raw string:", path)
 print("Tab:\tindented")
 print("Newline:\nsecond line")
 print("Quote: She said \"Hello\"")
-print("Backslash: C:\\Users\\Mark")
+print("Backslash: C:\\Users\\Alex")
 
 # =============================================
 # PART 5: USEFUL STRING PATTERNS

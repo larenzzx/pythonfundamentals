@@ -3,8 +3,8 @@
 # Lesson 1: Variables and Data Types
 # A variable stores a value so you can use it later.
 
-name = "Mark"        # str: text data, written inside quotes
-age = 25             # int: whole number
+name = "Alex"        # str: text data, written inside quotes
+age = 20             # int: whole number
 height = 5.9         # float: decimal number
 is_student = True    # bool: True or False value
 
@@ -27,7 +27,7 @@ print(type(height))      # float
 print(type(is_student))  # bool
 
 # Variables can be changed after they are created.
-age = 26
+age = 21
 print("Updated age:", age)
 
 # Good variable names are clear and descriptive.

@@ -21,7 +21,7 @@ def farewell(name):
 
 # Assign function to a variable
 my_func = greet
-print(my_func("Mark"))  # "Hello, Mark!"
+print(my_func("Alex"))  # "Hello, Mark!"
 
 # Pass function as argument
 def execute_function(func, value):
@@ -104,7 +104,7 @@ def say_hello(name):
     """Says hello to someone."""
     print(f"Hello, {name}!")
 
-say_hello("Mark")
+say_hello("Alex")
 print("Function name:", say_hello.__name__)  # Thanks to functools.wraps
 print("Docstring:", say_hello.__doc__)
 

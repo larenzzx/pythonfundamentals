@@ -85,7 +85,7 @@ swapped = {v: k for k, v in original.items()}
 print("Swapped:", swapped)
 
 # Filter a dictionary:
-scores = {"Mark": 95, "Ana": 88, "Luis": 92, "Sara": 78, "Tom": 85}
+scores = {"Alex": 95, "Ana": 88, "Luis": 92, "Sara": 78, "Tom": 85}
 high_scorers = {name: score for name, score in scores.items() if score >= 90}
 print("High scorers:", high_scorers)
 
@@ -123,7 +123,7 @@ print("Lambda greet:", greet())
 # =============================================
 
 # Sort a list of tuples by second element:
-students = [("Mark", 95), ("Ana", 88), ("Luis", 92), ("Sara", 78)]
+students = [("Alex", 95), ("Ana", 88), ("Luis", 92), ("Sara", 78)]
 students.sort(key=lambda student: student[1])  # Sort by score
 print("Sorted by score:", students)
 
@@ -137,7 +137,7 @@ words.sort(key=lambda w: len(w))
 print("Sorted by length:", words)
 
 # Sort dictionary by value:
-scores = {"Mark": 95, "Ana": 88, "Luis": 92, "Sara": 78}
+scores = {"Alex": 95, "Ana": 88, "Luis": 92, "Sara": 78}
 sorted_scores = dict(sorted(scores.items(), key=lambda item: item[1]))
 print("Sorted by score:", sorted_scores)
 
@@ -185,12 +185,12 @@ print("Numbers only:", numbers_only)
 
 # Create a dict from two lists:
 keys = ["name", "age", "city"]
-values = ["Mark", 24, "New York"]
+values = ["Alex", 24, "New York"]
 combined = {k: v for k, v in zip(keys, values)}
 print("Combined:", combined)
 
 # zip() pairs items from multiple lists:
-names = ["Mark", "Ana", "Luis"]
+names = ["Alex", "Ana", "Luis"]
 scores = [95, 88, 92]
 for name, score in zip(names, scores):
     print(f"{name}: {score}")
@@ -216,7 +216,7 @@ print("============Activity Section==========")
 
 # Exercise 3: Sorting Challenge
 # Given a list of dictionaries:
-#   people = [{"name": "Mark", "age": 24}, {"name": "Ana", "age": 30}, ...]
+#   people = [{"name": "Alex", "age": 20}, {"name": "Ana", "age": 30}, ...]
 # Sort them by age (ascending) using sorted() and lambda.
 # Then sort them by name length (descending).
 

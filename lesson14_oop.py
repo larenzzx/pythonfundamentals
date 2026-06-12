@@ -70,7 +70,7 @@ class BankAccount:
     def __str__(self):
         return f"Account({self.owner}, Balance: ${self.__balance})"
 
-account = BankAccount("Mark", 1000)
+account = BankAccount("Alex", 1000)
 print(account.deposit(500))
 print(account.withdraw(200))
 print("Balance:", account.get_balance())
@@ -303,7 +303,7 @@ class Employee:
 
     @classmethod
     def from_string(cls, emp_string):
-        """Alternative constructor from a string like 'Mark-50000'."""
+        """Alternative constructor from a string like 'Alex-50000'."""
         name, salary = emp_string.split("-")
         return cls(name, int(salary))
 
@@ -315,7 +315,7 @@ class Employee:
     def __str__(self):
         return f"{self.name}: ${self.salary}"
 
-emp1 = Employee("Mark", 50000)
+emp1 = Employee("Alex", 50000)
 emp2 = Employee("Ana", 60000)
 print(emp1)
 print(emp2)

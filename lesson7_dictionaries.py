@@ -9,8 +9,8 @@
 # Dictionaries use curly braces.
 
 student = {
-    "name": "Mark",
-    "age": 24,
+    "name": "Alex",
+    "age": 20,
     "course": "Python"
 }
 

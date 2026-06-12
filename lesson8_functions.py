@@ -19,7 +19,7 @@ greet()
 def greet_student(name):
     print("Hello,", name)
 
-greet_student("Mark")
+greet_student("Alex")
 greet_student("Ana")
 
 # A function can have more than one parameter.
@@ -27,7 +27,7 @@ greet_student("Ana")
 def introduce(name, age):
     print("My name is", name, "and I am", age, "years old.")
 
-introduce("Mark", 24)
+introduce("Alex", 24)
 
 # A function can return a value.
 # return sends a result back to the place where the function was called.

@@ -131,15 +131,15 @@ if re.match(r'\d{3}-\d{3}-\d{4}', phone):
 
 # You can import it:
 # import helpers
-# helpers.greet("Mark")
+# helpers.greet("Alex")
 
 # Or import specific functions:
 # from helpers import greet, add
-# greet("Mark")
+# greet("Alex")
 
 # Or import with an alias:
 # import helpers as h
-# h.greet("Mark")
+# h.greet("Alex")
 
 # =============================================
 # PART 4: __name__ == "__main__"
