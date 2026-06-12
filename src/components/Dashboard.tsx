@@ -22,6 +22,7 @@ export default function Dashboard({ lessons, progress, onSelectLesson, executedC
   const completedCount = Object.values(progress).filter(p => p === 'completed').length;
   const inProgressCount = Object.values(progress).filter(p => p === 'in_progress').length;
   const percentComplete = Math.round((completedCount / lessons.length) * 100);
+  const hasStarted = completedCount > 0 || inProgressCount > 0;
 
   // Compute achievements
   const achievements = [
@@ -85,7 +86,7 @@ export default function Dashboard({ lessons, progress, onSelectLesson, executedC
                 className="inline-flex items-center gap-2 bg-gradient-to-r from-sky-400 to-indigo-500 text-slate-950 hover:shadow-lg hover:shadow-sky-500/20 active:scale-95 transition-all duration-200 px-5 py-3 rounded-xl font-bold text-sm"
               >
                 <Play className="w-4 h-4 fill-current" />
-                Resume Learning
+                {hasStarted ? 'Resume Learning' : 'Start Learning'}
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>

@@ -25,8 +25,8 @@ export default function CheatSheet() {
       category: 'Syntax Basics',
       title: 'Variables & Data Types',
       description: 'Declaration of string, integer, float, and boolean variables with label printing.',
-      code: `name = "Mark"
-age = 24
+      code: `name = "Alex"
+age = 20
 height = 5.9
 is_developer = True
 
