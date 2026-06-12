@@ -5,6 +5,7 @@ import {
   Play, RotateCcw, Save, CheckCircle2, ChevronLeft, 
   Terminal, FileCode, HelpCircle, BookOpen, AlertCircle
 } from 'lucide-react';
+import ConfirmationModal from './ui/ConfirmationModal';
 
 interface Lesson {
   id: number;
@@ -43,6 +44,7 @@ export default function InteractiveClassroom({
   const [consoleLogs, setConsoleLogs] = useState<ConsoleOutputLine[]>([]);
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [isSaved, setIsSaved] = useState<boolean>(false);
+  const [isResetModalOpen, setIsResetModalOpen] = useState<boolean>(false);
   const { loading: pyodideLoading, error: pyodideError, runCode } = usePyodide();
 
   // Load saved code from LocalStorage or fallback to lesson file content
@@ -75,15 +77,18 @@ export default function InteractiveClassroom({
 
   // Handle Reset
   const handleReset = () => {
-    if (confirm('Are you sure you want to reset this code to the default lesson template? Any edits will be lost.')) {
-      setCode(lesson.sections[activeSection] || '');
-      const storageKey = `py_lesson_${lesson.id}_${activeSection}`;
-      localStorage.removeItem(storageKey);
-      setConsoleLogs(prev => [
-        ...prev, 
-        { type: 'system', text: 'Reset code to default template.' }
-      ]);
-    }
+    setIsResetModalOpen(true);
+  };
+
+  const confirmReset = () => {
+    setCode(lesson.sections[activeSection] || '');
+    const storageKey = `py_lesson_${lesson.id}_${activeSection}`;
+    localStorage.removeItem(storageKey);
+    setConsoleLogs(prev => [
+      ...prev, 
+      { type: 'system', text: 'Reset code to default template.' }
+    ]);
+    setIsResetModalOpen(false);
   };
 
   // Execute Code using Pyodide
@@ -382,6 +387,16 @@ export default function InteractiveClassroom({
 
       </div>
 
+      <ConfirmationModal
+        isOpen={isResetModalOpen}
+        title="Reset Template Code"
+        message="Are you sure you want to reset the code for this section to the default lesson template? Any unsaved edits will be permanently overwritten."
+        confirmText="Reset Code"
+        cancelText="Cancel"
+        onConfirm={confirmReset}
+        onCancel={() => setIsResetModalOpen(false)}
+        type="warning"
+      />
     </div>
   );
 }

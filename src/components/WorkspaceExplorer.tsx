@@ -5,6 +5,7 @@ import {
   Folder, File, Terminal, 
   Play, Save, RotateCcw, Monitor, Code, Info, Lock
 } from 'lucide-react';
+import ConfirmationModal from './ui/ConfirmationModal';
 
 interface Lesson {
   id: number;
@@ -32,6 +33,7 @@ export default function WorkspaceExplorer({ lessons, progress }: WorkspaceExplor
   const [consoleLogs, setConsoleLogs] = useState<any[]>([]);
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [isSaved, setIsSaved] = useState<boolean>(false);
+  const [isResetModalOpen, setIsResetModalOpen] = useState<boolean>(false);
   const { loading: pyodideLoading, error: pyodideError, runCode } = usePyodide();
 
   // Create virtual workspace layout
@@ -130,13 +132,17 @@ export default function WorkspaceExplorer({ lessons, progress }: WorkspaceExplor
 
   const handleReset = () => {
     if (!selectedFile) return;
-    if (confirm(`Reset ${selectedFile.name} to its original template? All unsaved browser changes will be overwritten.`)) {
-      setCode(selectedFile.content || '');
-      const storageKey = selectedFile.lessonId 
-        ? `py_workspace_lesson_${selectedFile.lessonId}`
-        : `py_workspace_system_${selectedFile.name}`;
-      localStorage.removeItem(storageKey);
-    }
+    setIsResetModalOpen(true);
+  };
+
+  const confirmReset = () => {
+    if (!selectedFile) return;
+    setCode(selectedFile.content || '');
+    const storageKey = selectedFile.lessonId 
+      ? `py_workspace_lesson_${selectedFile.lessonId}`
+      : `py_workspace_system_${selectedFile.name}`;
+    localStorage.removeItem(storageKey);
+    setIsResetModalOpen(false);
   };
 
   const handleRunCode = async () => {
@@ -367,6 +373,16 @@ export default function WorkspaceExplorer({ lessons, progress }: WorkspaceExplor
         )}
       </div>
 
+      <ConfirmationModal
+        isOpen={isResetModalOpen}
+        title="Reset Script File"
+        message={`Are you sure you want to reset ${selectedFile?.name || 'this file'} to its default template? All unsaved browser changes will be permanently overwritten.`}
+        confirmText="Reset Code"
+        cancelText="Cancel"
+        onConfirm={confirmReset}
+        onCancel={() => setIsResetModalOpen(false)}
+        type="warning"
+      />
     </div>
   );
 }

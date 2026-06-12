@@ -1,15 +1,21 @@
 import { useState, useEffect } from 'react';
+import { AuthProvider, useAuth } from './hooks/useAuth';
+import { supabase } from './lib/supabase';
 import Dashboard from './components/Dashboard';
 import InteractiveClassroom from './components/InteractiveClassroom';
 import WorkspaceExplorer from './components/WorkspaceExplorer';
 import CheatSheet from './components/CheatSheet';
+import Login from './components/Login';
+import ResetPassword from './components/ResetPassword';
+import AdminDashboard from './components/AdminDashboard';
+import ConfirmationModal from './components/ui/ConfirmationModal';
 
 // Import compiled lessons data
 import lessonsData from './data/lessons.json';
 
 import { 
   LayoutDashboard, BookOpen, Monitor, Layers, 
-  Terminal, CheckCircle, Menu, X, Lock
+  Terminal, Menu, X, Lock, LogOut, ShieldAlert
 } from 'lucide-react';
 
 interface Lesson {
@@ -26,46 +32,78 @@ interface Lesson {
 
 const lessonsList = lessonsData as Lesson[];
 
-export default function App() {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'classroom' | 'workspace' | 'cheatsheet'>('dashboard');
+function MainLayout() {
+  const { user, profile, loading: authLoading, signOut } = useAuth();
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'classroom' | 'workspace' | 'cheatsheet' | 'admin'>('dashboard');
   const [selectedLessonId, setSelectedLessonId] = useState<number | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const [isResettingPassword, setIsResettingPassword] = useState<boolean>(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState<boolean>(false);
   
   // Progress state: maps lessonId -> status
   const [progress, setProgress] = useState<Record<number, 'not_started' | 'in_progress' | 'completed'>>({});
   const [executedCount, setExecutedCount] = useState<number>(0);
+  const [syncing, setSyncing] = useState<boolean>(false);
 
-  // Initialize progress and count from localStorage
+  // Check URL path for password reset recovery or invite types
   useEffect(() => {
-    // Progress
-    const savedProgress = localStorage.getItem('py_course_progress');
-    if (savedProgress) {
-      try {
-        setProgress(JSON.parse(savedProgress));
-      } catch (e) {
-        console.error('Failed to parse saved progress', e);
-      }
-    } else {
-      // Seed default
-      const defaultProgress: Record<number, 'not_started' | 'in_progress' | 'completed'> = {};
-      lessonsList.forEach(l => {
-        defaultProgress[l.id] = 'not_started';
-      });
-      setProgress(defaultProgress);
+    const isRecovery = window.location.pathname === '/reset-password' || 
+                        window.location.hash.includes('type=recovery') ||
+                        window.location.search.includes('type=recovery') ||
+                        window.location.hash.includes('type=invite') ||
+                        window.location.hash.includes('type=signup');
+    if (isRecovery) {
+      setIsResettingPassword(true);
     }
+  }, []);
 
-    // Executed Runs
+  // Fetch progress from Supabase once user is loaded
+  useEffect(() => {
+    if (!user) return;
+
+    const fetchUserProgress = async () => {
+      setSyncing(true);
+      try {
+        const { data, error } = await supabase
+          .from('user_progress')
+          .select('lesson_id, status')
+          .eq('user_id', user.id);
+
+        if (error) throw error;
+
+        const progressMap: Record<number, 'not_started' | 'in_progress' | 'completed'> = {};
+        // Seed default locks
+        lessonsList.forEach(l => {
+          progressMap[l.id] = 'not_started';
+        });
+        
+        // Populate DB records
+        if (data) {
+          data.forEach((row: any) => {
+            progressMap[row.lesson_id] = row.status as 'not_started' | 'in_progress' | 'completed';
+          });
+        }
+        setProgress(progressMap);
+      } catch (e) {
+        console.error('Failed to load user progress from Supabase:', e);
+      } finally {
+        setSyncing(false);
+      }
+    };
+
+    fetchUserProgress();
+
+    // Executed Runs (keep client side or store locally)
     const count = parseInt(localStorage.getItem('py_exec_count') || '0', 10);
     setExecutedCount(count);
 
-    // Watch for code runs in other tabs / components
     const handleStorageChange = () => {
       const updatedCount = parseInt(localStorage.getItem('py_exec_count') || '0', 10);
       setExecutedCount(updatedCount);
     };
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
-  }, []);
+  }, [user]);
 
   // Check if a lesson is unlocked
   const isLessonUnlocked = (lessonId: number) => {
@@ -73,20 +111,38 @@ export default function App() {
     return progress[lessonId - 1] === 'completed';
   };
 
-  // Set individual lesson progress state
-  const handleMarkComplete = (lessonId: number, status: 'completed' | 'in_progress') => {
-    const newProgress = {
-      ...progress,
+  // Sync individual lesson progress state with database
+  const handleMarkComplete = async (lessonId: number, status: 'completed' | 'in_progress') => {
+    if (!user) return;
+    
+    // Update local state optimistically
+    setProgress(prev => ({
+      ...prev,
       [lessonId]: status
-    };
-    setProgress(newProgress);
-    localStorage.setItem('py_course_progress', JSON.stringify(newProgress));
+    }));
+
+    try {
+      const { error } = await supabase
+        .from('user_progress')
+        .upsert({
+          user_id: user.id,
+          lesson_id: lessonId,
+          status: status,
+          updated_at: new Date().toISOString()
+        }, {
+          onConflict: 'user_id,lesson_id' // Requires unique index on (user_id, lesson_id)
+        });
+
+      if (error) throw error;
+    } catch (e) {
+      console.error('Failed to sync lesson progress to Supabase:', e);
+    }
   };
 
   const selectedLesson = lessonsList.find(l => l.id === selectedLessonId);
 
   // Navigation handlers
-  const handleTabChange = (tab: 'dashboard' | 'classroom' | 'workspace' | 'cheatsheet') => {
+  const handleTabChange = (tab: 'dashboard' | 'classroom' | 'workspace' | 'cheatsheet' | 'admin') => {
     setActiveTab(tab);
     setIsMobileMenuOpen(false);
     
@@ -105,6 +161,26 @@ export default function App() {
       setActiveTab('classroom');
     }
   };
+
+  // Loading Screens
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-[#060913] text-white flex flex-col items-center justify-center space-y-4">
+        <div className="w-10 h-10 border-t-2 border-sky-400 border-solid rounded-full animate-spin"></div>
+        <p className="text-xs text-slate-400 font-mono">Syncing sandbox credentials...</p>
+      </div>
+    );
+  }
+
+  // Redirect to Reset Password screen if type=recovery
+  if (isResettingPassword) {
+    return <ResetPassword />;
+  }
+
+  // Redirect to Login if unauthorized
+  if (!user) {
+    return <Login />;
+  }
 
   return (
     <div className="flex min-h-screen bg-[#060913] text-[#f8fafc] overflow-hidden font-sans relative">
@@ -197,6 +273,23 @@ export default function App() {
             </span>
           </button>
 
+          {/* Admin Dashboard Tab (Only shown to Admin users) */}
+          {profile?.role === 'admin' && (
+            <button
+              onClick={() => handleTabChange('admin')}
+              className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
+                activeTab === 'admin'
+                  ? 'bg-indigo-500/10 border-l-2 border-indigo-500 text-indigo-400 font-extrabold'
+                  : 'text-slate-500 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <span className="flex items-center gap-3">
+                <ShieldAlert className="w-4 h-4" />
+                Admin Panel
+              </span>
+            </button>
+          )}
+
           {/* Quick Classroom Sub-Tree of unlocked lessons */}
           {activeTab === 'classroom' && (
             <div className="mt-6 pt-4 border-t border-white/5 space-y-1">
@@ -237,13 +330,20 @@ export default function App() {
 
         {/* Sidebar Footer */}
         <div className="p-4 border-t border-white/5 bg-[#070b12] text-xs space-y-3 shrink-0">
-          <div className="flex items-center gap-2 text-slate-400 font-mono text-[10px]">
+          <div className="flex items-center justify-between text-slate-400 font-mono text-[9px]">
+            <span className="truncate max-w-[120px]">{profile?.email || user.email}</span>
+            <button 
+              onClick={() => setIsLogoutModalOpen(true)}
+              className="text-red-400 hover:text-red-300 flex items-center gap-0.5 transition-colors"
+              title="Sign Out"
+            >
+              <LogOut className="w-3 h-3" />
+              Exit
+            </button>
+          </div>
+          <div className="flex items-center gap-2 text-slate-500 font-mono text-[10px]">
             <Terminal className="w-3.5 h-3.5 text-amber-500" />
             WASM Compiler: Active
-          </div>
-          <div className="flex items-center gap-2 text-slate-400 font-mono text-[10px]">
-            <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
-            Workspace sync: Valid
           </div>
         </div>
       </aside>
@@ -252,7 +352,7 @@ export default function App() {
       <div className="flex-1 flex flex-col min-w-0 md:pl-64 h-screen overflow-y-auto z-10">
         
         {/* Top Navbar Header */}
-        <header className="h-16 border-b border-white/5 bg-[#090d16]/40 backdrop-blur-md flex items-center justify-between px-6 md:px-8 shrink-0 sticky top-0 z-30">
+        <header className="h-16 border-b border-white/5 bg-[#090d16]/40 backdrop-blur-md flex items-center justify-between px-6 md:px-8 shrink-0 static top-0 z-30">
           <div className="flex items-center gap-3">
             {/* Hamburger Button for Mobile Menu */}
             <button
@@ -277,6 +377,11 @@ export default function App() {
 
           {/* Quick Status Pill */}
           <div className="flex items-center gap-4 text-xs font-bold text-slate-400">
+            {syncing && (
+              <span className="text-[10px] text-slate-500 animate-pulse font-mono">
+                Syncing database...
+              </span>
+            )}
             <div className="bg-slate-900 border border-white/5 rounded-xl px-3.5 py-1.5 flex items-center gap-1.5 shadow-sm">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               <span className="hidden sm:inline">Browser Runtime Ready</span>
@@ -318,9 +423,30 @@ export default function App() {
           {activeTab === 'cheatsheet' && (
             <CheatSheet />
           )}
+
+          {activeTab === 'admin' && profile?.role === 'admin' && (
+            <AdminDashboard />
+          )}
         </main>
       </div>
 
+      <ConfirmationModal
+        isOpen={isLogoutModalOpen}
+        title="Sign Out Confirmation"
+        message="Are you sure you want to end your current session and sign out of PyFundamentals?"
+        confirmText="Sign Out"
+        cancelText="Stay"
+        onConfirm={signOut}
+        onCancel={() => setIsLogoutModalOpen(false)}
+      />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <MainLayout />
+    </AuthProvider>
   );
 }
