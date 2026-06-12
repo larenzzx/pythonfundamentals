@@ -68,7 +68,6 @@ for key in student:
 for key, value in student.items():
     print(key, ":", value)
 
-
 # =========================
 # Activity
 print("============Activity Section==========")
@@ -79,30 +78,24 @@ print("============Activity Section==========")
 # It should have these keys: title, year, and genre.
 # Print the whole dictionary.
 
-
 # Exercise 2:
 # Print only the movie title using its key.
-
 
 # Exercise 3:
 # Change the year in favorite_movie to a different year.
 # Print the updated dictionary.
-
 
 # Exercise 4:
 # Add a new key called rating.
 # Give it a value from 1 to 10.
 # Print the updated dictionary.
 
-
 # Exercise 5:
 # Remove the genre key using pop().
 # Print the updated dictionary.
 
-
 # Exercise 6:
 # Use a for loop with items() to print each key and value.
-
 
 # =========================
 # Mini Challenge
@@ -115,4 +108,4 @@ print("============Mini Challenge==========")
 # Store each answer in the dictionary using these keys:
 # name, phone, email
 # Print the final contact dictionary.
-
+# Then use a for loop with items() to print each key and value one by one.

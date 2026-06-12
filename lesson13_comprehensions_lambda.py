@@ -4,7 +4,6 @@
 # These are powerful Python features that let you write
 # concise, expressive code. This is where Python starts to shine.
 
-
 # =============================================
 # PART 1: LIST COMPREHENSIONS
 # =============================================
@@ -33,7 +32,6 @@ print("Lengths:", lengths)
 uppercased = [name.upper() for name in ["mark", "ana", "luis"]]
 print("Uppercased:", uppercased)
 
-
 # =============================================
 # PART 2: LIST COMPREHENSIONS WITH CONDITIONS
 # =============================================
@@ -54,7 +52,6 @@ numbers = [5, -3, 8, -1, 0, -7, 4]
 cleaned = [n if n >= 0 else 0 for n in numbers]
 print("Cleaned:", cleaned)
 
-
 # =============================================
 # PART 3: NESTED LIST COMPREHENSIONS
 # =============================================
@@ -73,7 +70,6 @@ for row in table:
 # Get diagonal of a matrix:
 diagonal = [matrix[i][i] for i in range(len(matrix))]
 print("Diagonal:", diagonal)  # [1, 5, 9]
-
 
 # =============================================
 # PART 4: DICTIONARY & SET COMPREHENSIONS
@@ -97,7 +93,6 @@ print("High scorers:", high_scorers)
 words = ["hello", "world", "hello", "python", "world"]
 unique_lengths = {len(w) for w in words}
 print("Unique lengths:", unique_lengths)
-
 
 # =============================================
 # PART 5: LAMBDA FUNCTIONS
@@ -123,7 +118,6 @@ print("Lambda greet:", greet())
 
 # Lambdas are most useful when passed to other functions.
 
-
 # =============================================
 # PART 6: SORTING WITH LAMBDA
 # =============================================
@@ -146,7 +140,6 @@ print("Sorted by length:", words)
 scores = {"Mark": 95, "Ana": 88, "Luis": 92, "Sara": 78}
 sorted_scores = dict(sorted(scores.items(), key=lambda item: item[1]))
 print("Sorted by score:", sorted_scores)
-
 
 # =============================================
 # PART 7: map(), filter(), sorted()
@@ -176,7 +169,6 @@ print("Even squares:", result)
 result2 = [x ** 2 for x in numbers if x % 2 == 0]
 print("Even squares (comp):", result2)
 
-
 # =============================================
 # PART 8: USEFUL ONE-LINERS
 # =============================================
@@ -202,7 +194,6 @@ names = ["Mark", "Ana", "Luis"]
 scores = [95, 88, 92]
 for name, score in zip(names, scores):
     print(f"{name}: {score}")
-
 
 # =============================================
 # ACTIVITY SECTION
@@ -242,7 +233,6 @@ print("============Activity Section==========")
 # a) Get the second column: [2, 5, 8]
 # b) Get all even numbers from the matrix
 # c) Create a new matrix where each value is doubled
-
 
 # =============================================
 # MINI CHALLENGE: Data Processing Pipeline

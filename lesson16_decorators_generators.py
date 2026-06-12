@@ -5,7 +5,6 @@
 # intermediate/advanced developers. They're used everywhere in
 # real Python code -- web frameworks, data science, automation.
 
-
 # =============================================
 # PART 1: FUNCTIONS AS FIRST-CLASS OBJECTS
 # =============================================
@@ -40,7 +39,6 @@ def get_function(choice):
 
 selected = get_function("greet")
 print(selected("Sara"))
-
 
 # =============================================
 # PART 2: CLOSURES
@@ -82,7 +80,6 @@ print(counter_a())  # 2
 print(counter_a())  # 3
 print(counter_b())  # 1 (independent of counter_a)
 
-
 # =============================================
 # PART 3: DECORATORS
 # =============================================
@@ -111,7 +108,6 @@ say_hello("Mark")
 print("Function name:", say_hello.__name__)  # Thanks to functools.wraps
 print("Docstring:", say_hello.__doc__)
 
-
 # --- Timing decorator ---
 def timer(func):
     """Measures how long a function takes to run."""
@@ -133,7 +129,6 @@ def slow_function():
 
 result = slow_function()
 print("Result:", result)
-
 
 # --- Retry decorator ---
 def retry(max_attempts=3):
@@ -165,7 +160,6 @@ try:
 except ValueError:
     print("Operation failed after all retries.")
 
-
 # --- Logging decorator ---
 def log_calls(func):
     """Logs function calls with arguments."""
@@ -187,7 +181,6 @@ def add(a, b):
 add(3, 5)
 add(10, b=20)
 
-
 # --- Chaining multiple decorators ---
 @timer
 @log_calls
@@ -199,7 +192,6 @@ def process_data(data):
 
 print("Processed:", process_data([1, 2, 3, 4, 5]))
 # Decorators execute bottom-up: my_decorator -> log_calls -> timer
-
 
 # =============================================
 # PART 4: GENERATORS
@@ -234,7 +226,6 @@ print("Next:", next(gen))   # 4
 for square in gen:
     print("Remaining:", square)
 
-
 # Why generators matter: memory efficiency
 import sys
 
@@ -247,7 +238,6 @@ big_gen = range(1_000_000)
 print("Generator size:", sys.getsizeof(big_gen), "bytes")
 # range() is a generator -- it doesn't store all values in memory!
 
-
 # --- Generator expressions (like list comprehensions but lazy) ---
 # List comprehension: []
 squares_list = [x ** 2 for x in range(10)]
@@ -258,7 +248,6 @@ squares_gen = (x ** 2 for x in range(10))
 print("Gen exp:", squares_gen)
 print("Gen values:", list(squares_gen))
 
-
 # --- Real-world generator: reading large files line by line ---
 def read_large_file(filename):
     """Reads a file line by line without loading it all into memory."""
@@ -268,7 +257,6 @@ def read_large_file(filename):
 
 # for line in read_large_file("huge_log.txt"):
 #     process(line)
-
 
 # --- Infinite generator ---
 def fibonacci():
@@ -284,7 +272,6 @@ for _ in range(15):
     print(next(fib), end=" ")
 print()
 
-
 # --- send() -- two-way communication with generators ---
 def running_total():
     """Accumulates values sent to it."""
@@ -299,7 +286,6 @@ next(acc)  # Prime the generator (advance to first yield)
 print(acc.send(10))   # 10
 print(acc.send(20))   # 30
 print(acc.send(5))    # 35
-
 
 # =============================================
 # PART 5: ITERATORS
@@ -349,7 +335,6 @@ class NoSpaceIterator:
 print("No spaces:", list(NoSpaceIterator("Hello World")))
 # ['H', 'e', 'l', 'l', 'o', 'W', 'o', 'r', 'l', 'd']
 
-
 # =============================================
 # PART 6: PUTTING IT ALL TOGETHER
 # =============================================
@@ -391,7 +376,6 @@ def filter_records(records, key, min_value):
 #     print(record)
 # Each step processes ONE record at a time -- almost zero memory!
 
-
 # =============================================
 # ACTIVITY SECTION
 # =============================================
@@ -430,7 +414,6 @@ print("============Activity Section==========")
 # Test: for i in Range(0, 20, 3): print(i)
 # Expected: 0, 3, 6, 9, 12, 15, 18
 
-
 # =============================================
 # MINI CHALLENGE: Decorator Logger + Generator Pipeline
 # =============================================
@@ -451,7 +434,6 @@ print("============Mini Challenge==========")
 #     expensive_calc(1, 2)  # Takes 1 second, prints "Computing..."
 #     expensive_calc(1, 2)  # Instant, prints "Using cache!"
 #     expensive_calc(3, 4)  # Takes 1 second, different args
-
 
 # Part B: Build a log file analyzer using a generator pipeline:
 #   1. read_lines(filename) -- generator that yields lines from a file

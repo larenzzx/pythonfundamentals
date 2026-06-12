@@ -4,7 +4,6 @@
 # Programs need to save data permanently. Files let you do that.
 # This lesson covers reading from and writing to files.
 
-
 # =============================================
 # PART 1: WRITING TO FILES
 # =============================================
@@ -36,7 +35,6 @@ with open("my_first_file.txt", "a") as file:
 
 print("Lines appended!")
 
-
 # =============================================
 # PART 2: READING FROM FILES
 # =============================================
@@ -67,7 +65,6 @@ with open("my_first_file.txt", "r") as file:
     for line in file:
         print("Line:", line.strip())  # strip() removes the \n
 
-
 # =============================================
 # PART 3: WORKING WITH FILE PATHS
 # =============================================
@@ -90,7 +87,6 @@ print("File size:", os.path.getsize("my_first_file.txt"), "bytes")
 # Check if it's a file or directory
 print("Is file?", os.path.isfile("my_first_file.txt"))
 print("Is directory?", os.path.isdir("my_first_file.txt"))
-
 
 # =============================================
 # PART 4: READING AND PROCESSING DATA
@@ -125,7 +121,6 @@ print(f"Average score: {average:.1f}")
 highest_name = max(scores, key=lambda name: scores[name])
 print(f"Highest: {highest_name} with {scores[highest_name]}")
 
-
 # =============================================
 # PART 5: CSV-STYLE FILE HANDLING
 # =============================================
@@ -154,7 +149,6 @@ with open("students.csv", "r") as file:
     for line in file:
         row = line.strip().split(",")
         print(f"  {row[0]} is {row[1]} years old, grade: {row[2]}")
-
 
 # =============================================
 # PART 6: JSON FILE HANDLING
@@ -186,7 +180,6 @@ print("Loaded JSON:", loaded)
 print("Name:", loaded["name"])
 print("Courses:", loaded["courses"])
 
-
 # =============================================
 # PART 7: ERROR HANDLING WITH FILES
 # =============================================
@@ -202,7 +195,6 @@ except PermissionError:
     print("Error: No permission to read this file!")
 except Exception as e:
     print(f"Unexpected error: {e}")
-
 
 # =============================================
 # ACTIVITY SECTION
@@ -239,7 +231,6 @@ print("============Activity Section==========")
 # It should accept a source filename and destination filename.
 # It should read the source and write its contents to the destination.
 # Handle the case where the source file doesn't exist.
-
 
 # =============================================
 # MINI CHALLENGE: To-Do List with File Persistence

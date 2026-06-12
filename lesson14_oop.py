@@ -5,7 +5,6 @@
 # data (attributes) and behavior (methods).
 # This is how most real-world Python projects are structured.
 
-
 # =============================================
 # PART 1: CLASSES AND OBJECTS
 # =============================================
@@ -33,7 +32,6 @@ class Dog:
         # This is what print() shows
         return f"Dog(name={self.name}, age={self.age})"
 
-
 # Create objects (instances)
 dog1 = Dog("Buddy", 3)
 dog2 = Dog("Max", 5)
@@ -43,7 +41,6 @@ print(dog2.bark())
 print(dog1)  # Uses __str__
 print("Species:", Dog.species)
 print("Species:", dog1.species)  # Can also access via instance
-
 
 # =============================================
 # PART 2: THE FOUR PILLARS OF OOP
@@ -73,7 +70,6 @@ class BankAccount:
     def __str__(self):
         return f"Account({self.owner}, Balance: ${self.__balance})"
 
-
 account = BankAccount("Mark", 1000)
 print(account.deposit(500))
 print(account.withdraw(200))
@@ -81,7 +77,6 @@ print("Balance:", account.get_balance())
 # print(account.__balance)  # AttributeError -- it's private!
 # Python uses "name mangling" -- it's actually _BankAccount__balance
 # but you should NEVER access it directly.
-
 
 # --- INHERITANCE: A class can inherit from another ---
 class Animal:
@@ -95,7 +90,6 @@ class Animal:
     def __str__(self):
         return f"{self.__class__.__name__}({self.name})"
 
-
 class Cat(Animal):  # Cat inherits from Animal
     def __init__(self, name, sound="Meow", indoor=True):
         super().__init__(name, sound)  # Call parent's __init__
@@ -104,14 +98,12 @@ class Cat(Animal):  # Cat inherits from Animal
     def purr(self):
         return f"{self.name} is purring."
 
-
 class Cow(Animal):
     def __init__(self, name, sound="Moo"):
         super().__init__(name, sound)
 
     def produce_milk(self):
         return f"{self.name} is being milked."
-
 
 cat = Cat("Whiskers")
 cow = Cow("Bessie")
@@ -126,7 +118,6 @@ print("Cat is Animal?", isinstance(cat, Animal))  # True
 print("Cat is Cat?", isinstance(cat, Cat))         # True
 print("Cow is Cat?", isinstance(cow, Cat))         # False
 
-
 # --- POLYMORPHISM: Same method name, different behavior ---
 class Shape:
     def area(self):
@@ -134,7 +125,6 @@ class Shape:
 
     def describe(self):
         return f"I am a {self.__class__.__name__}"
-
 
 class Rectangle(Shape):
     def __init__(self, width, height):
@@ -144,14 +134,12 @@ class Rectangle(Shape):
     def area(self):
         return self.width * self.height
 
-
 class Circle(Shape):
     def __init__(self, radius):
         self.radius = radius
 
     def area(self):
         return 3.14159 * self.radius ** 2
-
 
 class Triangle(Shape):
     def __init__(self, base, height):
@@ -161,12 +149,10 @@ class Triangle(Shape):
     def area(self):
         return 0.5 * self.base * self.height
 
-
 # Polymorphism in action -- same method call, different results
 shapes = [Rectangle(5, 3), Circle(4), Triangle(6, 8)]
 for shape in shapes:
     print(f"{shape.describe()}: area = {shape.area():.2f}")
-
 
 # --- ABSTRACTION: Only show essential details ---
 # (Achieved through careful class design -- hiding complex logic behind
@@ -195,11 +181,9 @@ class CoffeeMachine:
         self.__beans = 500
         return "Machine refilled."
 
-
 machine = CoffeeMachine()
 print(machine.make_coffee("large"))
 print(machine.make_coffee("medium"))
-
 
 # =============================================
 # PART 3: SPECIAL (DUNDER) METHODS
@@ -243,7 +227,6 @@ class Book:
         data = {"title": self.title, "author": self.author, "pages": self.pages}
         return data.get(key, "Not found")
 
-
 book1 = Book("Python Basics", "John Doe", 300)
 book2 = Book("Advanced Python", "Jane Smith", 450)
 book3 = Book("Python Basics", "John Doe", 300)
@@ -260,7 +243,6 @@ print("Title:", book1["title"])     # __getitem__
 books = [book2, book1]
 books.sort()
 print("Sorted:", [str(b) for b in books])
-
 
 # =============================================
 # PART 4: @property DECORATOR
@@ -290,14 +272,12 @@ class Temperature:
     def __str__(self):
         return f"{self.celsius:.1f}C / {self.fahrenheit:.1f}F / {self.kelvin:.1f}K"
 
-
 temp = Temperature(100)
 print(temp)
 print("Celsius:", temp.celsius)      # Looks like an attribute!
 print("Fahrenheit:", temp.fahrenheit)
 temp.fahrenheit = 32                 # Uses the setter
 print("After setting F:", temp)
-
 
 # =============================================
 # PART 5: CLASS METHODS AND STATIC METHODS
@@ -335,7 +315,6 @@ class Employee:
     def __str__(self):
         return f"{self.name}: ${self.salary}"
 
-
 emp1 = Employee("Mark", 50000)
 emp2 = Employee("Ana", 60000)
 print(emp1)
@@ -354,7 +333,6 @@ from datetime import date
 print("Is Monday a workday?", Employee.is_workday(date(2025, 1, 6)))
 print("Is Saturday a workday?", Employee.is_workday(date(2025, 1, 11)))
 print("Total employees:", Employee.employee_count)
-
 
 # =============================================
 # ACTIVITY SECTION
@@ -399,7 +377,6 @@ print("============Activity Section==========")
 # Properties: area, perimeter, is_square
 # Setters for width and height that validate positive numbers.
 # __str__ that shows all info.
-
 
 # =============================================
 # MINI CHALLENGE: Library Management System

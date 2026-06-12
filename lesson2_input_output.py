@@ -19,7 +19,7 @@ print("Course:", course)
 student_name = input("Enter your name: ")
 
 # input() always gives back a string.
-print("Hello,", student_name)
+print("Hello, " + student_name)
 
 # If you want a number, convert the input.
 # int() converts text to a whole number.
@@ -33,7 +33,6 @@ print("The price is:", price)
 # You can combine input and output to make a simple program.
 favorite_food = input("Enter your favorite food: ")
 print("Nice! Your favorite food is", favorite_food)
-
 
 # =========================
 # Activity
@@ -52,15 +51,12 @@ print("============Activity Section==========")
 # Ask the user to enter their birth year.
 # Convert it to an integer and store it in a variable called birth_year.
 
-
 # Exercise 4:
 # Ask the user to enter the price of any item.
 # Convert it to a float and store it in a variable called item_price.
 
-
 # Exercise 5:
 # Print all answers with clear labels.
-
 
 # =========================
 # Mini Challenge
@@ -77,3 +73,4 @@ print("============Mini Challenge==========")
 #
 # Example format:
 # Hello, my name is Ana. I am 19 years old and I enjoy drawing.
+

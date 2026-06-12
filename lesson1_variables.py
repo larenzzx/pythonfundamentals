@@ -37,7 +37,6 @@ score = 100
 print("Favorite color:", favorite_color)
 print("Score:", score)
 
-
 # =========================
 # Activity
 print("============Activity Section==========")
@@ -56,12 +55,10 @@ print("============Activity Section==========")
 # Create a variable called likes_python and store True or False.
 
 # Exercise 5:
-# Print each variable with a clear label.
-
+# Print each variable with a clear label
 
 # Exercise 6:
-# Print the type of each variable.
-
+# Print the type of each variable
 
 # =========================
 # Mini Challenge
@@ -78,3 +75,4 @@ print("============Mini Challenge==========")
 #
 # Example format:
 # My name is Alex, I am 20 years old, my favorite food is pizza, and it is True that I like coding.
+

@@ -59,7 +59,6 @@ print("Student name:", student[0])
 print("Student age:", student[1])
 print("Likes Python:", student[2])
 
-
 # =========================
 # Activity
 print("============Activity Section==========")
@@ -69,29 +68,23 @@ print("============Activity Section==========")
 # Create a list called favorite_foods with three foods.
 # Print the whole list.
 
-
 # Exercise 2:
 # Print the first item in favorite_foods.
-
 
 # Exercise 3:
 # Change the second item in favorite_foods to a new food.
 # Print the updated list.
 
-
 # Exercise 4:
 # Add a new food to favorite_foods using append().
 # Print the updated list.
-
 
 # Exercise 5:
 # Remove one food from favorite_foods using remove().
 # Print the updated list.
 
-
 # Exercise 6:
 # Use a for loop to print each food in favorite_foods.
-
 
 # =========================
 # Mini Challenge
@@ -104,7 +97,3 @@ print("============Mini Challenge==========")
 # Add each item to shopping_list using append().
 # Print the final shopping list.
 # Then use a for loop to print each item one by one.
-
-
-# or use extend() - takes an iterable (like list) and adds each element.
-# shopping_list.extend([item1, item2, item3])

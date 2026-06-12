@@ -56,10 +56,8 @@ def divide_numbers(a, b):
     except ZeroDivisionError:
         return "Cannot divide by zero."
 
-
 print("Division result:", divide_numbers(20, 5))
 print("Division result:", divide_numbers(20, 0))
-
 
 # =========================
 # Activity
@@ -99,7 +97,6 @@ print("============Activity Section==========")
 # Print the item at that index.
 # Handle ValueError if the user does not enter a whole number.
 # Handle IndexError if the index does not exist.
-
 
 # =========================
 # Mini Challenge

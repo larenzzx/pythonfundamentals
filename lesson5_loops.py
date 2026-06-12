@@ -44,7 +44,6 @@ for number in range(1, 6):
         continue
     print("After continue:", number)
 
-
 # =========================
 # Activity
 print("============Activity Section==========")
@@ -53,24 +52,19 @@ print("============Activity Section==========")
 # Exercise 1:
 # Use a for loop to print numbers from 1 to 10.
 
-
 # Exercise 2:
 # Use a for loop to print each letter in your first name.
 
-
 # Exercise 3:
 # Use a while loop to print numbers from 1 to 5.
-
 
 # Exercise 4:
 # Use a for loop with range(1, 11).
 # Print only the even numbers.
 # Hint: A number is even if number % 2 == 0.
 
-
 # Exercise 5:
 # Use a while loop to count down from 5 to 1.
-
 
 # =========================
 # Mini Challenge

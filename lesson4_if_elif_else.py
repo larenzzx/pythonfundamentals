@@ -62,7 +62,6 @@ if has_id and age >= 18:
 else:
     print("Entry denied.")
 
-
 # =========================
 # Activity
 print("============Activity Section==========")
@@ -73,11 +72,9 @@ print("============Activity Section==========")
 # If the age is 18 or older, print "You can vote."
 # Otherwise, print "You cannot vote yet."
 
-
 # Exercise 2:
 # Ask the user to enter a number.
 # Print whether the number is positive, negative, or zero.
-
 
 # Exercise 3:
 # Ask the user to enter their grade.
@@ -87,7 +84,6 @@ print("============Activity Section==========")
 # 75 to 79: "Passed"
 # Below 75: "Failed"
 
-
 # Exercise 4:
 # Create two boolean variables:
 # has_username
@@ -95,7 +91,6 @@ print("============Activity Section==========")
 #
 # If both are True, print "Login allowed."
 # Otherwise, print "Login denied."
-
 
 # =========================
 # Mini Challenge

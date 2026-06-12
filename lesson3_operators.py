@@ -55,7 +55,6 @@ print("has_id and is_adult:", has_id and is_adult)  # True only if both are True
 print("has_id or is_adult:", has_id or is_adult)    # True if at least one is True
 print("not has_id:", not has_id)                    # reverses True or False
 
-
 # =========================
 # Activity
 print("============Activity Section==========")
@@ -65,15 +64,12 @@ print("============Activity Section==========")
 # Create two number variables called num1 and num2.
 # Print their sum, difference, product, and quotient.
 
-
-
 # Exercise 2:
 # Create a variable called points and set it to 50.
 # Add 10 using +=.
 # Subtract 5 using -=.
 # Multiply by 2 using *=.
 # Print points after each change.
-
 
 # Exercise 3:
 # Create two variables called age1 and age2.
@@ -90,8 +86,6 @@ print("============Activity Section==========")
 # has_ticket and has_money
 # has_ticket or has_money
 # not has_ticket
-
-
 
 # =========================
 # Mini Challenge

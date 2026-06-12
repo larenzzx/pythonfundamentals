@@ -4,7 +4,6 @@
 # Real Python projects are split across multiple files.
 # This lesson teaches you how to organize, import, and share code.
 
-
 # =============================================
 # PART 1: IMPORTING MODULES
 # =============================================
@@ -31,7 +30,6 @@ print("Random float:", rand.random())  # 0.0 to 1.0
 
 # Import everything (generally NOT recommended -- can cause name conflicts)
 # from math import *
-
 
 # =============================================
 # PART 2: USEFUL BUILT-IN MODULES
@@ -119,7 +117,6 @@ phone = "555-123-4567"
 if re.match(r'\d{3}-\d{3}-\d{4}', phone):
     print("Valid phone number!")
 
-
 # =============================================
 # PART 3: CREATING YOUR OWN MODULES
 # =============================================
@@ -144,7 +141,6 @@ if re.match(r'\d{3}-\d{3}-\d{4}', phone):
 # import helpers as h
 # h.greet("Mark")
 
-
 # =============================================
 # PART 4: __name__ == "__main__"
 # =============================================
@@ -159,7 +155,6 @@ if re.match(r'\d{3}-\d{3}-\d{4}', phone):
 
 # This is why you'll see this pattern in almost every Python file.
 # It lets a file be both a reusable module AND a runnable script.
-
 
 # =============================================
 # PART 5: PACKAGES (FOLDERS WITH __init__.py)
@@ -182,7 +177,6 @@ if re.match(r'\d{3}-\d{3}-\d{4}', phone):
 # Import like:
 #   from utils.string_utils import clean_text
 #   from models.user import User
-
 
 # =============================================
 # PART 6: VIRTUAL ENVIRONMENTS
@@ -219,7 +213,6 @@ if re.match(r'\d{3}-\d{3}-\d{4}', phone):
 #   source myenv/bin/activate
 #   uv pip install requests flask
 
-
 # =============================================
 # PART 7: THIRD-PARTY PACKAGES (pip/uv)
 # =============================================
@@ -238,7 +231,6 @@ if re.match(r'\d{3}-\d{3}-\d{4}', phone):
 #   response = requests.get("https://api.github.com")
 #   print(response.status_code)
 #   print(response.json())
-
 
 # =============================================
 # PART 8: WRITING A REAL MULTI-FILE PROJECT
@@ -282,7 +274,6 @@ print("Currency:", utils.format_currency(1234.5))
 print("Slug:", utils.slugify("Hello World!"))
 print("Truncated:", utils.truncate("This is a very long sentence.", 20))
 
-
 # =============================================
 # ACTIVITY SECTION
 # =============================================
@@ -324,7 +315,6 @@ print("============Activity Section==========")
 #   - capitalize_words(text)
 # Each function should have a docstring.
 # Import and test all functions from this lesson file.
-
 
 # =============================================
 # MINI CHALLENGE: Project Structure
