@@ -6,6 +6,7 @@ import {
   Terminal, FileCode, HelpCircle, BookOpen, AlertCircle
 } from 'lucide-react';
 import ConfirmationModal from './ui/ConfirmationModal';
+import { lessonValidators } from '../data/validators';
 
 interface Lesson {
   id: number;
@@ -47,6 +48,39 @@ export default function InteractiveClassroom({
   const [isResetModalOpen, setIsResetModalOpen] = useState<boolean>(false);
   const { loading: pyodideLoading, error: pyodideError, runCode } = usePyodide();
 
+  // Track completion of activity & challenge
+  const [activityPassed, setActivityPassed] = useState<boolean>(false);
+  const [challengePassed, setChallengePassed] = useState<boolean>(false);
+
+  // Load section completion status on mount/lesson change
+  useEffect(() => {
+    const activityKey = `py_lesson_${lesson.id}_activity_passed`;
+    const challengeKey = `py_lesson_${lesson.id}_challenge_passed`;
+    setActivityPassed(localStorage.getItem(activityKey) === 'true');
+    setChallengePassed(localStorage.getItem(challengeKey) === 'true');
+  }, [lesson.id]);
+
+  // Extract tutorial code by taking everything before the Activity section
+  const getTutorialCode = (content: string): string => {
+    const lines = content.split('\n');
+    let activityStartIdx = -1;
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (line.includes('Activity Section') || line.includes('============Activity Section==========')) {
+        activityStartIdx = i;
+        // Search upwards to catch the comments block boundary of Activity Section
+        while (activityStartIdx > 0 && (lines[activityStartIdx - 1].trim().startsWith('#') || lines[activityStartIdx - 1].trim() === '')) {
+          activityStartIdx--;
+        }
+        break;
+      }
+    }
+    if (activityStartIdx !== -1) {
+      return lines.slice(0, activityStartIdx).join('\n').trim();
+    }
+    return content;
+  };
+
   // Load saved code from LocalStorage or fallback to lesson file content
   useEffect(() => {
     const storageKey = `py_lesson_${lesson.id}_${activeSection}`;
@@ -54,8 +88,14 @@ export default function InteractiveClassroom({
     if (savedCode) {
       setCode(savedCode);
     } else {
-      // Fallback to parsed sections
-      setCode(lesson.sections[activeSection] || '');
+      // Clean start templates
+      if (activeSection === 'tutorial') {
+        setCode(getTutorialCode(lesson.content));
+      } else if (activeSection === 'activity') {
+        setCode(`print("============Activity Section==========\\n")\n\n# Write your activity code below\n`);
+      } else if (activeSection === 'challenge') {
+        setCode(`print("============Mini Challenge==========\\n")\n\n# Write your challenge code below\n`);
+      }
     }
     setConsoleLogs([
       { type: 'system', text: `Loaded ${lesson.filename} - Section: ${activeSection.toUpperCase()}` }
@@ -69,7 +109,7 @@ export default function InteractiveClassroom({
     setIsSaved(true);
     setTimeout(() => setIsSaved(false), 2000);
     
-    // Set lesson status to in_progress
+    // Set lesson status to in_progress if not already completed
     if (initialProgress === 'not_started') {
       onMarkComplete(lesson.id, 'in_progress');
     }
@@ -81,7 +121,16 @@ export default function InteractiveClassroom({
   };
 
   const confirmReset = () => {
-    setCode(lesson.sections[activeSection] || '');
+    let defaultCode = '';
+    if (activeSection === 'tutorial') {
+      defaultCode = getTutorialCode(lesson.content);
+    } else if (activeSection === 'activity') {
+      defaultCode = `print("============Activity Section==========\\n")\n\n# Write your activity code below\n`;
+    } else if (activeSection === 'challenge') {
+      defaultCode = `print("============Mini Challenge==========\\n")\n\n# Write your challenge code below\n`;
+    }
+
+    setCode(defaultCode);
     const storageKey = `py_lesson_${lesson.id}_${activeSection}`;
     localStorage.removeItem(storageKey);
     setConsoleLogs(prev => [
@@ -91,7 +140,7 @@ export default function InteractiveClassroom({
     setIsResetModalOpen(false);
   };
 
-  // Execute Code using Pyodide
+  // Execute Code using Pyodide and validate correctness
   const handleRunCode = async () => {
     setIsRunning(true);
     setConsoleLogs([
@@ -107,19 +156,52 @@ export default function InteractiveClassroom({
       setConsoleLogs(prev => [...prev, { type: 'stderr', text }]);
     };
 
-    const result = await runCode(code, stdoutCallback, stderrCallback);
+    // Grab validation script if this is Activity or Challenge tab
+    const validator = activeSection !== 'tutorial' ? lessonValidators[lesson.id]?.[activeSection] : null;
+    const validationCode = validator ? validator.pythonCode : undefined;
+
+    const result = await runCode(code, stdoutCallback, stderrCallback, validationCode);
     
     if (result.success) {
-      setConsoleLogs(prev => [
-        ...prev,
-        { type: 'system', text: `Process finished successfully.` }
-      ]);
-      
-      // Update running stats or trigger milestone checking if needed
-      // Track total execution count
+      // Record execution metrics locally
       const currentCount = parseInt(localStorage.getItem('py_exec_count') || '0', 10);
       localStorage.setItem('py_exec_count', String(currentCount + 1));
-      window.dispatchEvent(new Event('storage')); // Notify App component of run
+      window.dispatchEvent(new Event('storage'));
+
+      if (activeSection !== 'tutorial') {
+        if (result.validationSuccess) {
+          setConsoleLogs(prev => [
+            ...prev,
+            { type: 'system', text: `Process finished successfully.` },
+            { type: 'system', text: `🎉 CORRECT! You have successfully completed the ${activeSection} objectives!` }
+          ]);
+
+          // Save completion status
+          const key = `py_lesson_${lesson.id}_${activeSection}_passed`;
+          localStorage.setItem(key, 'true');
+          if (activeSection === 'activity') {
+            setActivityPassed(true);
+          } else {
+            setChallengePassed(true);
+          }
+
+          // Automatically set status to in_progress
+          if (initialProgress === 'not_started') {
+            onMarkComplete(lesson.id, 'in_progress');
+          }
+        } else {
+          setConsoleLogs(prev => [
+            ...prev,
+            { type: 'system', text: `Process finished successfully.` },
+            { type: 'stderr', text: `❌ INCORRECT: Requirements not met.\nHint: ${result.validationError || validator?.errorMessage}` }
+          ]);
+        }
+      } else {
+        setConsoleLogs(prev => [
+          ...prev,
+          { type: 'system', text: `Process finished successfully.` }
+        ]);
+      }
     } else {
       setConsoleLogs(prev => [
         ...prev,
@@ -131,56 +213,55 @@ export default function InteractiveClassroom({
     setIsRunning(false);
   };
 
-  // Parse Python Comments for Tutorial Sidebar
+  // Parse Python Comments for clean layout instructions
   const parseComments = (sourceCode: string) => {
     const lines = sourceCode.split('\n');
-    const explanationLines: string[] = [];
-    const exerciseInstructions: string[] = [];
-    let isInsideActivity = false;
-    let isInsideChallenge = false;
+    const tutorialLines: string[] = [];
+    const activityLines: string[] = [];
+    const challengeLines: string[] = [];
+    
+    let currentSection: 'tutorial' | 'activity' | 'challenge' = 'tutorial';
 
     lines.forEach(line => {
       const trimmed = line.trim();
       
       // Track section dividers
-      if (trimmed.includes('Activity Section') || trimmed.includes('============ActivitySection==========')) {
-        isInsideActivity = true;
-        isInsideChallenge = false;
+      if (trimmed.includes('Activity Section') || trimmed.includes('============ActivitySection==========') || trimmed.includes('============Activity Section==========')) {
+        currentSection = 'activity';
         return;
       }
-      if (trimmed.includes('Mini Challenge') || trimmed.includes('============Mini Challenge==========')) {
-        isInsideChallenge = true;
-        isInsideActivity = false;
+      if (trimmed.includes('Mini Challenge') || trimmed.includes('============Mini Challenge==========') || trimmed.includes('============MiniChallenge==========')) {
+        currentSection = 'challenge';
         return;
       }
 
       if (trimmed.startsWith('#')) {
-        // Remove # and double leading spaces
         const text = trimmed.substring(1).trim();
         if (text.startsWith('===') || text.startsWith('---') || text === lesson.filename) {
-          return; // Skip dividers & files titles
+          return; // Skip dividers
         }
 
-        if (isInsideChallenge) {
-          exerciseInstructions.push(text);
-        } else if (isInsideActivity) {
-          exerciseInstructions.push(text);
+        if (currentSection === 'challenge') {
+          challengeLines.push(text);
+        } else if (currentSection === 'activity') {
+          activityLines.push(text);
         } else {
-          explanationLines.push(text);
+          tutorialLines.push(text);
         }
       }
     });
 
     return {
-      tutorialText: explanationLines.join('\n'),
-      exerciseText: exerciseInstructions.join('\n')
+      tutorialText: tutorialLines.join('\n'),
+      activityText: activityLines.join('\n'),
+      challengeText: challengeLines.join('\n')
     };
   };
 
-  const { tutorialText, exerciseText } = parseComments(lesson.content);
+  const { tutorialText, activityText, challengeText } = parseComments(lesson.content);
 
   return (
-    <div className="flex flex-col h-[calc(100vh-80px)] border border-white/5 rounded-2xl overflow-hidden bg-slate-950/40 relative z-10">
+    <div className="flex flex-col h-[calc(100vh-80px)] border border-white/5 rounded-2xl overflow-hidden bg-slate-950/40 relative z-10 font-sans">
       
       {/* Top action header bar */}
       <div className="flex flex-wrap items-center justify-between px-6 py-4 border-b border-white/5 bg-slate-900/60 backdrop-blur-md gap-4">
@@ -204,31 +285,41 @@ export default function InteractiveClassroom({
         </div>
 
         {/* Section selectors */}
-        <div className="flex bg-slate-950/60 p-1 rounded-xl border border-white/5">
-          {(['tutorial', 'activity', 'challenge'] as const).map((sec) => (
-            <button
-              key={sec}
-              onClick={() => setActiveSection(sec)}
-              className={`px-4 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all duration-200 ${
-                activeSection === sec
-                  ? 'bg-gradient-to-r from-sky-400 to-indigo-500 text-slate-950 shadow-md font-bold'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              {sec}
-            </button>
-          ))}
+        <div className="flex bg-slate-950/60 p-1 rounded-xl border border-white/5 gap-1">
+          {(['tutorial', 'activity', 'challenge'] as const).map((sec) => {
+            const isPassed = sec === 'activity' ? activityPassed : sec === 'challenge' ? challengePassed : false;
+            return (
+              <button
+                key={sec}
+                onClick={() => setActiveSection(sec)}
+                className={`px-4 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all duration-200 flex items-center gap-1.5 ${
+                  activeSection === sec
+                    ? 'bg-gradient-to-r from-sky-400 to-indigo-500 text-slate-950 shadow-md font-bold'
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                {sec}
+                {isPassed && (
+                  <span className={`w-1.5 h-1.5 rounded-full ${activeSection === sec ? 'bg-slate-950' : 'bg-emerald-400'}`}></span>
+                )}
+              </button>
+            );
+          })}
         </div>
 
         {/* Complete Buttons */}
         <div className="flex items-center gap-3">
           <button 
+            disabled={initialProgress !== 'completed' && !(activityPassed && challengePassed)}
             onClick={() => onMarkComplete(lesson.id, 'completed')}
             className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 ${
               initialProgress === 'completed'
                 ? 'bg-emerald-950/40 border border-emerald-500/20 text-emerald-400'
-                : 'bg-slate-900 text-slate-300 hover:bg-emerald-950/40 hover:text-emerald-400 hover:border-emerald-500/20 border border-white/5 active:scale-95'
+                : activityPassed && challengePassed
+                  ? 'bg-slate-900 text-slate-300 hover:bg-emerald-950/40 hover:text-emerald-400 hover:border-emerald-500/20 border border-white/5 active:scale-95 cursor-pointer'
+                  : 'bg-slate-950 text-slate-600 border border-white/5 opacity-55 cursor-not-allowed'
             }`}
+            title={initialProgress === 'completed' ? 'Module finished' : activityPassed && challengePassed ? 'Mark lesson as completed' : 'Finish both Activity and Challenge to complete the module'}
           >
             <CheckCircle2 className="w-4 h-4" />
             {initialProgress === 'completed' ? 'Module Finished' : 'Mark Completed'}
@@ -242,36 +333,63 @@ export default function InteractiveClassroom({
         {/* Left Side: Learn Docs / Instructions */}
         <div className="lg:col-span-2 border-r border-white/5 flex flex-col overflow-y-auto bg-slate-900/20 p-6 space-y-6">
           
-          {/* Objective summary */}
-          <div className="space-y-3">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2 font-sans">
-              <BookOpen className="w-4 h-4 text-sky-400" />
-              Lesson Explanation
-            </h3>
-            <div className="p-4 rounded-xl bg-slate-900/60 border border-white/5 text-sm leading-relaxed text-slate-300 whitespace-pre-line font-sans">
-              {tutorialText || 'No detailed instructions written. Read the comments inside the code editor.'}
-            </div>
-          </div>
-
-          {/* Section specific instructions */}
-          {activeSection !== 'tutorial' && exerciseText && (
+          {/* Tutorial Section Explanation */}
+          {activeSection === 'tutorial' && (
             <div className="space-y-3">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-amber-400 flex items-center gap-2 font-sans">
-                <HelpCircle className="w-4 h-4" />
-                {activeSection === 'activity' ? 'Activity Objectives' : 'Challenge Details'}
+              <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                <BookOpen className="w-4 h-4 text-sky-400" />
+                Lesson Explanation
               </h3>
-              <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/10 text-sm leading-relaxed text-amber-200/90 whitespace-pre-line font-sans">
-                {exerciseText}
+              <div className="p-4 rounded-xl bg-slate-900/60 border border-white/5 text-sm leading-relaxed text-slate-300 whitespace-pre-line">
+                {tutorialText || 'No detailed instructions written. Read the comments inside the code editor.'}
               </div>
+            </div>
+          )}
+
+          {/* Activity Section Objectives */}
+          {activeSection === 'activity' && (
+            <div className="space-y-3">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-sky-400 flex items-center gap-2">
+                <HelpCircle className="w-4 h-4 text-sky-400" />
+                Activity Objectives
+              </h3>
+              <div className="p-4 rounded-xl bg-sky-950/20 border border-sky-500/10 text-sm leading-relaxed text-slate-300 whitespace-pre-line">
+                {activityText || 'No Activity objectives found for this lesson.'}
+              </div>
+              {activityPassed && (
+                <div className="p-4 rounded-xl bg-emerald-950/20 border border-emerald-500/10 text-xs font-semibold text-emerald-400 flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 animate-pulse" />
+                  Activity completed successfully!
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Challenge Section Details */}
+          {activeSection === 'challenge' && (
+            <div className="space-y-3">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-amber-400 flex items-center gap-2">
+                <HelpCircle className="w-4 h-4 text-amber-400" />
+                Challenge Details
+              </h3>
+              <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/10 text-sm leading-relaxed text-slate-300 whitespace-pre-line">
+                {challengeText || 'No Challenge details found for this lesson.'}
+              </div>
+              {challengePassed && (
+                <div className="p-4 rounded-xl bg-emerald-950/20 border border-emerald-500/10 text-xs font-semibold text-emerald-400 flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 animate-pulse" />
+                  Challenge completed successfully!
+                </div>
+              )}
             </div>
           )}
 
           {/* Info Card */}
           <div className="p-4 rounded-xl bg-slate-950/40 border border-white/5 flex items-start gap-3 mt-auto">
             <AlertCircle className="w-5 h-5 text-sky-400 shrink-0 mt-0.5" />
-            <div className="text-xs text-slate-500">
+            <div className="text-xs text-slate-500 leading-normal">
               <span className="text-slate-300 font-bold block mb-1">Local Development Sync</span>
-              Your progress is saved locally. If you run code, this runs inside a local WASM runtime (Pyodide). To save these exercises to your local `.py` files, update them in your code editor directly!
+              Your progress is saved locally. When you run code, this runs inside a local WASM runtime (Pyodide). To save these exercises to your local `.py` files, update them in your code editor directly!
             </div>
           </div>
 
@@ -282,9 +400,9 @@ export default function InteractiveClassroom({
           
           {/* Editor Header Toolbar */}
           <div className="flex justify-between items-center px-6 py-2.5 bg-slate-900/30 border-b border-white/5 text-xs text-slate-400">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 font-mono">
               <FileCode className="w-3.5 h-3.5 text-indigo-400" />
-              <span className="font-mono text-slate-300">{lesson.filename} ({activeSection})</span>
+              <span className="text-slate-300">{lesson.filename} ({activeSection})</span>
             </div>
             
             <div className="flex items-center gap-4">

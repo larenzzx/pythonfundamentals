@@ -41,6 +41,8 @@ export interface RunResult {
   success: boolean;
   result?: string;
   error?: string;
+  validationSuccess?: boolean;
+  validationError?: string;
 }
 
 export function usePyodide() {
@@ -74,7 +76,8 @@ export function usePyodide() {
   const runCode = useCallback(async (
     code: string,
     onStdout: (text: string) => void,
-    onStderr: (text: string) => void
+    onStderr: (text: string) => void,
+    validationCode?: string
   ): Promise<RunResult> => {
     try {
       const py = await loadPyodideCached();
@@ -83,18 +86,37 @@ export function usePyodide() {
       globalStdoutListener = onStdout;
       globalStderrListener = onStderr;
       
-      // Clear modules that might cache variables or sys overrides
       // Run the code in its own clean dict scope
       const globals = py.toPy({});
       
+      // Run user code
       const result = await py.runPythonAsync(code, { globals });
+      
+      // Run validation code in same scope if provided
+      let validationSuccess = true;
+      let validationError = '';
+      if (validationCode) {
+        try {
+          globals.set('code', code);
+          await py.runPythonAsync(validationCode, { globals });
+        } catch (valErr: any) {
+          validationSuccess = false;
+          // Clean up traceback formatting to just show the assertion message
+          const fullMsg = valErr.message || String(valErr);
+          const lines = fullMsg.split('\n');
+          const lastLine = lines[lines.length - 2] || lines[lines.length - 1] || fullMsg;
+          validationError = lastLine.replace(/^AssertionError:\s*/, '').trim();
+        }
+      }
       
       // Clean up globals object
       globals.destroy();
       
       return {
         success: true,
-        result: result !== undefined && result !== null ? String(result) : undefined
+        result: result !== undefined && result !== null ? String(result) : undefined,
+        validationSuccess,
+        validationError: validationSuccess ? undefined : validationError
       };
     } catch (err: any) {
       return {
@@ -106,6 +128,7 @@ export function usePyodide() {
       globalStderrListener = null;
     }
   }, []);
+
 
   return {
     loading,
