@@ -52,6 +52,13 @@ export default function InteractiveClassroom({
   const [activityPassed, setActivityPassed] = useState<boolean>(false);
   const [challengePassed, setChallengePassed] = useState<boolean>(false);
 
+  // Input Modal States
+  const [isInputModalOpen, setIsInputModalOpen] = useState<boolean>(false);
+  const [inputPrompts, setInputPrompts] = useState<string[]>([]);
+  const [inputAnswers, setInputAnswers] = useState<string[]>([]);
+  const [pendingRunResolve, setPendingRunResolve] = useState<((values: string[]) => void) | null>(null);
+
+
   // Load section completion status on mount/lesson change
   useEffect(() => {
     const activityKey = `py_lesson_${lesson.id}_activity_passed`;
@@ -140,6 +147,58 @@ export default function InteractiveClassroom({
     setIsResetModalOpen(false);
   };
 
+  // Extract input() prompts from Python code (ignoring comments)
+  const extractPrompts = (sourceCode: string): string[] => {
+    const prompts: string[] = [];
+    const cleanCode = sourceCode
+      .split('\n')
+      .filter(line => !line.trim().startsWith('#'))
+      .join('\n');
+
+    // Match input("...") or input('...')
+    const regex = /input\s*\(\s*(['"`])(.*?)\1\s*\)/g;
+    let match;
+    while ((match = regex.exec(cleanCode)) !== null) {
+      prompts.push(match[2]);
+    }
+
+    // Also match empty input()
+    const simpleRegex = /input\s*\(\s*\)/g;
+    let simpleCount = 0;
+    while (simpleRegex.exec(cleanCode) !== null) {
+      simpleCount++;
+    }
+    for (let i = 0; i < simpleCount; i++) {
+      prompts.push(`Input value ${prompts.length + 1}:`);
+    }
+
+    return prompts;
+  };
+
+  const handleInputSubmit = () => {
+    if (pendingRunResolve) {
+      pendingRunResolve(inputAnswers);
+    }
+    setIsInputModalOpen(false);
+  };
+
+  const handleInputCancel = () => {
+    setIsInputModalOpen(false);
+    setConsoleLogs(prev => [
+      ...prev,
+      { type: 'system', text: 'Execution cancelled: Input prompt dismissed.' }
+    ]);
+    setIsRunning(false);
+  };
+
+  const handleAnswerChange = (index: number, value: string) => {
+    setInputAnswers(prev => {
+      const copy = [...prev];
+      copy[index] = value;
+      return copy;
+    });
+  };
+
   // Execute Code using Pyodide and validate correctness
   const handleRunCode = async () => {
     setIsRunning(true);
@@ -156,11 +215,28 @@ export default function InteractiveClassroom({
       setConsoleLogs(prev => [...prev, { type: 'stderr', text }]);
     };
 
+    // 1. Scan for inputs
+    const prompts = extractPrompts(code);
+    let answers: string[] = [];
+    if (prompts.length > 0) {
+      try {
+        answers = await new Promise<string[]>((resolve) => {
+          setInputPrompts(prompts);
+          setInputAnswers(new Array(prompts.length).fill(''));
+          setIsInputModalOpen(true);
+          setPendingRunResolve(() => resolve);
+        });
+      } catch (e) {
+        setIsRunning(false);
+        return;
+      }
+    }
+
     // Grab validation script if this is Activity or Challenge tab
     const validator = activeSection !== 'tutorial' ? lessonValidators[lesson.id]?.[activeSection] : null;
     const validationCode = validator ? validator.pythonCode : undefined;
 
-    const result = await runCode(code, stdoutCallback, stderrCallback, validationCode);
+    const result = await runCode(code, stdoutCallback, stderrCallback, validationCode, answers);
     
     if (result.success) {
       // Record execution metrics locally
@@ -515,6 +591,91 @@ export default function InteractiveClassroom({
         onCancel={() => setIsResetModalOpen(false)}
         type="warning"
       />
+
+      <InputModal
+        isOpen={isInputModalOpen}
+        prompts={inputPrompts}
+        answers={inputAnswers}
+        onAnswerChange={handleAnswerChange}
+        onSubmit={handleInputSubmit}
+        onCancel={handleInputCancel}
+      />
+    </div>
+  );
+}
+
+interface InputModalProps {
+  isOpen: boolean;
+  prompts: string[];
+  answers: string[];
+  onAnswerChange: (index: number, value: string) => void;
+  onSubmit: () => void;
+  onCancel: () => void;
+}
+
+function InputModal({ isOpen, prompts, answers, onAnswerChange, onSubmit, onCancel }: InputModalProps) {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
+      {/* Backdrop */}
+      <div 
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+        onClick={onCancel}
+      />
+      
+      {/* Modal Content */}
+      <div className="relative w-full max-w-md bg-[#090d16]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-md p-6 overflow-hidden animate-scale-in">
+        <div className="absolute top-0 right-0 w-40 h-40 bg-sky-500/5 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div className="flex items-center gap-3 mb-5 border-b border-white/5 pb-4">
+          <div className="w-8 h-8 rounded-lg bg-sky-500/10 flex items-center justify-center text-sky-400 shrink-0">
+            <Terminal className="w-4 h-4" />
+          </div>
+          <div>
+            <h3 className="text-sm font-bold text-white uppercase tracking-wider">Input Required</h3>
+            <p className="text-[10px] text-slate-500 font-mono">PROVIDE PARAMETERS FOR RUNTIME</p>
+          </div>
+        </div>
+
+        <div className="space-y-4 max-h-[300px] overflow-y-auto pr-1 mb-6">
+          {prompts.map((promptText, idx) => (
+            <div key={idx} className="space-y-1.5">
+              <label className="text-xs font-semibold text-slate-300 block">
+                {promptText}
+              </label>
+              <input
+                type="text"
+                value={answers[idx] || ''}
+                onChange={(e) => onAnswerChange(idx, e.target.value)}
+                className="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-2.5 text-slate-200 focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-400 text-xs font-mono"
+                placeholder="Type input value..."
+                autoFocus={idx === 0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    onSubmit();
+                  }
+                }}
+              />
+            </div>
+          ))}
+        </div>
+
+        <div className="flex items-center justify-end gap-3 pt-2">
+          <button
+            onClick={onCancel}
+            className="px-5 py-2.5 rounded-xl border border-white/5 text-slate-400 hover:text-white bg-slate-900/50 hover:bg-slate-900 transition-all font-bold text-xs"
+          >
+            Cancel Run
+          </button>
+          <button
+            onClick={onSubmit}
+            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-sky-400 to-indigo-500 text-slate-950 font-bold text-xs hover:shadow-lg hover:shadow-sky-500/20 active:scale-95 transition-all"
+          >
+            Submit Inputs
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

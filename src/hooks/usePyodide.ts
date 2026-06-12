@@ -77,7 +77,8 @@ export function usePyodide() {
     code: string,
     onStdout: (text: string) => void,
     onStderr: (text: string) => void,
-    validationCode?: string
+    validationCode?: string,
+    inputs?: string[]
   ): Promise<RunResult> => {
     try {
       const py = await loadPyodideCached();
@@ -89,11 +90,21 @@ export function usePyodide() {
       // Run the code in its own clean dict scope
       const globals = py.toPy({});
       
-      // Mock Python's input() using window.prompt to prevent I/O errors in the browser
+      // Mock Python's input() to consume pre-collected inputs or fall back to window.prompt
+      let inputIndex = 0;
       globals.set('input', (promptText: string = '') => {
+        if (inputs && inputIndex < inputs.length) {
+          const val = inputs[inputIndex++];
+          // Echo the prompt and typed value in stdout to look like a terminal
+          onStdout(`${promptText}${val}\n`);
+          return val;
+        }
+        
         try {
           const val = window.prompt(promptText);
-          return val !== null ? val : '';
+          const response = val !== null ? val : '';
+          onStdout(`${promptText}${response}\n`);
+          return response;
         } catch (e) {
           console.warn('window.prompt is not supported or blocked:', e);
           return '';
