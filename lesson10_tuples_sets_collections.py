@@ -5,7 +5,6 @@
 # important data structures: tuples, sets, and some advanced
 # collection techniques.
 
-
 # =============================================
 # PART 1: TUPLES
 # =============================================
@@ -59,7 +58,6 @@ print("Index of 85:", scores.index(85))
 # - Use a tuple when data should NOT change (coordinates, RGB colors, dates)
 # - Use a list when data needs to change (shopping cart, to-do list)
 
-
 # =============================================
 # PART 2: SETS
 # =============================================
@@ -110,7 +108,6 @@ print("Unique numbers:", unique_numbers)
 print("Is 3 in set_a?", 3 in set_a)  # True
 print("Is 99 in set_a?", 99 in set_a)  # False
 
-
 # =============================================
 # PART 3: NESTED DATA STRUCTURES
 # =============================================
@@ -150,7 +147,6 @@ grades = [("Mark", 95), ("Ana", 88), ("Luis", 92)]
 for name, score in grades:
     print(name, "scored", score)
 
-
 # =============================================
 # PART 4: *args AND **kwargs
 # =============================================
@@ -181,7 +177,6 @@ def full_function(name, *args, **kwargs):
     print("Kwargs:", kwargs)
 
 full_function("Mark", 1, 2, 3, city="NYC", role="student")
-
 
 # =============================================
 # ACTIVITY SECTION
@@ -222,7 +217,6 @@ print("============Activity Section==========")
 # It should accept any extra info using **kwargs.
 # Print all the information nicely.
 # Call it like: describe_pet("Buddy", "friendly", "fluffy", age=3, breed="Lab")
-
 
 # =============================================
 # MINI CHALLENGE: Contact Book

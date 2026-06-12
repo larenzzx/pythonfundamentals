@@ -44,7 +44,6 @@ for number in range(1, 6):
         continue
     print("After continue:", number)
 
-
 # =========================
 # Activity
 print("============Activity Section==========")
@@ -52,37 +51,20 @@ print("============Activity Section==========")
 
 # Exercise 1:
 # Use a for loop to print numbers from 1 to 10.
-for numbers in range(1, 11):
-    print("NUMBERS:", numbers)
 
 # Exercise 2:
 # Use a for loop to print each letter in your first name.
-my_name = "Mark Larenz"
-for name in my_name:
-    print("Each letter in your first name:", name)
 
 # Exercise 3:
 # Use a while loop to print numbers from 1 to 5.
-numbers = 1
-while numbers <= 5:
-    print("Number:", numbers)
-    numbers += 1
 
 # Exercise 4:
 # Use a for loop with range(1, 11).
 # Print only the even numbers.
 # Hint: A number is even if number % 2 == 0.
-for number in range(1, 11):
-    if number % 2 == 0:
-        print("Even Number:", number)
 
 # Exercise 5:
 # Use a while loop to count down from 5 to 1.
-reverse_count = 5
-while reverse_count >= 1:
-    print("Reverse count:", reverse_count)
-    reverse_count -= 1
-
 
 # =========================
 # Mini Challenge
@@ -99,6 +81,3 @@ print("============Mini Challenge==========")
 # 3 x 2 = 6
 # 3 x 3 = 9
 # ... continue until 10
-x = int(input("Enter a number: "))
-for y in range(1, 11):
-    print(f"{x} x {y} =", x * y)

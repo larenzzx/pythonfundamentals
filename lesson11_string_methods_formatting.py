@@ -4,7 +4,6 @@
 # Strings have tons of built-in methods that make text processing easy.
 # This lesson covers the most important ones plus modern formatting.
 
-
 # =============================================
 # PART 1: ESSENTIAL STRING METHODS
 # =============================================
@@ -57,7 +56,6 @@ print("join():", joined)
 multi = "line1\nline2\nline3"
 print("splitlines():", multi.splitlines())
 
-
 # =============================================
 # PART 2: STRING SLICING (DEEP DIVE)
 # =============================================
@@ -76,7 +74,6 @@ print(word[::-1])   # "nohtyP" (REVERSED!)
 print(word[-1])     # "n" (last character)
 print(word[-3:])    # "hon" (last 3 characters)
 print(word[:-2])    # "Pyth" (everything except last 2)
-
 
 # =============================================
 # PART 3: STRING FORMATTING (3 WAYS)
@@ -109,7 +106,6 @@ print("Name: {n}, Age: {a}".format(n=name, a=age))
 print("My name is %s, I am %d years old." % (name, age))
 print("Score: %.1f" % score)
 
-
 # =============================================
 # PART 4: MULTI-LINE STRINGS & RAW STRINGS
 # =============================================
@@ -133,7 +129,6 @@ print("Tab:\tindented")
 print("Newline:\nsecond line")
 print("Quote: She said \"Hello\"")
 print("Backslash: C:\\Users\\Mark")
-
 
 # =============================================
 # PART 5: USEFUL STRING PATTERNS
@@ -172,7 +167,6 @@ def reverse_words(sentence):
     return " ".join(words[::-1])
 
 print(reverse_words("Python is fun"))  # "fun is Python"
-
 
 # =============================================
 # ACTIVITY SECTION
@@ -219,7 +213,6 @@ print("============Activity Section==========")
 #   - Contains at least one lowercase letter
 #   - Contains at least one digit
 # Print which rules pass and fail.
-
 
 # =============================================
 # MINI CHALLENGE: Text Analyzer

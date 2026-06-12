@@ -37,7 +37,6 @@ score = 100
 print("Favorite color:", favorite_color)
 print("Score:", score)
 
-
 # =========================
 # Activity
 print("============Activity Section==========")
@@ -45,33 +44,21 @@ print("============Activity Section==========")
 
 # Exercise 1:
 # Create a variable called city and store your city name.
-city = "Zamboanga City"
 
 # Exercise 2:
 # Create a variable called birth_year and store your birth year.
-birth_year = 2001
 
 # Exercise 3:
 # Create a variable called price and store any decimal number.
-price = 22.2
 
 # Exercise 4:
 # Create a variable called likes_python and store True or False.
-likes_python = True
 
 # Exercise 5:
 # Print each variable with a clear label
-print("City:", city)
-print("Birth year:", birth_year)
-print("Price:", price)
-print("Likes Python:", likes_python)
 
 # Exercise 6:
 # Print the type of each variable
-print(type(city))
-print(type(birth_year))
-print(type(price))
-print(type(likes_python))
 
 # =========================
 # Mini Challenge
@@ -88,9 +75,4 @@ print("============Mini Challenge==========")
 #
 # Example format:
 # My name is Alex, I am 20 years old, my favorite food is pizza, and it is True that I like coding.
-first_name = "Mark Tabotabo"
-current_age = 24
-favorite_food = "Fried Chicken"
-likes_coding = True
 
-print(f"My name is {first_name}, I am {current_age} years old, my favorite food is {favorite_food}, and it is {likes_coding} that I like coding.")

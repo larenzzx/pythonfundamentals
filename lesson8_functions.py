@@ -9,7 +9,6 @@
 def greet():
     print("Hello!")
 
-
 # Call the function by writing its name with parentheses.
 
 greet()
@@ -20,7 +19,6 @@ greet()
 def greet_student(name):
     print("Hello,", name)
 
-
 greet_student("Mark")
 greet_student("Ana")
 
@@ -29,7 +27,6 @@ greet_student("Ana")
 def introduce(name, age):
     print("My name is", name, "and I am", age, "years old.")
 
-
 introduce("Mark", 24)
 
 # A function can return a value.
@@ -37,7 +34,6 @@ introduce("Mark", 24)
 
 def add_numbers(a, b):
     return a + b
-
 
 sum_result = add_numbers(5, 3)
 print("Sum:", sum_result)
@@ -54,7 +50,6 @@ def check_age(age):
     else:
         print("Minor")
 
-
 check_age(24)
 check_age(15)
 
@@ -64,10 +59,8 @@ def print_foods(foods):
     for food in foods:
         print("Food:", food)
 
-
 favorite_foods = ["chicken", "pizza", "fries"]
 print_foods(favorite_foods)
-
 
 # =========================
 # Activity
@@ -104,7 +97,6 @@ print("============Activity Section==========")
 # It should have one parameter called colors.
 # Use a for loop to print each color in the list.
 # Create a list of three colors and pass it to the function.
-
 
 # =========================
 # Mini Challenge
