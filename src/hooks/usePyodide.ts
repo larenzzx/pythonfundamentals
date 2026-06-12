@@ -89,6 +89,17 @@ export function usePyodide() {
       // Run the code in its own clean dict scope
       const globals = py.toPy({});
       
+      // Mock Python's input() using window.prompt to prevent I/O errors in the browser
+      globals.set('input', (promptText: string = '') => {
+        try {
+          const val = window.prompt(promptText);
+          return val !== null ? val : '';
+        } catch (e) {
+          console.warn('window.prompt is not supported or blocked:', e);
+          return '';
+        }
+      });
+      
       // Run user code
       const result = await py.runPythonAsync(code, { globals });
       
