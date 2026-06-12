@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Fundamentals | Learn Python Step-by-Step</title>
+    <meta name="description" content="Master Python from variables to advanced decorators. Interactive learning, real-world code, and comprehensive lessons designed for developers.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* Modern CSS Reset & Variable Design Tokens */
+        :root {
+            --bg-dark: #0b0f19;
+            --bg-card: rgba(17, 24, 39, 0.7);
+            --bg-card-hover: rgba(31, 41, 55, 0.8);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-color-glow: rgba(56, 189, 248, 0.4);
+            
+            /* Curated Color Palette */
+            --primary: #38bdf8;        /* Electric Light Blue */
+            --primary-hover: #0ea5e9;
+            --secondary: #fbbf24;      /* Python Yellow Gold */
+            --secondary-hover: #f59e0b;
+            --accent-green: #10b981;   /* Emerald Green */
+            
+            /* Text Hierarchy */
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-code: #e2e8f0;
+            
+            /* Spacing & Utilities */
+            --font-sans: 'Outfit', sans-serif;
+            --font-mono: 'Fira Code', monospace;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --glow-blue: 0 0 20px rgba(56, 189, 248, 0.15);
+            --glow-gold: 0 0 20px rgba(251, 191, 36, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Decorative Background Radial Gradients (Blobs) */
+        .blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.15;
+            filter: blur(140px);
+            animation: float-blobs 12s infinite alternate ease-in-out;
+        }
+
+        .blob-blue {
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            top: -100px;
+            right: -100px;
+        }
+
+        .blob-gold {
+            background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
+            bottom: 20%;
+            left: -150px;
+            animation-delay: -6s;
+        }
+
+        @keyframes float-blobs {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                transform: translate(50px, 40px) scale(1.1);
+            }
+        }
+
+        /* Header / Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(11, 15, 25, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition-smooth);
+        }
+
+        header.scrolled {
+            background: rgba(11, 15, 25, 0.85);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: -0.5px;
+            z-index: 1001;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover .logo-icon {
+            transform: rotate(15deg);
+        }
+
+        .logo-accent {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav {
+            display: flex;
+            gap: 28px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition-smooth);
+            position: relative;
+            padding: 6px 0;
+        }
+
+        .nav-link:hover {
+            color: var(--text-main);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: var(--transition-smooth);
+            border-radius: 2px;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Interactive Buttons */
+        .btn {
+            font-family: var(--font-sans);
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            border: 1px solid transparent;
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.875rem;
+        }
+
+        .btn-md {
+            padding: 10px 20px;
+            font-size: 0.95rem;
+        }
+
+        .btn-lg {
+            padding: 14px 28px;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, #0284c7 100%);
+            color: #0b0f19;
+            box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45), var(--glow-blue);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-main);
+            border-color: var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: var(--text-muted);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border-color: rgba(56, 189, 248, 0.3);
+        }
+
+        .btn-outline:hover {
+            background: rgba(56, 189, 248, 0.05);
+            border-color: var(--primary);
+            color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section Container */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 24px 80px 24px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 60px;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Left Side: Hero Text & Badges */
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 24px;
+        }
+
+        .badge {
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            color: var(--primary);
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            box-shadow: var(--glow-blue);
+            animation: pulse-glow 2s infinite alternate;
+        }
+
+        @keyframes pulse-glow {
+            0% {
+                box-shadow: 0 0 10px rgba(56, 189, 248, 0.1);
+            }
+            100% {
+                box-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
+            }
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -1px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
+        .hero-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            max-width: 580px;
+            line-height: 1.7;
+        }
+
+        .hero-features {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+
+        .hero-feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        .feature-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            border-radius: 50%;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        /* Right Side: IDE / Code Preview Interface */
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+
+        .code-window {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 520px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), var(--glow-blue);
+            overflow: hidden;
+            transition: var(--transition-smooth);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .code-window:hover {
+            border-color: var(--border-color-glow);
+            box-shadow: 0 24px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(56, 189, 248, 0.2);
+            transform: translateY(-4px) rotateX(1deg);
+        }
+
+        .code-header {
+            display: flex;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.8);
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .window-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .window-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .window-dot.red { background-color: #ef4444; }
+        .window-dot.yellow { background-color: #f59e0b; }
+        .window-dot.green { background-color: #10b981; }
+
+        .window-title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        .code-body {
+            padding: 24px;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            background: rgba(15, 23, 42, 0.4);
+            overflow-x: auto;
+        }
+
+        pre {
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        /* Code Syntax Highlighting */
+        .code-keyword { color: #f472b6; font-weight: 500; }
+        .code-function { color: #38bdf8; }
+        .code-string { color: #34d399; }
+        .code-comment { color: #64748b; font-style: italic; }
+        .code-builtin { color: #fbbf24; }
+
+        /* Console Box (Simulated Runtime) */
+        .console-box {
+            border-top: 1px solid var(--border-color);
+            background: rgba(15, 23, 42, 0.9);
+            font-family: var(--font-mono);
+        }
+
+        .console-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 18px;
+            background: rgba(15, 23, 42, 0.5);
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .btn-run {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-run:hover:not(:disabled) {
+            background: var(--primary);
+            color: #0b0f19;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+        }
+
+        .btn-run:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-run svg {
+            width: 12px;
+            height: 12px;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-run:hover:not(:disabled) svg {
+            transform: scale(1.1);
+        }
+
+        .console-body {
+            padding: 18px 24px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .console-line {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+
+        .console-prompt {
+            color: var(--primary);
+            user-select: none;
+        }
+
+        .console-text {
+            color: var(--text-code);
+        }
+
+        .console-success {
+            color: var(--secondary);
+            font-weight: 600;
+            box-shadow: var(--glow-gold);
+            background: rgba(251, 191, 36, 0.05);
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .placeholder-text {
+            color: #475569;
+            font-style: italic;
+        }
+
+        /* Cursor Blink */
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 15px;
+            background: var(--primary);
+            margin-left: 2px;
+            animation: cursor-blink 1s step-end infinite;
+        }
+
+        @keyframes cursor-blink {
+            from, to { background-color: transparent }
+            50% { background-color: var(--primary) }
+        }
+
+        /* Mobile Hamburger Menu */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 1002;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background-color: var(--text-main);
+            transition: var(--transition-smooth);
+            border-radius: 2px;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 1024px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                gap: 50px;
+                text-align: center;
+            }
+
+            .hero-content {
+                align-items: center;
+            }
+
+            .hero-subtitle {
+                margin: 0 auto;
+            }
+
+            .hero-actions {
+                justify-content: center;
+            }
+
+            .hero-features {
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.75rem;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 75%;
+                height: 100vh;
+                background: rgba(11, 15, 25, 0.95);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                justify-content: center;
+                gap: 40px;
+                transition: var(--transition-smooth);
+                z-index: 1000;
+                border-left: 1px solid var(--border-color);
+            }
+
+            nav.active {
+                right: 0;
+            }
+
+            .header-actions {
+                display: none; /* Can be moved inside mobile menu or simplified */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient glowing backgrounds -->
+    <div class="blob blob-blue"></div>
+    <div class="blob blob-gold"></div>
+
+    <!-- Navigation Header -->
+    <header id="main-header">
+        <div class="header-container">
+            <a href="#" class="logo" id="logo-home">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C10.9 2 10 2.9 10 4V8H14V9.5H8C6.9 9.5 6 10.4 6 11.5V15.5C6 16.6 6.9 17.5 8 17.5H10.5V16C10.5 14.9 11.4 14 12.5 14H16.5C17.6 14 18.5 13.1 18.5 12V8C18.5 6.9 17.6 6 16.5 6H14V4C14 2.9 13.1 2 12 2Z" fill="url(#python-gradient-1)"/>
+                    <path d="M12 22C13.1 22 14 21.1 14 20V16H10V14.5H16C17.1 14.5 18 13.6 18 12.5V8.5C18 7.4 17.1 6.5 16 6.5H13.5V8C13.5 9.1 12.6 10 11.5 10H7.5C6.4 10 5.5 10.9 5.5 12V16C5.5 17.1 6.4 18 7.5 18H10V20C10 21.1 10.9 22 12 22Z" fill="url(#python-gradient-2)"/>
+                    <defs>
+                        <linearGradient id="python-gradient-1" x1="6" y1="2" x2="18" y2="17.5" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stop-color="#38bdf8"/>
+                            <stop offset="100%" stop-color="#0284c7"/>
+                        </linearGradient>
+                        <linearGradient id="python-gradient-2" x1="5.5" y1="6.5" x2="18" y2="22" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stop-color="#fbbf24"/>
+                            <stop offset="100%" stop-color="#d97706"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span>Py<span class="logo-accent">Fundamentals</span></span>
+            </a>
+            
+            <button class="menu-toggle" id="menu-toggle-btn" aria-label="Toggle Navigation Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <nav id="nav-links">
+                <a href="#lessons" class="nav-link">Lessons</a>
+                <a href="#sandbox" class="nav-link">Interactive Sandbox</a>
+                <a href="#docs" class="nav-link">Documentation</a>
+            </nav>
+
+            <div class="header-actions">
+                <a href="#login" class="btn btn-secondary btn-sm" id="btn-login">Sign In</a>
+                <a href="#signup" class="btn btn-primary btn-sm" id="btn-signup">Get Started</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Hero Section -->
+    <main>
+        <section class="hero-section" id="hero">
+            <div class="hero-container">
+                
+                <!-- Hero Left: Content -->
+                <div class="hero-content">
+                    <span class="badge">🚀 Level Up Your Code</span>
+                    <h1 class="hero-title">Master Python from <br><span class="gradient-text">Variables to OOP</span></h1>
+                    <p class="hero-subtitle">
+                        Build a rock-solid foundation in Python. Dive into interactive script execution, learn complex data structures, master error handling, and build modular, clean code.
+                    </p>
+                    
+                    <div class="hero-features">
+                        <div class="hero-feature-item">
+                            <span class="feature-icon">✓</span>
+                            <span>16 interactive, module-driven lessons</span>
+                        </div>
+                        <div class="hero-feature-item">
+                            <span class="feature-icon">✓</span>
+                            <span>Live browser runtime simulators</span>
+                        </div>
+                        <div class="hero-feature-item">
+                            <span class="feature-icon">✓</span>
+                            <span>Self-paced, builder-centric approach</span>
+                        </div>
+                    </div>
+
+                    <div class="hero-actions">
+                        <a href="#lessons" class="btn btn-primary btn-lg" id="btn-start-learning">Start Learning Free</a>
+                        <a href="#sandbox" class="btn btn-outline btn-lg" id="btn-sandbox-link">Try Live Sandbox</a>
+                    </div>
+                </div>
+
+                <!-- Hero Right: Interactive IDE Mockup -->
+                <div class="hero-visual">
+                    <div class="code-window" id="python-playground">
+                        <div class="code-header">
+                            <div class="window-dots">
+                                <div class="window-dot red"></div>
+                                <div class="window-dot yellow"></div>
+                                <div class="window-dot green"></div>
+                            </div>
+                            <div class="window-title">python_tutor.py</div>
+                        </div>
+                        <div class="code-body">
+                            <pre><code><span class="code-keyword">def</span> <span class="code-function">learn_python</span>():
+    progress = <span class="code-string">"accelerated"</span>
+    topics = [<span class="code-string">"Variables"</span>, <span class="code-string">"OOP"</span>, <span class="code-string">"Decorators"</span>]
+    
+    <span class="code-keyword">for</span> index, topic <span class="code-keyword">in</span> <span class="code-builtin">enumerate</span>(topics, <span class="code-builtin">1</span>):
+        <span class="code-keyword">print</span>(<span class="code-string">f"[{index}/3] Compiling {topic}..."</span>)
+        
+    <span class="code-keyword">return</span> <span class="code-string">"Python Fundamentals unlocked!"</span>
+
+<span class="code-keyword">print</span>(learn_python())</code></pre>
+                        </div>
+                        
+                        <!-- Simulated Console Terminal -->
+                        <div class="console-box">
+                            <div class="console-header">
+                                <span>TERMINAL OUTPUT</span>
+                                <button class="btn-run" id="btn-run-code" title="Click to execute Python script in terminal">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                    Run Code
+                                </button>
+                            </div>
+                            <div class="console-body" id="console-output">
+                                <span class="placeholder-text">Click "Run Code" to compile and execute Python script...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Interactive Script Logic -->
+    <script>
+        // Header scroll behavior
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        const menuToggleBtn = document.getElementById('menu-toggle-btn');
+        const navLinks = document.getElementById('nav-links');
+        
+        menuToggleBtn.addEventListener('click', () => {
+            menuToggleBtn.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when a nav link is clicked
+        const navLinkItems = document.querySelectorAll('.nav-link');
+        navLinkItems.forEach(item => {
+            item.addEventListener('click', () => {
+                menuToggleBtn.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Code execution simulator
+        const runBtn = document.getElementById('btn-run-code');
+        const consoleOutput = document.getElementById('console-output');
+
+        const simulationSteps = [
+            { text: "python python_tutor.py", delay: 300, isPrompt: true },
+            { text: "[1/3] Compiling Variables...", delay: 800 },
+            { text: "[2/3] Compiling OOP...", delay: 1400 },
+            { text: "[3/3] Compiling Decorators...", delay: 2000 },
+            { text: "Python Fundamentals unlocked!", delay: 2600, isSuccess: true }
+        ];
+
+        runBtn.addEventListener('click', () => {
+            runBtn.disabled = true;
+            consoleOutput.innerHTML = '';
+            
+            // Add initial active prompt line
+            let currentLine = document.createElement('div');
+            currentLine.className = 'console-line';
+            currentLine.innerHTML = `<span class="console-prompt">&gt;</span> <span class="console-text"></span><span class="cursor"></span>`;
+            consoleOutput.appendChild(currentLine);
+
+            const textToType = simulationSteps[0].text;
+            let charIndex = 0;
+            
+            // Simulating user typing the execution command
+            function typeCommand() {
+                if (charIndex < textToType.length) {
+                    currentLine.querySelector('.console-text').textContent += textToType.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeCommand, 60);
+                } else {
+                    // Remove cursor from typed command
+                    const cursor = currentLine.querySelector('.cursor');
+                    if (cursor) cursor.remove();
+                    
+                    // Proceed with running code
+                    executeSimulation();
+                }
+            }
+
+            setTimeout(typeCommand, 150);
+        });
+
+        function executeSimulation() {
+            // Steps after typing command
+            for (let i = 1; i < simulationSteps.length; i++) {
+                const step = simulationSteps[i];
+                setTimeout(() => {
+                    const line = document.createElement('div');
+                    line.className = 'console-line';
+                    
+                    if (step.isSuccess) {
+                        line.innerHTML = `<span class="console-text"><span class="console-success">${step.text}</span></span>`;
+                    } else {
+                        line.innerHTML = `<span class="console-text">${step.text}</span>`;
+                    }
+                    
+                    consoleOutput.appendChild(line);
+
+                    // If it is the last step, re-enable the run button
+                    if (i === simulationSteps.length - 1) {
+                        runBtn.disabled = false;
+                    }
+                }, step.delay - 300); // adjust offset based on typing delay
+            }
+        }
+    </script>
+</body>
+</html>
