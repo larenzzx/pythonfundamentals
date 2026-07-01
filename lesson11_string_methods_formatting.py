@@ -1,12 +1,25 @@
 # lesson11_string_methods_formatting.py
 
-# Lesson 11: String Methods & Formatting
-# Strings have tons of built-in methods that make text processing easy.
-# This lesson covers the most important ones plus modern formatting.
-
-# =============================================
-# PART 1: ESSENTIAL STRING METHODS
-# =============================================
+# ### Lesson 11: String Manipulation & Formatting
+# Text processing is one of Python's strongest features. This lesson covers slicing and core string formatting methods.
+# 
+# #### 1. String Slicing
+# You can extract parts of a string using slice indexing: `string[start:stop:step]`
+# - `text[0:5]`: Gets characters from index `0` up to `4`.
+# - `text[::-1]`: Reverses the string.
+# 
+# #### 2. Essential String Methods
+# Strings are immutable; these methods return a *new* string without modifying the original:
+# - `.lower()` / `.upper()`: Converts text casing.
+# - `.strip()`: Removes leading/trailing whitespace.
+# - `.replace(old, new)`: Swaps characters or words.
+# - `.split(separator)`: Divides a string into a list of substrings.
+# - `join(list)`: Merges a list of strings into a single string.
+# 
+# #### 3. F-Strings (Formatted Strings)
+# F-strings provide a readable syntax for embedding variables directly inside text:
+# - **Example**: `f"Hello, {name}. You are {age} years old."`
+# - You can perform operations or format decimal places inside the brackets: `f"Price: {price:.2f}"` (rounds to 2 decimal places).
 
 text = "  Hello, Python World!  "
 print("Original:", repr(text))  # repr shows hidden characters
@@ -37,7 +50,7 @@ sentence = "Python is fun and Python is powerful"
 print("find():", sentence.find("Python"))       # First occurrence: 0
 print("rfind():", sentence.rfind("Python"))     # Last occurrence: 17
 print("count():", sentence.count("Python"))     # 2
-# find() returns -1 if not found (index() raises ValueError)
+# find() returns -1 if not found (index() raises `ValueError`)
 
 # Replacing
 print("replace():", sentence.replace("Python", "Java"))
@@ -57,7 +70,7 @@ multi = "line1\nline2\nline3"
 print("splitlines():", multi.splitlines())
 
 # =============================================
-# PART 2: STRING SLICING (DEEP DIVE)
+# #### Exercise 2
 # =============================================
 # You know indexing. Slicing lets you grab substrings.
 
@@ -76,7 +89,7 @@ print(word[-3:])    # "hon" (last 3 characters)
 print(word[:-2])    # "Pyth" (everything except last 2)
 
 # =============================================
-# PART 3: STRING FORMATTING (3 WAYS)
+# #### Exercise 3
 # =============================================
 
 name = "Alex"
@@ -107,7 +120,7 @@ print("My name is %s, I am %d years old." % (name, age))
 print("Score: %.1f" % score)
 
 # =============================================
-# PART 4: MULTI-LINE STRINGS & RAW STRINGS
+# #### Exercise 4
 # =============================================
 
 # Triple quotes for multi-line strings
@@ -131,7 +144,7 @@ print("Quote: She said \"Hello\"")
 print("Backslash: C:\\Users\\Alex")
 
 # =============================================
-# PART 5: USEFUL STRING PATTERNS
+# #### Exercise 5
 # =============================================
 
 # Check if a string is a palindrome
@@ -173,28 +186,28 @@ print(reverse_words("Python is fun"))  # "fun is Python"
 # =============================================
 print("============Activity Section==========")
 
-# Exercise 1: Clean Up Input
-# Ask the user to enter their full name.
+# #### Exercise 1
+# **Ask the user to enter their full name.**
 # Strip leading/trailing whitespace.
 # Print it in title case.
 # Print how many characters it has (excluding spaces).
 
-# Exercise 2: Email Validator (Basic)
-# Ask the user to enter an email address.
+# #### Exercise 2
+# **Ask the user to enter an `email` address.**
 # Check if it contains "@" and ".com"
-# Print "Valid email" or "Invalid email"
+# Print "Valid `email`" or "Invalid `email`"
 # (This is a basic check -- real validation is more complex)
 
-# Exercise 3: Word Counter
-# Ask the user to enter a sentence.
+# #### Exercise 3
+# **Ask the user to enter a sentence.**
 # Print:
 #   - The number of words
 #   - The number of characters (with and without spaces)
 #   - The sentence in reverse
 #   - The sentence with every word reversed (but word order kept)
 
-# Exercise 4: Format a Receipt
-# Create variables for 3 items with name, quantity, and price.
+# #### Exercise 4
+# Create variables for 3 items with name, quantity, and `price`.
 # Use f-strings to print a formatted receipt with columns.
 # Example:
 #   ITEM          QTY    PRICE    TOTAL
@@ -205,8 +218,8 @@ print("============Activity Section==========")
 #   TOTAL                          13.99
 # Use :>10 for right alignment, :<10 for left alignment.
 
-# Exercise 5: Password Strength Checker
-# Ask the user to enter a password.
+# #### Exercise 5
+# **Ask the user to enter a password.**
 # Check if it meets these rules:
 #   - At least 8 characters long
 #   - Contains at least one uppercase letter

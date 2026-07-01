@@ -1,0 +1,110 @@
+{
+  "1": {
+    "activity_hint": "Define the four variables: `city` as a string (quotes), `birth_year` as a whole number, `price` as a decimal, and `likes_python` as a boolean (`True` or `False`). Print each with a label and use `type()` to check their classes.",
+    "activity_solution": "city = \"New York\"\nbirth_year = 2005\nprice = 19.99\nlikes_python = True\n\nprint(\"City:\", city)\nprint(\"Birth Year:\", birth_year)\nprint(\"Price:\", price)\nprint(\"Likes Python:\", likes_python)\n\nprint(\"City type:\", type(city))\nprint(\"Birth Year type:\", type(birth_year))\nprint(\"Price type:\", type(price))\nprint(\"Likes Python type:\", type(likes_python))",
+    "challenge_hint": "Define variables for first name, current age, favorite food, and a coding preference. The age must be an integer and the coding preference must be a boolean.",
+    "challenge_solution": "first_name = \"Alex\"\ncurrent_age = 20\nfavorite_food = \"Pizza\"\nloves_coding = True\n\nprint(\"Name:\", first_name)\nprint(\"Age:\", current_age)\nprint(\"Favorite Food:\", favorite_food)\nprint(\"Loves Coding:\", loves_coding)"
+  },
+  "2": {
+    "activity_hint": "Use `input()` to prompt for strings. Wrap `input()` inside `int()` for whole numbers (birth_year) and inside `float()` for decimals (item_price).",
+    "activity_solution": "city = input(\"Enter your city: \")\nfavorite_color = input(\"Enter favorite color: \")\nbirth_year = int(input(\"Enter birth year: \"))\nitem_price = float(input(\"Enter item price: \"))\n\nprint(\"City:\", city)\nprint(\"Color:\", favorite_color)\nprint(\"Birth Year:\", birth_year)\nprint(\"Item Price:\", item_price)",
+    "challenge_hint": "Gather name, age, and hobby using `input()`. Make sure to convert age to an integer using `int()`, then print a summary string.",
+    "challenge_solution": "name = input(\"Name: \")\nage = int(input(\"Age: \"))\nhobby = input(\"Hobby: \")\n\nprint(f\"User {name} is {age} years old and enjoys {hobby}.\")"
+  },
+  "3": {
+    "activity_hint": "Use mathematical operators: `+`, `-`, `*`, `/`, `//`, `%`, `**` on `num1` and `num2`. In Part 2, calculate points as `(50 + 10 - 5) * 2`. Use logic check operators (`and`, `or`).",
+    "activity_solution": "num1 = 10\nnum2 = 3\nprint(\"Sum:\", num1 + num2)\nprint(\"Diff:\", num1 - num2)\nprint(\"Product:\", num1 * num2)\nprint(\"Div:\", num1 / num2)\nprint(\"Floor:\", num1 // num2)\nprint(\"Mod:\", num1 % num2)\nprint(\"Exponent:\", num1 ** num2)\n\npoints = (50 + 10 - 5) * 2\nprint(\"Points:\", points)\n\nage1 = 20\nage2 = 25\nprint(\"Comparison:\", age1 > age2)\nprint(\"Equality:\", age1 == age2)\n\nhas_ticket = True\nhas_money = False\nprint(\"Can enter?\", has_ticket and has_money)",
+    "challenge_hint": "Ask for price (decimal) and quantity (integer). Multiply them to find the total cost and print it.",
+    "challenge_solution": "price = float(input(\"Enter price: \"))\nquantity = int(input(\"Enter quantity: \"))\ntotal = price * quantity\nprint(\"Total cost:\", total)"
+  },
+  "4": {
+    "activity_hint": "Exercise 1: Check age. Exercise 2: Check positive/negative/zero. Exercise 3: Grading ladder. Exercise 4: Create two boolean variables `has_username` and `has_password` and combine them with `and`.",
+    "activity_solution": "# Exercise 1\nage = int(input(\"Enter age: \"))\nif age >= 18:\n    print(\"You can vote.\")\nelse:\n    print(\"You cannot vote yet.\")\n\n# Exercise 2\nnumber = int(input(\"Enter number: \"))\nif number > 0:\n    print(\"Positive\")\nelif number < 0:\n    print(\"Negative\")\nelse:\n    print(\"Zero\")\n\n# Exercise 3\ngrade = int(input(\"Enter grade: \"))\nif grade >= 90:\n    print(\"Excellent\")\nelif grade >= 80:\n    print(\"Very good\")\nelif grade >= 75:\n    print(\"Passed\")\nelse:\n    print(\"Failed\")\n\n# Exercise 4\nhas_username = True\nhas_password = True\nif has_username and has_password:\n    print(\"Login allowed.\")\nelse:\n    print(\"Login denied.\")",
+    "challenge_hint": "Ask the user for the purchase amount and if they are a member. Check if the amount is >= 1000 and membership status is equal to 'yes'.",
+    "challenge_solution": "amount = float(input(\"Enter purchase amount: \"))\nmember = input(\"Are you a member? (yes/no): \")\nif amount >= 1000 and member == \"yes\":\n    print(\"You get a discount.\")\nelse:\n    print(\"No discount available.\")"
+  },
+  "5": {
+    "activity_hint": "Use `for i in range(1, 11):` to print 1 to 10. Use a `while` loop with a counter to print 1 to 5. Use `for char in name:` to loop characters, and `range(2, 21, 2)` to get even numbers.",
+    "activity_solution": "# 1. for loop 1-10\nfor i in range(1, 11):\n    print(i)\n\n# 2. while loop 1-5\ncount = 1\nwhile count <= 5:\n    print(count)\n    count += 1\n\n# 3. for loop letters in name\nname = \"Python\"\nfor char in name:\n    print(char)\n\n# 4. while loop countdown\ncountdown = 5\nwhile countdown >= 1:\n    print(countdown)\n    countdown -= 1\n\n# 5. for loop even numbers\nfor num in range(2, 21, 2):\n    print(num)",
+    "challenge_hint": "Ask the user for a number, and run a `for` loop from 1 to 10. Multiply the number by the loop variable and print the formatted string.",
+    "challenge_solution": "number = int(input(\"Enter number: \"))\nfor i in range(1, 11):\n    print(f\"{number} x {i} = {number * i}\")"
+  },
+  "6": {
+    "activity_hint": "Create a list called `favorite_foods` with three initial values. Print index 0, modify index 1, append a new food, and remove one food to keep the list size at exactly 3.",
+    "activity_solution": "favorite_foods = [\"Pizza\", \"Sushi\", \"Tacos\"]\nprint(\"First item:\", favorite_foods[0])\nfavorite_foods[1] = \"Burger\"\nfavorite_foods.append(\"Pasta\")\nfavorite_foods.remove(\"Pizza\")\nfor food in favorite_foods:\n    print(food)",
+    "challenge_hint": "Create an empty list called `shopping_list`. Use `input()` to prompt for 3 items, append each item, and use a `for` loop to print them out.",
+    "challenge_solution": "shopping_list = []\nitem1 = input(\"Item 1: \")\nitem2 = input(\"Item 2: \")\nitem3 = input(\"Item 3: \")\nshopping_list.append(item1)\nshopping_list.append(item2)\nshopping_list.append(item3)\nprint(shopping_list)\nfor item in shopping_list:\n    print(item)"
+  },
+  "7": {
+    "activity_hint": "Create a dictionary called `favorite_movie` with keys 'title', 'year', and 'genre'. Update the year, add a new key 'rating', and delete 'genre' using `pop('genre')`.",
+    "activity_solution": "favorite_movie = {\n    \"title\": \"Inception\",\n    \"year\": 2010,\n    \"genre\": \"Sci-Fi\"\n}\nfavorite_movie[\"year\"] = 2011\nfavorite_movie[\"rating\"] = 8.8\nfavorite_movie.pop(\"genre\")\nfor key, value in favorite_movie.items():\n    print(key, \":\", value)",
+    "challenge_hint": "Create an empty dictionary called `contact`. Ask the user for name, phone, and email, store them, and loop through key-value items.",
+    "challenge_solution": "contact = {}\ncontact[\"name\"] = input(\"Enter name: \")\ncontact[\"phone\"] = input(\"Enter phone: \")\ncontact[\"email\"] = input(\"Enter email: \")\nfor key, value in contact.items():\n    print(key, \":\", value)"
+  },
+  "8": {
+    "activity_hint": "Define: `say_welcome()`, `print_name(name)`, `multiply(num1, num2)` (using return), `check_number(number)`, and `print_colors(colors)` (takes a list and loops).",
+    "activity_solution": "def say_welcome():\n    print(\"Welcome!\")\n\ndef print_name(name):\n    print(\"Name:\", name)\n\ndef multiply(num1, num2):\n    return num1 * num2\n\ndef check_number(number):\n    if number > 0:\n        print(\"Positive\")\n    elif number < 0:\n        print(\"Negative\")\n    else:\n        print(\"Zero\")\n\ndef print_colors(colors):\n    for color in colors:\n        print(color)",
+    "challenge_hint": "Define four separate functions: `add`, `subtract`, `multiply_numbers`, and `divide` (handling zero division safely). Call them and print results.",
+    "challenge_solution": "def add(a, b):\n    return a + b\n\ndef subtract(a, b):\n    return a - b\n\ndef multiply_numbers(a, b):\n    return a * b\n\ndef divide(a, b):\n    if b == 0:\n        return \"Error: division by zero\"\n    return a / b"
+  },
+  "9": {
+    "activity_hint": "Implement `safe_multiply(a, b)`. Use `try:` and `except TypeError:` to return the message 'Invalid values.' if multiplication fails.",
+    "activity_solution": "def safe_multiply(a, b):\n    try:\n        return a * b\n    except TypeError:\n        return \"Invalid values.\"",
+    "challenge_hint": "Define a function `divide(a, b)`. Use `try` and catch `ZeroDivisionError` to handle zero division safely, returning a description text.",
+    "challenge_solution": "def divide(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return \"Cannot divide by zero\""
+  },
+  "10": {
+    "activity_hint": "Use parentheses `()` to define tuples. Use curly braces `{}` to define sets. Set operations like `.intersection()` and `.union()` compute set relationships.",
+    "activity_solution": "rgb = (255, 128, 0)\nprint(\"R:\", rgb[0], \"G:\", rgb[1], \"B:\", rgb[2])\n\npython_students = {\"Alex\", \"Ana\", \"Luis\", \"Sara\"}\njava_students = {\"Ana\", \"Sara\", \"Tom\", \"Joe\"}\nprint(\"Both:\", python_students.intersection(java_students))\nprint(\"Either:\", python_students.union(java_students))\nprint(\"Only Python:\", python_students.difference(java_students))\n\nduplicates = [5, 3, 5, 2, 3, 1, 2, 4, 1]\nclean_list = sorted(list(set(duplicates)))\nprint(\"Sorted unique:\", clean_list)\n\ninventory = {\n    \"apple\": {\"name\": \"Apple\", \"price\": 1.5, \"quantity\": 10},\n    \"banana\": {\"name\": \"Banana\", \"price\": 0.8, \"quantity\": 15}\n}\nfor k, item in inventory.items():\n    print(item[\"name\"], \"value:\", item[\"price\"] * item[\"quantity\"])\n\ndef describe_pet(name, *args, **kwargs):\n    print(\"Name:\", name)\n    print(\"Traits:\", args)\n    print(\"Extra details:\", kwargs)",
+    "challenge_hint": "Create a contact book dictionary. Let the user add, delete, or search items. Store contact values as dictionaries containing phone/email info.",
+    "challenge_solution": "contacts = {}\nwhile True:\n    print(\"\\n1. Add\\n2. Search\\n3. Exit\")\n    choice = input(\"Choice: \")\n    if choice == '1':\n        name = input(\"Name: \")\n        phone = input(\"Phone: \")\n        contacts[name] = {\"phone\": phone}\n    elif choice == '2':\n        name = input(\"Search name: \")\n        if name in contacts:\n            print(\"Phone:\", contacts[name][\"phone\"])\n        else:\n            print(\"Not found\")\n    elif choice == '3':\n        break"
+  },
+  "11": {
+    "activity_hint": "Use `.lower()` to convert to lowercase, `.upper()` for uppercase, and `.replace(old, new)` to replace strings. Slicing syntax is `string[start:stop:step]`.",
+    "activity_solution": "text = \"Python Programming\"\nprint(\"Upper:\", text.upper())\nprint(\"Lower:\", text.lower())\nprint(\"Replaced:\", text.replace(\"Programming\", \"Is Fun\"))\nprint(\"Slicing 0-6:\", text[0:6])\nprint(\"Reversed:\", text[::-1])",
+    "challenge_hint": "Read a sentence from the user. Split it using `.split()`, count the number of words, and print a formatted summary sentence using f-strings.",
+    "challenge_solution": "sentence = input(\"Enter a sentence: \")\nwords = sentence.split()\nword_count = len(words)\nprint(f\"The sentence contains {word_count} words.\")"
+  },
+  "12": {
+    "activity_hint": "Use `with open(filename, 'w') as file:` to write text to files. Use `with open(filename, 'r') as file:` to read text.",
+    "activity_solution": "with open(\"notes.txt\", \"w\") as file:\n    file.write(\"Line 1\\nLine 2\\nLine 3\\n\")\n\nwith open(\"notes.txt\", \"r\") as file:\n    print(file.read())",
+    "challenge_hint": "Open a file called `activity_log.txt` in append mode (`'a'`) to add log logs. Use read mode (`'r'`) to read all added content.",
+    "challenge_solution": "import datetime\nlog_msg = input(\"Log message: \")\ntimestamp = datetime.datetime.now().strftime(\"%Y-%m-%d %H:%M:%S\")\nwith open(\"activity_log.txt\", \"a\") as file:\n    file.write(f\"[{timestamp}] {log_msg}\\n\")\nwith open(\"activity_log.txt\", \"r\") as file:\n    print(file.read())"
+  },
+  "13": {
+    "activity_hint": "List comprehensions are formatted as `[expression for item in iterable if condition]`. Lambdas are `lambda x: x * 2`.",
+    "activity_solution": "squares = [x ** 2 for x in range(1, 11)]\nevens = [x for x in range(1, 21) if x % 2 == 0]\n\ndouble = lambda x: x * 2\nadd = lambda x, y: x + y\n\nprint(\"Squares:\", squares)\nprint(\"Evens:\", evens)\nprint(\"Double 5:\", double(5))",
+    "challenge_hint": "Use list comprehensions to build numbers, and filter them using lambda conditions inside functional methods.",
+    "challenge_solution": "numbers = range(1, 11)\nfiltered = list(filter(lambda x: x > 5, numbers))\nprint(\"Filtered:\", filtered)"
+  },
+  "14": {
+    "activity_hint": "Define a class `Car` with constructor `__init__(self, make, model, year)`. Implement a method `start_engine(self)` that returns a string.",
+    "activity_solution": "class Car:\n    def __init__(self, make, model, year):\n        self.make = make\n        self.model = model\n        self.year = year\n    def start_engine(self):\n        return f\"The engine of {self.make} {self.model} is now running.\"",
+    "challenge_hint": "Define two classes: `Book` representing a book node, and `Library` managing a list of Book objects with add_book and remove_book methods.",
+    "challenge_solution": "class Book:\n    def __init__(self, title, author):\n        self.title = title\n        self.author = author\n\nclass Library:\n    def __init__(self):\n        self.books = []\n    def add_book(self, book):\n        self.books.append(book)\n    def remove_book(self, book):\n        if book in self.books:\n            self.books.remove(book)"
+  },
+  "15": {
+    "activity_hint": "Import modules using `import math` and `import random`. Call their methods like `math.sqrt()` or `random.choice()`.",
+    "activity_solution": "import math\nimport random\n\nprint(\"Sqrt of 16:\", math.sqrt(16))\nprint(\"Random element:\", random.choice([\"A\", \"B\", \"C\"]))",
+    "challenge_hint": "Import `datetime` library. Use `datetime.date.today()` to print the current calendar date.",
+    "challenge_solution": "import datetime\nprint(\"Current Date:\", datetime.date.today())"
+  },
+  "16": {
+    "activity_hint": "Write a decorator that accepts a function, runs print statements before/after calling it, and returns the wrapper. Write a generator using `yield`.",
+    "activity_solution": "def my_decorator(func):\n    def wrapper(*args, **kwargs):\n        print(\"Before call\")\n        result = func(*args, **kwargs)\n        print(\"After call\")\n        return result\n    return wrapper\n\n@my_decorator\ndef greet():\n    print(\"Hello!\")\n\ndef count_up_to(n):\n    count = 1\n    while count <= n:\n        yield count\n        count += 1",
+    "challenge_hint": "Write a decorator function (e.g. `@timer_decorator`) that measures time differences before and after execution, and apply it to a test function.",
+    "challenge_solution": "import time\n\ndef timer_decorator(func):\n    def wrapper(*args, **kwargs):\n        start = time.time()\n        result = func(*args, **kwargs)\n        end = time.time()\n        print(f\"Execution time: {end - start:.4f}s\")\n        return result\n    return wrapper\n\n@timer_decorator\ndef heavy_calculation():\n    total = 0\n    for i in range(10000):\n        total += i\n    return total"
+  },
+  "17": {
+    "activity_hint": "1. Parse JSON: Use `json.loads(api_payload)`.\n2. Convert to JSON: Use `json.dumps(post_data)`.\n3. Return 'Success' for 200 or 201, 'Client Error' for 400, 401, or 404, and 'Server Error' for 500.",
+    "activity_solution": "import json\n\n# 1. Parse JSON\nuser_profile = json.loads(api_payload)\n\n# 2. Convert to JSON\npost_data = {\n    \"title\": \"My Post\",\n    \"body\": \"This is the post content.\"\n}\npost_json = json.dumps(post_data)\n\n# 3. Check status code\ndef check_http_status(status_code):\n    if status_code in [200, 201]:\n        return \"Success\"\n    elif status_code in [400, 401, 404]:\n        return \"Client Error\"\n    elif status_code == 500:\n        return \"Server Error\"\n    return \"Unknown\"",
+    "challenge_hint": "Check method and path conditions. For POST '/users', use a try-except block wrapping `json.loads(body_json)` to catch invalid JSON formatting, and verify that the parsed dictionary contains a 'name' key.",
+    "challenge_solution": "import json\n\ndef route_request(method, path, body_json):\n    if method == \"GET\" and path == \"/users\":\n        return (200, '{\"users\": [\"alice\", \"bob\"]}')\n    elif method == \"POST\" and path == \"/users\":\n        try:\n            payload = json.loads(body_json)\n            if \"name\" not in payload:\n                return (400, '{\"error\": \"Invalid payload\"}')\n            return (201, '{\"status\": \"Created\"}')\n        except json.JSONDecodeError:\n            return (400, '{\"error\": \"Invalid payload\"}')\n    else:\n        return (404, '{\"error\": \"Not Found\"}')"
+  },
+  "18": {
+    "activity_hint": "1. Create app: `app = FastAPI()`.\n2. Create GET health endpoint: `@app.get('/health')` that returns `{'status': 'ok'}`.\n3. Create Pydantic model: `class UserSignUp(BaseModel):` with type annotations `username: str` and `email: str`.",
+    "activity_solution": "from fastapi import FastAPI\nfrom pydantic import BaseModel\n\n# 1. Create app\napp = FastAPI()\n\n# 2. Add health endpoint\n@app.get(\"/health\")\ndef health():\n    return {\"status\": \"ok\"}\n\n# 3. Define UserSignUp model\nclass UserSignUp(BaseModel):\n    username: str\n    email: str",
+    "challenge_hint": "1. Define model `Product(BaseModel)` with name (str) and price (float).\n2. Create `app = FastAPI()` and database list `products_db = []`.\n3. Implement `@app.post('/products')` to append `{\"name\": prod.name, \"price\": prod.price}` and return `prod`.\n4. Implement `@app.get('/products')` to return `products_db`.",
+    "challenge_solution": "from fastapi import FastAPI\nfrom pydantic import BaseModel\n\nclass Product(BaseModel):\n    name: str\n    price: float\n\napp = FastAPI()\nproducts_db = []\n\n@app.post(\"/products\")\ndef create_product(product: Product):\n    products_db.append({\"name\": product.name, \"price\": product.price})\n    return product\n\n@app.get(\"/products\")\ndef get_products():\n    return products_db"
+  }
+}

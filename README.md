@@ -63,3 +63,12 @@ PyFundamentals is a premium, full-stack, interactive learning space designed to 
 Detailed guides for configuring, hosting, and running this application are available in your repository:
 * 📖 **[SETUP.md](file:///C:/PythonFundamentals/SETUP.md):** Guides you through local installation, database SQL scripts, and admin setup.
 * 🚀 **[DEPLOYMENT.md](file:///C:/PythonFundamentals/DEPLOYMENT.md):** Step-by-step instructions for deploying to Vercel and configuring Supabase Authentication Redirect URLs.
+
+---
+
+## 🔄 Syncing Lesson Changes
+If you modify the Python lesson files in the workspace (e.g. `lesson1_variables.py` through `lesson18_fastapi.py`), run the compilation script in your terminal to sync the files into the React database:
+```bash
+python3 compile_lessons.py
+```
+This automatically rebuilds `src/data/lessons.json` and `lessons_data.json`.

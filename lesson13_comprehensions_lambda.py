@@ -1,16 +1,33 @@
 # lesson13_comprehensions_lambda.py
 
-# Lesson 13: List Comprehensions & Lambda Functions
-# These are powerful Python features that let you write
-# concise, expressive code. This is where Python starts to shine.
+# ### Lesson 13: Comprehensions & Lambdas
+# Python provides concise syntax features that let you write expressive, short, and highly readable code.
+# 
+# #### 1. List Comprehensions
+# A list comprehension builds a new list in a single line, replacing traditional `for` loops.
+# - **Traditional**:
+#   ```python
+#   squares = []
+#   for n in range(1, 6):
+#       squares.append(n ** 2)
+#   ```
+# - **Comprehension**:
+#   ```python
+#   squares = [n ** 2 for n in range(1, 6)]
+#   ```
+# - **Filtering with `if`**: `evens = [n for n in range(10) if n % 2 == 0]`
+# 
+# #### 2. Dict & Set Comprehensions
+# You can build dictionaries and sets in one line:
+# - **Dict**: `{word: len(word) for word in words}`
+# - **Set**: `{len(w) for w in words}`
+# 
+# #### 3. Lambda (Anonymous) Functions
+# Lambdas are quick, nameless functions written on a single line.
+# - **Syntax**: `lambda parameters: expression`
+# - **Example**: `add = lambda x, y: x + y`
+# - Often passed to functions like `.sort(key=...)`, `map()`, or `filter()`.
 
-# =============================================
-# PART 1: LIST COMPREHENSIONS
-# =============================================
-# A list comprehension creates a new list in one line.
-# It replaces a for loop that builds a list.
-
-# Traditional way:
 squares = []
 for n in range(1, 6):
     squares.append(n ** 2)
@@ -33,7 +50,7 @@ uppercased = [name.upper() for name in ["mark", "ana", "luis"]]
 print("Uppercased:", uppercased)
 
 # =============================================
-# PART 2: LIST COMPREHENSIONS WITH CONDITIONS
+# #### Exercise 2
 # =============================================
 
 # Filter with if (at the end):
@@ -53,10 +70,10 @@ cleaned = [n if n >= 0 else 0 for n in numbers]
 print("Cleaned:", cleaned)
 
 # =============================================
-# PART 3: NESTED LIST COMPREHENSIONS
+# #### Exercise 3
 # =============================================
 
-# Flatten a 2D list (matrix):
+# Flatten a 2D `list` (matrix):
 matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 flat = [num for row in matrix for num in row]
 print("Flattened:", flat)  # [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -72,7 +89,7 @@ diagonal = [matrix[i][i] for i in range(len(matrix))]
 print("Diagonal:", diagonal)  # [1, 5, 9]
 
 # =============================================
-# PART 4: DICTIONARY & SET COMPREHENSIONS
+# #### Exercise 4
 # =============================================
 
 # Dictionary comprehension:
@@ -95,7 +112,7 @@ unique_lengths = {len(w) for w in words}
 print("Unique lengths:", unique_lengths)
 
 # =============================================
-# PART 5: LAMBDA FUNCTIONS
+# #### Exercise 5
 # =============================================
 # A lambda is a small anonymous function (no name).
 # Syntax: lambda parameters: expression
@@ -119,10 +136,10 @@ print("Lambda greet:", greet())
 # Lambdas are most useful when passed to other functions.
 
 # =============================================
-# PART 6: SORTING WITH LAMBDA
+# #### Exercise 6
 # =============================================
 
-# Sort a list of tuples by second element:
+# Sort a `list` of tuples by second element:
 students = [("Alex", 95), ("Ana", 88), ("Luis", 92), ("Sara", 78)]
 students.sort(key=lambda student: student[1])  # Sort by score
 print("Sorted by score:", students)
@@ -142,7 +159,7 @@ sorted_scores = dict(sorted(scores.items(), key=lambda item: item[1]))
 print("Sorted by score:", sorted_scores)
 
 # =============================================
-# PART 7: map(), filter(), sorted()
+# #### Exercise 7
 # =============================================
 # These built-in functions work great with lambdas.
 
@@ -156,7 +173,7 @@ print("map squares:", squares)
 evens = list(filter(lambda x: x % 2 == 0, numbers))
 print("filter evens:", evens)
 
-# sorted() -- return a new sorted list (doesn't modify original)
+# sorted() -- return a new sorted `list` (doesn't modify original)
 desc = sorted(numbers, key=lambda x: -x)
 print("sorted desc:", desc)
 
@@ -170,7 +187,7 @@ result2 = [x ** 2 for x in numbers if x % 2 == 0]
 print("Even squares (comp):", result2)
 
 # =============================================
-# PART 8: USEFUL ONE-LINERS
+# #### Exercise 8
 # =============================================
 
 # Find all vowels in a sentence:
@@ -178,12 +195,12 @@ sentence = "The quick brown fox jumps over the lazy dog"
 vowels = [ch for ch in sentence.lower() if ch in "aeiou"]
 print("Vowels found:", vowels)
 
-# Extract all numbers from a mixed list:
+# Extract all numbers from a mixed `list`:
 mixed = [1, "hello", 3.14, "world", 42, True, None, 7]
 numbers_only = [x for x in mixed if isinstance(x, (int, float)) and not isinstance(x, bool)]
 print("Numbers only:", numbers_only)
 
-# Create a dict from two lists:
+# Create a `dict` from two lists:
 keys = ["name", "age", "city"]
 values = ["Alex", 24, "New York"]
 combined = {k: v for k, v in zip(keys, values)}
@@ -200,34 +217,34 @@ for name, score in zip(names, scores):
 # =============================================
 print("============Activity Section==========")
 
-# Exercise 1: Basic Comprehensions
-# Create the following using list comprehensions:
-# a) A list of cubes for numbers 1-10
-# b) A list of only the vowels from the string "Programming is fun"
-# c) A list of tuples (number, square) for numbers 1-5
-# d) A list of all numbers 1-100 divisible by both 3 and 5
+# #### Exercise 1
+# Create the following using `list` comprehensions:
+# a) A `list` of cubes for numbers 1-10
+# b) A `list` of only the vowels from the string "Programming is fun"
+# c) A `list` of tuples (number, square) for numbers 1-5
+# d) A `list` of all numbers 1-100 divisible by both 3 and 5
 
-# Exercise 2: Dictionary Comprehension
+# #### Exercise 2
 # Given: words = ["apple", "banana", "cherry", "date", "elderberry"]
 # Create a dictionary where keys are words and values are:
 #   - "short" if length <= 5
 #   - "medium" if length is 6-8
 #   - "long" if length > 8
 
-# Exercise 3: Sorting Challenge
-# Given a list of dictionaries:
+# #### Exercise 3
+# Given a `list` of dictionaries:
 #   people = [{"name": "Alex", "age": 20}, {"name": "Ana", "age": 30}, ...]
 # Sort them by age (ascending) using sorted() and lambda.
 # Then sort them by name length (descending).
 
-# Exercise 4: map/filter
+# #### Exercise 4
 # Given: numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 # Using map and filter (not comprehensions):
-# a) Get a list of odd numbers doubled
-# b) Get a list of numbers > 5, each subtracted by 1
-# Then do the same with list comprehensions and compare.
+# a) Get a `list` of odd numbers doubled
+# b) Get a `list` of numbers > 5, each subtracted by 1
+# Then do the same with `list` comprehensions and compare.
 
-# Exercise 5: Matrix Operations
+# #### Exercise 5
 # Given matrix = [[1,2,3],[4,5,6],[7,8,9]]
 # Using comprehensions:
 # a) Get the second column: [2, 5, 8]
@@ -239,14 +256,14 @@ print("============Activity Section==========")
 # =============================================
 print("============Mini Challenge==========")
 
-# Process a list of student records.
-# Given raw data as a list of strings:
+# Process a `list` of student records.
+# Given raw data as a `list` of strings:
 #   ["Mark,95,Math", "Ana,88,Science", "Luis,92,Math", "Sara,78,English"]
 #
 # 1. Parse each string into a dictionary with keys: name, score, subject
 # 2. Filter to only students with score >= 85
 # 3. Sort by score descending
-# 4. Create a summary: list of strings like "Mark (Math): 95"
+# 4. Create a summary: `list` of strings like "Mark (Math): 95"
 # 5. Calculate average score per subject
 #
 # Use comprehensions, lambda, map, filter, and sorted.

@@ -110,7 +110,8 @@ RETURNS TABLE (
   id uuid,
   email text,
   role text,
-  created_at timestamptz
+  created_at timestamptz,
+  completed_count bigint
 ) AS $$
 BEGIN
   IF EXISTS (
@@ -118,8 +119,15 @@ BEGIN
     WHERE profiles.id = auth.uid() AND profiles.role = 'admin'
   ) THEN
     RETURN QUERY 
-    SELECT p.id, p.email, p.role, p.created_at 
-    FROM public.profiles p;
+    SELECT 
+      p.id, 
+      p.email, 
+      p.role, 
+      p.created_at,
+      COALESCE(count(up.id) FILTER (WHERE up.status = 'completed'), 0) as completed_count
+    FROM public.profiles p
+    LEFT JOIN public.user_progress up ON p.id = up.user_id
+    GROUP BY p.id, p.email, p.role, p.created_at;
   ELSE
     RAISE EXCEPTION 'Access Denied: Only administrators can view users.';
   END IF;

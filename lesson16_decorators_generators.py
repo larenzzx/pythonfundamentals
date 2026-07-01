@@ -1,17 +1,25 @@
 # lesson16_decorators_generators.py
 
-# Lesson 16: Decorators, Generators & Iterators
-# These are advanced Python features that separate beginners from
-# intermediate/advanced developers. They're used everywhere in
-# real Python code -- web frameworks, data science, automation.
-
-# =============================================
-# PART 1: FUNCTIONS AS FIRST-CLASS OBJECTS
-# =============================================
-# In Python, functions are objects. You can:
-# - Assign them to variables
-# - Pass them as arguments
-# - Return them from other functions
+# ### Lesson 16: Decorators and Generators
+# This lesson covers advanced features used to modify behaviors of functions and handle large datasets memory-efficiently.
+# 
+# #### 1. Closures & First-Class Functions
+# In Python, functions are "first-class citizens", meaning they can be passed as arguments, returned from other functions, and assigned to variables.
+# 
+# #### 2. Decorators (`@`)
+# A **decorator** is a function that takes another function as an argument, extends its behavior, and returns a modified function.
+# - Used for logging, performance timing, security checks, and routing.
+# - Applied using the `@` symbol above the function definition:
+#   ```python
+#   @my_decorator
+#   def greet():
+#       print("Hello")
+#   ```
+# 
+# #### 3. Generators and `yield`
+# A **generator** is a function that returns a sequence of values lazily, one by one.
+# - Instead of `return` (which exits), it uses `yield` (which pauses execution and returns a value, remembering its state for the next call).
+# - High performance: Generators do not store the entire list in memory, making them excellent for streaming large files or infinite ranges.
 
 def greet(name):
     return f"Hello, {name}!"
@@ -41,7 +49,7 @@ selected = get_function("greet")
 print(selected("Sara"))
 
 # =============================================
-# PART 2: CLOSURES
+# #### Exercise 2
 # =============================================
 # A closure is a function that remembers variables from the outer
 # scope even after the outer function has finished running.
@@ -81,9 +89,9 @@ print(counter_a())  # 3
 print(counter_b())  # 1 (independent of counter_a)
 
 # =============================================
-# PART 3: DECORATORS
+# #### Exercise 3
 # =============================================
-# A decorator wraps a function to add extra behavior.
+# A decorator wraps a function to `add` extra behavior.
 # This is one of Python's most powerful and common patterns.
 
 import time
@@ -194,12 +202,12 @@ print("Processed:", process_data([1, 2, 3, 4, 5]))
 # Decorators execute bottom-up: my_decorator -> log_calls -> timer
 
 # =============================================
-# PART 4: GENERATORS
+# #### Exercise 4
 # =============================================
 # A generator produces values one at a time using yield.
 # It "pauses" between values, saving memory.
 
-# Normal function: computes ALL values at once, returns a list.
+# Normal function: computes ALL values at once, returns a `list`.
 def get_squares_list(n):
     result = []
     for i in range(n):
@@ -213,7 +221,7 @@ def get_squares_gen(n):
     for i in range(n):
         yield i ** 2  # yield = "give me one value, then pause"
 
-# It returns a generator object (not a list)
+# It returns a generator object (not a `list`)
 gen = get_squares_gen(10)
 print("Generator object:", gen)
 
@@ -229,7 +237,7 @@ for square in gen:
 # Why generators matter: memory efficiency
 import sys
 
-# A list of 1 million numbers
+# A `list` of 1 million numbers
 big_list = list(range(1_000_000))
 print("List size:", sys.getsizeof(big_list), "bytes")
 
@@ -238,7 +246,7 @@ big_gen = range(1_000_000)
 print("Generator size:", sys.getsizeof(big_gen), "bytes")
 # range() is a generator -- it doesn't store all values in memory!
 
-# --- Generator expressions (like list comprehensions but lazy) ---
+# --- Generator expressions (like `list` comprehensions but lazy) ---
 # List comprehension: []
 squares_list = [x ** 2 for x in range(10)]
 print("List comp:", squares_list)
@@ -288,7 +296,7 @@ print(acc.send(20))   # 30
 print(acc.send(5))    # 35
 
 # =============================================
-# PART 5: ITERATORS
+# #### Exercise 5
 # =============================================
 # Any object with __iter__() and __next__() is an iterator.
 # You can make your own iterable classes.
@@ -336,7 +344,7 @@ print("No spaces:", list(NoSpaceIterator("Hello World")))
 # ['H', 'e', 'l', 'l', 'o', 'W', 'o', 'r', 'l', 'd']
 
 # =============================================
-# PART 6: PUTTING IT ALL TOGETHER
+# #### Exercise 6
 # =============================================
 
 # A practical example: a pipeline using generators
@@ -381,32 +389,32 @@ def filter_records(records, key, min_value):
 # =============================================
 print("============Activity Section==========")
 
-# Exercise 1: Closures
+# #### Exercise 1
 # Create a make_power(exponent) function that returns a closure.
 # The closure should raise any number to that exponent.
 # square = make_power(2)  -> square(5) = 25
 # cube = make_power(3)    -> cube(3) = 27
 
-# Exercise 2: Simple Decorator
+# #### Exercise 2
 # Create a @shout decorator that:
 #   - Converts the return value to uppercase
 #   - Adds "!!!" to the end
 # Apply it to a function that returns a greeting string.
 # Example: greet("mark") -> "HELLO, MARK!!!"
 
-# Exercise 3: Timer Decorator
+# #### Exercise 3
 # Add the @timer decorator from this lesson to:
-#   - A function that sorts a list of 100,000 random numbers
-#   - A function that builds a list of 100,000 squares
+#   - A function that sorts a `list` of 100,000 random numbers
+#   - A function that builds a `list` of 100,000 squares
 # Compare the execution times.
 
-# Exercise 4: Generator -- Primes
+# #### Exercise 4
 # Create a generator function called primes() that yields
 # prime numbers infinitely.
 # Use it to print the first 20 prime numbers.
 # Hint: A number is prime if it's not divisible by any number from 2 to sqrt(n).
 
-# Exercise 5: Custom Iterator
+# #### Exercise 5
 # Create a Range class that works like Python's range() but:
 #   - Accepts start, stop, step
 #   - Is its own iterator

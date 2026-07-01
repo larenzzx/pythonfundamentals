@@ -3,10 +3,12 @@ import Editor from '@monaco-editor/react';
 import { usePyodide } from '../hooks/usePyodide';
 import { 
   Play, RotateCcw, Save, CheckCircle2, ChevronLeft, 
-  Terminal, FileCode, HelpCircle, BookOpen, AlertCircle
+  Terminal, FileCode, HelpCircle, BookOpen, AlertCircle,
+  Trophy
 } from 'lucide-react';
 import ConfirmationModal from './ui/ConfirmationModal';
 import { lessonValidators } from '../data/validators';
+import curriculumSupport from '../data/curriculum_support.json';
 
 interface Lesson {
   id: number;
@@ -52,6 +54,12 @@ export default function InteractiveClassroom({
   const [activityPassed, setActivityPassed] = useState<boolean>(false);
   const [challengePassed, setChallengePassed] = useState<boolean>(false);
 
+  // Hints & Solutions States
+  const [showActivityHint, setShowActivityHint] = useState<boolean>(false);
+  const [showActivitySolution, setShowActivitySolution] = useState<boolean>(false);
+  const [showChallengeHint, setShowChallengeHint] = useState<boolean>(false);
+  const [showChallengeSolution, setShowChallengeSolution] = useState<boolean>(false);
+
   // Input Modal States
   const [isInputModalOpen, setIsInputModalOpen] = useState<boolean>(false);
   const [inputPrompts, setInputPrompts] = useState<string[]>([]);
@@ -82,14 +90,29 @@ export default function InteractiveClassroom({
         break;
       }
     }
-    if (activityStartIdx !== -1) {
-      return lines.slice(0, activityStartIdx).join('\n').trim();
+    
+    const tutorialLines = activityStartIdx !== -1 ? lines.slice(0, activityStartIdx) : lines;
+    
+    // Find where the actual Python code starts (first non-empty line that doesn't start with '#')
+    let firstCodeLineIdx = 0;
+    for (let i = 0; i < tutorialLines.length; i++) {
+      const trimmed = tutorialLines[i].trim();
+      if (trimmed && !trimmed.startsWith('#')) {
+        firstCodeLineIdx = i;
+        break;
+      }
     }
-    return content;
+    
+    return tutorialLines.slice(firstCodeLineIdx).join('\n').trim();
   };
 
   // Load saved code from LocalStorage or fallback to lesson file content
   useEffect(() => {
+    setShowActivityHint(false);
+    setShowActivitySolution(false);
+    setShowChallengeHint(false);
+    setShowChallengeSolution(false);
+
     const storageKey = `py_lesson_${lesson.id}_${activeSection}`;
     const savedCode = localStorage.getItem(storageKey);
     if (savedCode) {
@@ -302,11 +325,20 @@ export default function InteractiveClassroom({
       const trimmed = line.trim();
       
       // Track section dividers
-      if (trimmed.includes('Activity Section') || trimmed.includes('============ActivitySection==========') || trimmed.includes('============Activity Section==========')) {
+      const trimmedLower = trimmed.toLowerCase();
+      if (
+        trimmedLower.includes('activity section') || 
+        trimmedLower.includes('activity objectives') ||
+        (trimmed.startsWith('#') && trimmedLower.replace(/[^a-z]/g, '') === 'activity')
+      ) {
         currentSection = 'activity';
         return;
       }
-      if (trimmed.includes('Mini Challenge') || trimmed.includes('============Mini Challenge==========') || trimmed.includes('============MiniChallenge==========')) {
+      if (
+        trimmedLower.includes('mini challenge') || 
+        trimmedLower.includes('challenge details') ||
+        (trimmed.startsWith('#') && (trimmedLower.replace(/[^a-z]/g, '') === 'minichallenge' || trimmedLower.replace(/[^a-z]/g, '') === 'challenge'))
+      ) {
         currentSection = 'challenge';
         return;
       }
@@ -335,6 +367,7 @@ export default function InteractiveClassroom({
   };
 
   const { tutorialText, activityText, challengeText } = parseComments(lesson.content);
+  const support = (curriculumSupport as any)[String(lesson.id)];
 
   return (
     <div className="flex flex-col h-[calc(100vh-80px)] border border-white/5 rounded-2xl overflow-hidden bg-slate-950/40 relative z-10 font-sans">
@@ -416,26 +449,93 @@ export default function InteractiveClassroom({
                 <BookOpen className="w-4 h-4 text-sky-400" />
                 Lesson Explanation
               </h3>
-              <div className="p-4 rounded-xl bg-slate-900/60 border border-white/5 text-sm leading-relaxed text-slate-300 whitespace-pre-line">
-                {tutorialText || 'No detailed instructions written. Read the comments inside the code editor.'}
+              <div className="p-4 rounded-xl bg-slate-900/60 border border-white/5 text-sm leading-relaxed text-slate-300">
+                <SimpleMarkdown content={tutorialText} fallback="No detailed instructions written. Read the comments inside the code editor." />
               </div>
             </div>
           )}
 
           {/* Activity Section Objectives */}
           {activeSection === 'activity' && (
-            <div className="space-y-3">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-sky-400 flex items-center gap-2">
-                <HelpCircle className="w-4 h-4 text-sky-400" />
-                Activity Objectives
-              </h3>
-              <div className="p-4 rounded-xl bg-sky-950/20 border border-sky-500/10 text-sm leading-relaxed text-slate-300 whitespace-pre-line">
-                {activityText || 'No Activity objectives found for this lesson.'}
+            <div className="space-y-4">
+              <div className="space-y-3">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-sky-400 flex items-center gap-2">
+                  <HelpCircle className="w-4 h-4 text-sky-400" />
+                  Activity Objectives
+                </h3>
+                <div className="p-4 rounded-xl bg-sky-950/20 border border-sky-500/10 text-sm leading-relaxed text-slate-300">
+                  <SimpleMarkdown content={activityText} fallback="No Activity objectives found for this lesson." />
+                </div>
               </div>
+              
               {activityPassed && (
                 <div className="p-4 rounded-xl bg-emerald-950/20 border border-emerald-500/10 text-xs font-semibold text-emerald-400 flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400 animate-pulse" />
                   Activity completed successfully!
+                </div>
+              )}
+
+              {/* Hints & Solutions support */}
+              {support && (
+                <div className="space-y-3 pt-3 border-t border-white/5">
+                  <div className="flex items-center gap-3">
+                    {support.activity_hint && (
+                      <button
+                        onClick={() => setShowActivityHint(!showActivityHint)}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-bold transition-all uppercase tracking-wider select-none cursor-pointer ${
+                          showActivityHint 
+                            ? 'bg-amber-400/20 border-amber-400/40 text-amber-300' 
+                            : 'bg-slate-900 border-white/5 text-slate-400 hover:bg-slate-800'
+                        }`}
+                      >
+                        <span>💡</span>
+                        {showActivityHint ? 'Hide Hint' : 'Show Hint'}
+                      </button>
+                    )}
+                    
+                    {support.activity_solution && (
+                      <button
+                        onClick={() => setShowActivitySolution(!showActivitySolution)}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-bold transition-all uppercase tracking-wider select-none cursor-pointer ${
+                          showActivitySolution 
+                            ? 'bg-emerald-400/20 border-emerald-400/40 text-emerald-300' 
+                            : 'bg-slate-900 border-white/5 text-slate-400 hover:bg-slate-800'
+                        }`}
+                      >
+                        <span>👁️</span>
+                        {showActivitySolution ? 'Hide Answer' : 'Reveal Answer'}
+                      </button>
+                    )}
+                  </div>
+                  
+                  {showActivityHint && support.activity_hint && (
+                    <div className="p-4 rounded-xl bg-amber-950/10 border border-amber-500/20 text-xs text-amber-200 leading-relaxed animate-fade-in space-y-1">
+                      <span className="font-bold uppercase tracking-wider text-[10px] text-amber-400 block">💡 Learning Hint:</span>
+                      <p>{support.activity_hint}</p>
+                    </div>
+                  )}
+                  
+                  {showActivitySolution && support.activity_solution && (
+                    <div className="space-y-2 animate-fade-in">
+                      <div className="flex items-center justify-between text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">
+                        <span>Correct Code Solution</span>
+                        <button
+                          onClick={() => {
+                            if (window.confirm("Do you want to overwrite your editor with the correct solution?")) {
+                              setCode(support.activity_solution);
+                              localStorage.setItem(`py_lesson_${lesson.id}_activity`, support.activity_solution);
+                            }
+                          }}
+                          className="text-emerald-400 hover:text-emerald-300 font-bold hover:underline cursor-pointer"
+                        >
+                          Apply to Editor
+                        </button>
+                      </div>
+                      <pre className="p-4 rounded-xl bg-slate-950/80 border border-white/5 font-mono text-[12px] text-emerald-200 overflow-x-auto whitespace-pre leading-relaxed">
+                        <code>{support.activity_solution}</code>
+                      </pre>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -443,18 +543,85 @@ export default function InteractiveClassroom({
 
           {/* Challenge Section Details */}
           {activeSection === 'challenge' && (
-            <div className="space-y-3">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-amber-400 flex items-center gap-2">
-                <HelpCircle className="w-4 h-4 text-amber-400" />
-                Challenge Details
-              </h3>
-              <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/10 text-sm leading-relaxed text-slate-300 whitespace-pre-line">
-                {challengeText || 'No Challenge details found for this lesson.'}
+            <div className="space-y-4">
+              <div className="space-y-3">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-amber-400 flex items-center gap-2">
+                  <Trophy className="w-4 h-4 text-amber-400" />
+                  Challenge Details
+                </h3>
+                <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/10 text-sm leading-relaxed text-slate-300">
+                  <SimpleMarkdown content={challengeText} fallback="No Challenge details found for this lesson." />
+                </div>
               </div>
+              
               {challengePassed && (
                 <div className="p-4 rounded-xl bg-emerald-950/20 border border-emerald-500/10 text-xs font-semibold text-emerald-400 flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400 animate-pulse" />
                   Challenge completed successfully!
+                </div>
+              )}
+
+              {/* Hints & Solutions support */}
+              {support && (
+                <div className="space-y-3 pt-3 border-t border-white/5">
+                  <div className="flex items-center gap-3">
+                    {support.challenge_hint && (
+                      <button
+                        onClick={() => setShowChallengeHint(!showChallengeHint)}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-bold transition-all uppercase tracking-wider select-none cursor-pointer ${
+                          showChallengeHint 
+                            ? 'bg-amber-400/20 border-amber-400/40 text-amber-300' 
+                            : 'bg-slate-900 border-white/5 text-slate-400 hover:bg-slate-800'
+                        }`}
+                      >
+                        <span>💡</span>
+                        {showChallengeHint ? 'Hide Hint' : 'Show Hint'}
+                      </button>
+                    )}
+                    
+                    {support.challenge_solution && (
+                      <button
+                        onClick={() => setShowChallengeSolution(!showChallengeSolution)}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-bold transition-all uppercase tracking-wider select-none cursor-pointer ${
+                          showChallengeSolution 
+                            ? 'bg-emerald-400/20 border-emerald-400/40 text-emerald-300' 
+                            : 'bg-slate-900 border-white/5 text-slate-400 hover:bg-slate-800'
+                        }`}
+                      >
+                        <span>👁️</span>
+                        {showChallengeSolution ? 'Hide Answer' : 'Reveal Answer'}
+                      </button>
+                    )}
+                  </div>
+                  
+                  {showChallengeHint && support.challenge_hint && (
+                    <div className="p-4 rounded-xl bg-amber-950/10 border border-amber-500/20 text-xs text-amber-200 leading-relaxed animate-fade-in space-y-1">
+                      <span className="font-bold uppercase tracking-wider text-[10px] text-amber-400 block">💡 Learning Hint:</span>
+                      <p>{support.challenge_hint}</p>
+                    </div>
+                  )}
+                  
+                  {showChallengeSolution && support.challenge_solution && (
+                    <div className="space-y-2 animate-fade-in">
+                      <div className="flex items-center justify-between text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">
+                        <span>Correct Code Solution</span>
+                        <button
+                          onClick={() => {
+                            if (window.confirm("Do you want to overwrite your editor with the correct solution?")) {
+                              setCode(support.challenge_solution);
+                              localStorage.setItem(`py_lesson_${lesson.id}_challenge`, support.challenge_solution);
+                            }
+                          }}
+                          className="text-emerald-400 hover:text-emerald-300 font-bold hover:underline cursor-pointer"
+                        >
+                          Apply to Editor
+                        </button>
+                      </div>
+                      <pre className="p-4 rounded-xl bg-slate-950/80 border border-white/5 font-mono text-[12px] text-emerald-200 overflow-x-auto whitespace-pre leading-relaxed">
+                        <code>{support.challenge_solution}</code>
+                      </pre>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -602,6 +769,236 @@ export default function InteractiveClassroom({
       />
     </div>
   );
+}
+
+function renderInline(text: string): React.ReactNode {
+  const parts: React.ReactNode[] = [];
+  let currentIndex = 0;
+  const inlineRegex = /(`[^`]+`|\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/g;
+  let match;
+  let keyIdx = 0;
+  
+  while ((match = inlineRegex.exec(text)) !== null) {
+    const matchStr = match[0];
+    const matchIndex = match.index;
+    
+    if (matchIndex > currentIndex) {
+      parts.push(text.substring(currentIndex, matchIndex));
+    }
+    
+    if (matchStr.startsWith('`')) {
+      const codeVal = matchStr.substring(1, matchStr.length - 1);
+      parts.push(
+        <code key={keyIdx++} className="bg-slate-900 border border-white/10 text-sky-400 px-1.5 py-0.5 rounded font-mono text-[13px] font-semibold">
+          {codeVal}
+        </code>
+      );
+    } else if (matchStr.startsWith('**')) {
+      const boldVal = matchStr.substring(2, matchStr.length - 2);
+      parts.push(<strong key={keyIdx++} className="text-white font-semibold">{boldVal}</strong>);
+    } else if (matchStr.startsWith('[')) {
+      const linkMatch = /\[([^\]]+)\]\(([^)]+)\)/.exec(matchStr);
+      if (linkMatch) {
+        const linkText = linkMatch[1];
+        const linkUrl = linkMatch[2];
+        parts.push(
+          <a key={keyIdx++} href={linkUrl} target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:text-sky-300 underline font-semibold transition-colors">
+            {linkText}
+          </a>
+        );
+      } else {
+        parts.push(matchStr);
+      }
+    }
+    currentIndex = inlineRegex.lastIndex;
+  }
+  
+  if (currentIndex < text.length) {
+    parts.push(text.substring(currentIndex));
+  }
+  
+  return parts.length > 0 ? parts : text;
+}
+
+interface SimpleMarkdownProps {
+  content: string;
+  fallback?: string;
+}
+
+function SimpleMarkdown({ content, fallback }: SimpleMarkdownProps) {
+  if (!content) return fallback ? <p className="text-slate-500 italic">{fallback}</p> : null;
+  
+  const lines = content.split('\n');
+  const elements: React.ReactNode[] = [];
+  let currentList: { type: 'ul' | 'ol'; items: string[] } | null = null;
+  let currentCodeBlock: { lang: string; lines: string[] } | null = null;
+  
+  const flushList = (key: string | number) => {
+    if (!currentList) return null;
+    const list = currentList;
+    currentList = null;
+    const ListTag = list.type === 'ul' ? 'ul' : 'ol';
+    const listClass = list.type === 'ul' ? 'list-disc pl-5' : 'list-decimal pl-5';
+    return (
+      <ListTag key={key} className={`${listClass} space-y-2 mb-4 text-slate-300 text-sm`}>
+        {list.items.map((item, idx) => (
+          <li key={idx} className="leading-relaxed">{renderInline(item)}</li>
+        ))}
+      </ListTag>
+    );
+  };
+
+  const flushCodeBlock = (key: string | number) => {
+    if (!currentCodeBlock) return null;
+    const cb = currentCodeBlock;
+    currentCodeBlock = null;
+    return (
+      <pre key={key} className="p-4 bg-slate-950/80 border border-white/5 rounded-xl font-mono text-[13px] text-slate-300 overflow-x-auto whitespace-pre my-4">
+        <code>{cb.lines.join('\n')}</code>
+      </pre>
+    );
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
+    
+    if (trimmed.startsWith('```')) {
+      if (currentCodeBlock) {
+        elements.push(flushCodeBlock(`cb-${i}`));
+      } else {
+        if (currentList) {
+          elements.push(flushList(`list-${i}`));
+        }
+        currentCodeBlock = { lang: trimmed.substring(3).trim(), lines: [] };
+      }
+      continue;
+    }
+    
+    if (currentCodeBlock) {
+      currentCodeBlock.lines.push(line);
+      continue;
+    }
+    
+    if (trimmed.startsWith('###### ')) {
+      if (currentList) elements.push(flushList(`list-${i}`));
+      elements.push(
+        <h6 key={`h6-${i}`} className="text-[11px] font-medium text-slate-500 uppercase tracking-widest mb-0.5 mt-2">
+          {renderInline(trimmed.substring(7))}
+        </h6>
+      );
+      continue;
+    }
+
+    if (trimmed.startsWith('##### ')) {
+      if (currentList) elements.push(flushList(`list-${i}`));
+      elements.push(
+        <h6 key={`h5-${i}`} className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-1 mt-2">
+          {renderInline(trimmed.substring(6))}
+        </h6>
+      );
+      continue;
+    }
+
+    if (trimmed.startsWith('#### ')) {
+      if (currentList) elements.push(flushList(`list-${i}`));
+      elements.push(
+        <h5 key={`h4-${i}`} className="text-xs font-bold text-slate-200 uppercase tracking-wider mb-1 mt-3">
+          {renderInline(trimmed.substring(5))}
+        </h5>
+      );
+      continue;
+    }
+
+    if (trimmed.startsWith('### ')) {
+      if (currentList) elements.push(flushList(`list-${i}`));
+      elements.push(
+        <h5 key={`h5-${i}`} className="text-xs font-semibold text-slate-300 uppercase tracking-widest mb-1 mt-3">
+          {renderInline(trimmed.substring(4))}
+        </h5>
+      );
+      continue;
+    }
+
+    if (trimmed.startsWith('## ')) {
+      if (currentList) elements.push(flushList(`list-${i}`));
+      elements.push(
+        <h4 key={`h4-${i}`} className="text-sm font-bold text-sky-400 uppercase tracking-wider mb-2 mt-4">
+          {renderInline(trimmed.substring(3))}
+        </h4>
+      );
+      continue;
+    }
+
+    if (trimmed.startsWith('# ')) {
+      if (currentList) elements.push(flushList(`list-${i}`));
+      elements.push(
+        <h3 key={`h3-${i}`} className="text-base font-extrabold text-white border-b border-white/5 pb-1.5 mb-3 mt-6 flex items-center gap-2">
+          {renderInline(trimmed.substring(2))}
+        </h3>
+      );
+      continue;
+    }
+    
+    if (trimmed.startsWith('> ')) {
+      if (currentList) elements.push(flushList(`list-${i}`));
+      elements.push(
+        <blockquote key={`bq-${i}`} className="pl-4 border-l-2 border-sky-400 italic text-slate-400 bg-sky-950/10 py-2 px-3 rounded-r-lg my-4 text-xs">
+          {renderInline(trimmed.substring(2))}
+        </blockquote>
+      );
+      continue;
+    }
+    
+    if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+      const itemContent = trimmed.substring(2);
+      if (currentList && currentList.type === 'ul') {
+        currentList.items.push(itemContent);
+      } else {
+        if (currentList) elements.push(flushList(`list-${i}`));
+        currentList = { type: 'ul', items: [itemContent] };
+      }
+      continue;
+    }
+    
+    const numListMatch = /^\d+\.\s+(.*)/.exec(trimmed);
+    if (numListMatch) {
+      const itemContent = numListMatch[1];
+      if (currentList && currentList.type === 'ol') {
+        currentList.items.push(itemContent);
+      } else {
+        if (currentList) elements.push(flushList(`list-${i}`));
+        currentList = { type: 'ol', items: [itemContent] };
+      }
+      continue;
+    }
+    
+    if (trimmed === '') {
+      if (currentList) {
+        elements.push(flushList(`list-${i}`));
+      }
+      elements.push(<div key={`space-${i}`} className="h-2" />);
+      continue;
+    }
+    
+    if (currentList) {
+      elements.push(flushList(`list-${i}`));
+    }
+    elements.push(
+      <p key={`p-${i}`} className="text-slate-300 leading-relaxed text-sm mb-2">
+        {renderInline(line)}
+      </p>
+    );
+  }
+  
+  if (currentList) {
+    elements.push(flushList('list-end'));
+  }
+  if (currentCodeBlock) {
+    elements.push(flushCodeBlock('cb-end'));
+  }
+  
+  return <div className="space-y-1">{elements}</div>;
 }
 
 interface InputModalProps {

@@ -107,6 +107,7 @@ function MainLayout() {
 
   // Check if a lesson is unlocked
   const isLessonUnlocked = (lessonId: number) => {
+    if (profile?.role === 'admin') return true;
     if (lessonId === 1) return true;
     return progress[lessonId - 1] === 'completed';
   };
@@ -398,6 +399,7 @@ function MainLayout() {
               progress={progress} 
               onSelectLesson={handleSelectLessonFromDashboard}
               executedCount={executedCount}
+              isAdmin={profile?.role === 'admin'}
             />
           )}
 

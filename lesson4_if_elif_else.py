@@ -1,9 +1,40 @@
 # lesson4_if_elif_else.py
 
-# Lesson 4: If, Elif, Else
-# Conditional statements let your program make decisions.
-
-# if runs code only when a condition is True.
+# ### Lesson 4: Conditional Logic (If, Elif, Else)
+# Conditional statements allow your program to make decisions and execute different blocks of code based on whether a condition is `True` or `False`.
+# 
+# #### 1. Python Indentation (Structure)
+# In Python, code blocks are defined by **indentation** (spacing). Standard practice is 4 spaces.
+# Lines that belong inside an `if` block must be indented. Indentation tells Python where the conditional block starts and ends.
+# 
+# #### 2. The `if` Statement
+# Checks a condition. If the condition is `True`, the indented block runs. If `False`, it is skipped.
+# ```python
+# if age >= 18:
+#     print("You are an adult.")
+# ```
+# 
+# #### 3. The `else` Clause
+# Runs code when the `if` condition is `False`. It acts as a fallback.
+# ```python
+# if is_raining:
+#     print("Bring an umbrella.")
+# else:
+#     print("No umbrella needed.")
+# ```
+# 
+# #### 4. Multiple Choices with `elif`
+# Short for "else if". It lets you check another condition when the previous conditions were `False`.
+# ```python
+# if score >= 90:
+#     print("Grade A")
+# elif score >= 80:
+#     print("Grade B")
+# else:
+#     print("Grade C")
+# ```
+# 
+# > **Important**: In Python, code blocks are grouped using spaces/indentation (standard is 4 spaces). Incorrect indentation causes `IndentationError`.
 
 age = 18
 
@@ -18,7 +49,7 @@ temperature = 30
 if temperature > 25:
     print("It is warm today.")
 
-# else runs when the if condition is False.
+# else runs when the if condition is `False`.
 
 is_raining = False
 
@@ -28,7 +59,7 @@ else:
     print("No umbrella needed.")
 
 # elif means "else if".
-# It checks another condition when the first condition is False.
+# It checks another condition when the first condition is `False`.
 
 grade = 85
 
@@ -67,29 +98,29 @@ else:
 print("============Activity Section==========")
 # =========================
 
-# Exercise 1:
-# Ask the user to enter their age.
+# #### Exercise 1
+# **Ask the user to enter their age.**
 # If the age is 18 or older, print "You can vote."
 # Otherwise, print "You cannot vote yet."
 
-# Exercise 2:
-# Ask the user to enter a number.
+# #### Exercise 2
+# **Ask the user to enter a number.**
 # Print whether the number is positive, negative, or zero.
 
-# Exercise 3:
-# Ask the user to enter their grade.
+# #### Exercise 3
+# **Ask the user to enter their grade.**
 # Use this grading guide:
 # 90 and above: "Excellent"
 # 80 to 89: "Very good"
 # 75 to 79: "Passed"
 # Below 75: "Failed"
 
-# Exercise 4:
-# Create two boolean variables:
-# has_username
-# has_password
+# #### Exercise 4
+# **Create two boolean variables:**
+# `has_username`
+# `has_password`
 #
-# If both are True, print "Login allowed."
+# If both are `True`, print "Login allowed."
 # Otherwise, print "Login denied."
 
 # =========================
@@ -97,7 +128,7 @@ print("============Activity Section==========")
 print("============Mini Challenge==========")
 # =========================
 
-# Build a simple discount checker.
+# **Build a simple discount checker.**
 # Ask the user for:
 # - total purchase amount
 # - whether they are a member

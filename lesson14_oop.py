@@ -1,15 +1,25 @@
 # lesson14_oop.py
 
-# Lesson 14: Object-Oriented Programming (OOP)
-# OOP is a way of organizing code into "objects" that combine
-# data (attributes) and behavior (methods).
-# This is how most real-world Python projects are structured.
-
-# =============================================
-# PART 1: CLASSES AND OBJECTS
-# =============================================
-# A class is a blueprint. An object is an instance of a class.
-# Think of a class as a cookie cutter and objects as the cookies.
+# ### Lesson 14: Object-Oriented Programming (OOP)
+# Object-Oriented Programming is a paradigm that groups data (attributes) and behavior (methods) into reusable packages called **Objects**.
+# 
+# #### 1. Classes and Objects
+# - **Class**: A blueprint or template. (E.g. a `Dog` class).
+# - **Object**: An instance of a class. (E.g. `my_dog = Dog("Buddy", 3)`).
+# - `__init__`: The constructor method. Initializes attributes.
+# - `self`: Represents the current instance of the object.
+# 
+# #### 2. The Four Pillars of OOP
+# - **Encapsulation**: Hiding internal data and exposing it only through methods. Prefix attributes with `__` to make them private.
+# - **Inheritance**: Creating a child class that inherits attributes and methods from a parent class. Use `super().__init__()` to load parent constructors.
+# - **Polymorphism**: Using the same method name on different classes to achieve unique behaviors.
+# - **Abstraction**: Hiding complex internal logic behind simple method interfaces.
+# 
+# #### 3. Special Dunder Methods
+# Double-underscore methods let your custom objects support standard Python behaviors:
+# - `__str__(self)`: Defines what `print(object)` displays.
+# - `__len__(self)`: Defines what `len(object)` returns.
+# - `__eq__(self, other)`: Defines equality checks (`==`).
 
 class Dog:
     # Class attribute -- shared by ALL instances
@@ -43,7 +53,7 @@ print("Species:", Dog.species)
 print("Species:", dog1.species)  # Can also access via instance
 
 # =============================================
-# PART 2: THE FOUR PILLARS OF OOP
+# #### Exercise 2
 # =============================================
 
 # --- ENCAPSULATION: Hide internal details, expose only what's needed ---
@@ -186,7 +196,7 @@ print(machine.make_coffee("large"))
 print(machine.make_coffee("medium"))
 
 # =============================================
-# PART 3: SPECIAL (DUNDER) METHODS
+# #### Exercise 3
 # =============================================
 # These let your objects work with Python's built-in operations.
 
@@ -197,7 +207,7 @@ class Book:
         self.pages = pages
 
     def __str__(self):
-        # For print() and str()
+        # For print() and `str()`()
         return f"'{self.title}' by {self.author}"
 
     def __repr__(self):
@@ -245,7 +255,7 @@ books.sort()
 print("Sorted:", [str(b) for b in books])
 
 # =============================================
-# PART 4: @property DECORATOR
+# #### Exercise 4
 # =============================================
 # Lets you access methods like attributes (no parentheses needed).
 
@@ -280,7 +290,7 @@ temp.fahrenheit = 32                 # Uses the setter
 print("After setting F:", temp)
 
 # =============================================
-# PART 5: CLASS METHODS AND STATIC METHODS
+# #### Exercise 5
 # =============================================
 
 class Employee:
@@ -339,31 +349,31 @@ print("Total employees:", Employee.employee_count)
 # =============================================
 print("============Activity Section==========")
 
-# Exercise 1: Create a Car Class
+# #### Exercise 1
 # Attributes: make, model, year, mileage
 # Methods:
 #   - drive(miles) -- adds to mileage
 #   - get_info() -- returns a formatted string
-#   - is_old() -- returns True if year < 2015
+#   - is_old() -- returns `True` if year < 2015
 # Create 3 car objects and test all methods.
 
-# Exercise 2: Inheritance - Vehicle Hierarchy
+# #### Exercise 2
 # Create a Vehicle base class with: make, model, year
 # Create subclasses: Truck (adds towing_capacity), Motorcycle (adds has_sidecar)
 # Each subclass should have its own __str__ that adds its unique info.
 # Create instances and print them.
 
-# Exercise 3: Encapsulation - Student Grade System
+# #### Exercise 3
 # Create a Student class with:
 #   - name (public)
-#   - __grades (private list)
+#   - __grades (private `list`)
 #   - add_grade(grade) -- validates 0-100
 #   - get_average() -- returns average grade
 #   - get_highest() -- returns highest grade
 #   - get_lowest() -- returns lowest grade
 # Test with at least 5 grades.
 
-# Exercise 4: Dunder Methods - Vector Class
+# #### Exercise 4
 # Create a Vector class that holds x and y.
 # Implement: __str__, __add__ (vector addition), __sub__ (subtraction),
 #   __mul__ (scalar multiplication), __len__ (magnitude/distance from origin),
@@ -372,7 +382,7 @@ print("============Activity Section==========")
 #   v1 + v2 should give Vector(4, 6)
 #   len(v1) should give 5.0 (sqrt(9+16))
 
-# Exercise 5: @property - Rectangle Class
+# #### Exercise 5
 # Create a Rectangle class with width and height.
 # Properties: area, perimeter, is_square
 # Setters for width and height that validate positive numbers.
@@ -391,17 +401,17 @@ print("============Mini Challenge==========")
 #   - return_book() -- marks as available
 #
 # Member:
-#   - name, member_id, borrowed_books (list)
-#   - borrow_book(book) -- adds to list if available
-#   - return_book(book) -- removes from list
+#   - name, member_id, borrowed_books (`list`)
+#   - borrow_book(book) -- adds to `list` if available
+#   - return_book(book) -- removes from `list`
 #
 # Library:
-#   - name, books (list), members (list)
+#   - name, books (`list`), members (`list`)
 #   - add_book(book), remove_book(isbn)
 #   - register_member(member)
 #   - find_book(title) -- returns matching books
-#   - available_books() -- returns list of available books
-#   - checked_out_books() -- returns list of checked out books
+#   - available_books() -- returns `list` of available books
+#   - checked_out_books() -- returns `list` of checked out books
 #
 # Create a menu-driven program that lets the user:
 #   1. View all books

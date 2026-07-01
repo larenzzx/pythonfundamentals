@@ -1,10 +1,23 @@
 # lesson5_loops.py
 
-# Lesson 5: Loops
-# Loops let you repeat code without writing it many times.
-
-# A for loop repeats over a sequence.
-# range(5) gives numbers from 0 to 4.
+# ### Lesson 5: Loops & Iteration
+# Loops are used to repeat a block of code multiple times. This saves you from copy-pasting the same instructions.
+# 
+# #### 1. The `for` Loop
+# Used to repeat code over a known sequence (like a range of numbers, items in a list, or characters in a string).
+# - `range(stop)`: Generates numbers from `0` up to (but not including) `stop`.
+#   - Example: `range(5)` gives `0, 1, 2, 3, 4`.
+# - `range(start, stop)`: Generates numbers from `start` up to `stop - 1`.
+#   - Example: `range(1, 6)` gives `1, 2, 3, 4, 5`.
+# 
+# #### 2. The `while` Loop
+# Repeats code as long as a specified condition is `True`. You must modify a variable inside the loop so the condition eventually becomes `False` and stops.
+# 
+# > **Warning**: Ensure your `while` loop has a condition that eventually becomes `False`, otherwise you will create an **infinite loop** that crashes the browser sandbox!
+# 
+# #### 3. Loop Control Keywords
+# - `break`: Instantly exits the loop, skipping any remaining iterations.
+# - `continue`: Skips the rest of the current iteration and jumps directly to the start of the next cycle.
 
 for number in range(5):
     print("For loop number:", number)
@@ -22,7 +35,7 @@ word = "Python"
 for letter in word:
     print("Letter:", letter)
 
-# A while loop repeats while a condition is True.
+# A while loop repeats while a condition is `True`.
 
 count = 1
 
@@ -49,21 +62,21 @@ for number in range(1, 6):
 print("============Activity Section==========")
 # =========================
 
-# Exercise 1:
+# #### Exercise 1
 # Use a for loop to print numbers from 1 to 10.
 
-# Exercise 2:
+# #### Exercise 2
 # Use a for loop to print each letter in your first name.
 
-# Exercise 3:
+# #### Exercise 3
 # Use a while loop to print numbers from 1 to 5.
 
-# Exercise 4:
+# #### Exercise 4
 # Use a for loop with range(1, 11).
 # Print only the even numbers.
 # Hint: A number is even if number % 2 == 0.
 
-# Exercise 5:
+# #### Exercise 5
 # Use a while loop to count down from 5 to 1.
 
 # =========================
@@ -71,7 +84,7 @@ print("============Activity Section==========")
 print("============Mini Challenge==========")
 # =========================
 
-# Build a simple multiplication table.
+# **Build a simple multiplication table.**
 # Ask the user for a number.
 # Use a for loop to print that number multiplied by 1 through 10.
 #

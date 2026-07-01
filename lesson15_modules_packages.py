@@ -1,13 +1,26 @@
 # lesson15_modules_packages.py
 
-# Lesson 15: Modules, Packages & Virtual Environments
-# Real Python projects are split across multiple files.
-# This lesson teaches you how to organize, import, and share code.
-
-# =============================================
-# PART 1: IMPORTING MODULES
-# =============================================
-# A module is just a .py file. You can import it and use its contents.
+# ### Lesson 15: Modules and Packages
+# As projects grow larger, putting all code in one file becomes unmanageable. Modules and packages allow you to separate code into logical files.
+# 
+# #### 1. What is a Module?
+# A module is simply a Python file (`.py` file) containing functions, classes, and variables.
+# 
+# #### 2. Importing Modules
+# - **Standard import**: `import math` (access using `math.sqrt()`).
+# - **Alias import**: `import datetime as dt`.
+# - **Specific features**: `from random import randint` (access `randint()` directly without prefix).
+# 
+# #### 3. Custom Modules
+# If you have `helpers.py` in the same folder, you can import its features inside `main.py` using:
+# `import helpers` or `from helpers import my_function`
+# 
+# #### 4. Entry Point: `__name__ == '__main__'`
+# Inside any python script:
+# - `__name__` is a special variable.
+# - If the script is run directly, `__name__` equals `__main__`.
+# - If imported, `__name__` equals the filename.
+# This prevents test code from executing automatically when a file is imported.
 
 import math
 print("Pi:", math.pi)
@@ -32,7 +45,7 @@ print("Random float:", rand.random())  # 0.0 to 1.0
 # from math import *
 
 # =============================================
-# PART 2: USEFUL BUILT-IN MODULES
+# #### Exercise 2
 # =============================================
 
 # --- os: Operating System ---
@@ -118,7 +131,7 @@ if re.match(r'\d{3}-\d{3}-\d{4}', phone):
     print("Valid phone number!")
 
 # =============================================
-# PART 3: CREATING YOUR OWN MODULES
+# #### Exercise 3
 # =============================================
 # Any .py file is a module. You can import it.
 
@@ -127,14 +140,14 @@ if re.match(r'\d{3}-\d{3}-\d{4}', phone):
 
 # Suppose you have a file called "helpers.py" with:
 #   def greet(name): ...
-#   def add(a, b): ...
+#   def `add`(a, b): ...
 
 # You can import it:
 # import helpers
 # helpers.greet("Alex")
 
 # Or import specific functions:
-# from helpers import greet, add
+# from helpers import greet, `add`
 # greet("Alex")
 
 # Or import with an alias:
@@ -142,7 +155,7 @@ if re.match(r'\d{3}-\d{3}-\d{4}', phone):
 # h.greet("Alex")
 
 # =============================================
-# PART 4: __name__ == "__main__"
+# #### Exercise 4
 # =============================================
 # This is a Python idiom. Code under this block only runs
 # when the file is executed directly, NOT when imported.
@@ -157,7 +170,7 @@ if re.match(r'\d{3}-\d{3}-\d{4}', phone):
 # It lets a file be both a reusable module AND a runnable script.
 
 # =============================================
-# PART 5: PACKAGES (FOLDERS WITH __init__.py)
+# #### Exercise 5
 # =============================================
 # A package is a folder containing modules and an __init__.py file.
 #
@@ -179,7 +192,7 @@ if re.match(r'\d{3}-\d{3}-\d{4}', phone):
 #   from models.user import User
 
 # =============================================
-# PART 6: VIRTUAL ENVIRONMENTS
+# #### Exercise 6
 # =============================================
 # Virtual environments keep project dependencies isolated.
 # This is ESSENTIAL for real projects.
@@ -197,7 +210,7 @@ if re.match(r'\d{3}-\d{3}-\d{4}', phone):
 #   pip install requests flask
 #
 #   # See what's installed
-#   pip list
+#   pip `list`
 #
 #   # Save dependencies to a file
 #   pip freeze > requirements.txt
@@ -214,7 +227,7 @@ if re.match(r'\d{3}-\d{3}-\d{4}', phone):
 #   uv pip install requests flask
 
 # =============================================
-# PART 7: THIRD-PARTY PACKAGES (pip/uv)
+# #### Exercise 7
 # =============================================
 # Python has a massive ecosystem of third-party packages.
 # Install them with pip or uv.
@@ -233,7 +246,7 @@ if re.match(r'\d{3}-\d{3}-\d{4}', phone):
 #   print(response.json())
 
 # =============================================
-# PART 8: WRITING A REAL MULTI-FILE PROJECT
+# #### Exercise 8
 # =============================================
 # Let's create a simple project structure right here.
 
@@ -279,35 +292,35 @@ print("Truncated:", utils.truncate("This is a very long sentence.", 20))
 # =============================================
 print("============Activity Section==========")
 
-# Exercise 1: Math Module
+# #### Exercise 1
 # Use the math module to:
 # a) Calculate the area of a circle with radius 7
 # b) Calculate the hypotenuse of a right triangle (sides 3 and 4)
 # c) Convert 45 degrees to radians
 # d) Calculate log base 10 of 1000
 
-# Exercise 2: Random Module
+# #### Exercise 2
 # Create a "Magic 8-Ball" program:
-# - Store 8 possible answers in a list
+# - Store 8 possible answers in a `list`
 # - Ask the user to ask a question
 # - Use random.choice() to pick and display an answer
 # - Loop until the user types "quit"
 
-# Exercise 3: datetime
+# #### Exercise 3
 # Create a "Days Until" calculator:
 # - Ask the user for a future date
 # - Calculate how many days until that date
 # - Also show how many weeks and remaining days
 # - Handle invalid dates with try/except
 
-# Exercise 4: re (Regular Expressions)
+# #### Exercise 4
 # Write a function that validates:
-# a) A valid email (has @ and a domain with a dot)
+# a) A valid `email` (has @ and a domain with a dot)
 # b) A valid phone number (format: XXX-XXX-XXXX)
 # c) A valid zip code (5 digits)
 # Test each with valid and invalid inputs.
 
-# Exercise 5: Create Your Own Module
+# #### Exercise 5
 # Create a file called "string_tools.py" with these functions:
 #   - reverse_string(text)
 #   - count_words(text)
@@ -326,7 +339,7 @@ print("============Mini Challenge==========")
 # calculator_project/
 # ├── __init__.py
 # ├── main.py          (menu and user interaction)
-# ├── operations.py    (add, subtract, multiply, divide, power, sqrt)
+# ├── operations.py    (add, subtract, `multiply`, `divide`, power, sqrt)
 # ├── history.py       (save/load calculation history to JSON)
 # └── formatter.py     (format results nicely)
 #
@@ -341,7 +354,7 @@ print("============Mini Challenge==========")
 #
 # formatter.py:
 #   - format_result(operation, num1, num2, result) -> "5 + 3 = 8"
-#   - format_history(history_list) -> numbered list of past calculations
+#   - format_history(history_list) -> numbered `list` of past calculations
 #
 # main.py:
 #   - Menu with: calculate, view history, clear history, quit
