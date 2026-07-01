@@ -1,10 +1,30 @@
 # lesson8_functions.py
 
-# Lesson 8: Functions
-# A function is a reusable block of code.
-# Functions help you avoid repeating the same code many times.
-
-# Use def to create a function.
+# ### Lesson 8: Functions (Reusable Code)
+# A **function** is a reusable block of organized code that performs a single task. Functions help divide your code into logical, manageable parts and avoid repetition.
+# 
+# #### 1. Defining and Calling Functions
+# - Use the `def` keyword, followed by the function name, parentheses `()`, and a colon `:`.
+# - The code inside the function must be indented.
+# - To run the function, call its name followed by parentheses: `greet()`.
+# 
+# #### 2. Parameters and Arguments
+# Parameters are placeholders defined in the function signature that receive data when the function is called.
+# ```python
+# def greet_student(name):
+#     print("Hello,", name)
+# 
+# greet_student("Alex") # "Alex" is the argument
+# ```
+# 
+# #### 3. Returning Values
+# Use the `return` keyword to send a result back to the caller. When a function executes `return`, it immediately exits.
+# ```python
+# def add(a, b):
+#     return a + b
+# 
+# result = add(5, 3) # result stores 8
+# ```
 
 def greet():
     print("Hello!")
@@ -67,48 +87,48 @@ print_foods(favorite_foods)
 print("============Activity Section==========")
 # =========================
 
-# Exercise 1:
-# Create a function called say_welcome.
+# #### Exercise 1
+# Create a function called `say_welcome`.
 # It should print "Welcome to Python!"
 # Call the function.
 
-# Exercise 2:
-# Create a function called print_name.
+# #### Exercise 2
+# Create a function called `print_name`.
 # It should have one parameter called name.
 # It should print the name with a clear label.
 # Call the function with your name.
 
-# Exercise 3:
-# Create a function called multiply.
+# #### Exercise 3
+# Create a function called `multiply`.
 # It should have two parameters called num1 and num2.
 # It should return their product.
 # Store the result in a variable and print it.
 
-# Exercise 4:
-# Create a function called check_number.
+# #### Exercise 4
+# Create a function called `check_number`.
 # It should have one parameter called number.
 # If the number is positive, print "Positive".
 # If the number is negative, print "Negative".
 # Otherwise, print "Zero".
 # Call the function three times with different numbers.
 
-# Exercise 5:
-# Create a function called print_colors.
+# #### Exercise 5
+# Create a function called `print_colors`.
 # It should have one parameter called colors.
-# Use a for loop to print each color in the list.
-# Create a list of three colors and pass it to the function.
+# Use a for loop to print each color in the `list`.
+# Create a `list` of three colors and pass it to the function.
 
 # =========================
 # Mini Challenge
 print("============Mini Challenge==========")
 # =========================
 
-# Build a simple calculator with functions.
+# **Build a simple calculator with functions.**
 # Create four functions:
-# add
-# subtract
-# multiply_numbers
-# divide
+# `add`
+# `subtract`
+# `multiply_numbers`
+# `divide`
 #
 # Ask the user for two numbers.
 # Print the result of each function.

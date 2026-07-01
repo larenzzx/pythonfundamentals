@@ -1,4 +1,5 @@
-import { BookOpen, CheckCircle, Clock, Play, Code, Star, Trophy, ArrowRight, Lock } from 'lucide-react';
+import { useState } from 'react';
+import { BookOpen, CheckCircle, Clock, Play, Code, Star, Trophy, ArrowRight, Lock, Layers, ShieldAlert } from 'lucide-react';
 
 interface Lesson {
   id: number;
@@ -16,9 +17,11 @@ interface DashboardProps {
   progress: Record<number, 'not_started' | 'in_progress' | 'completed'>;
   onSelectLesson: (id: number) => void;
   executedCount: number;
+  isAdmin?: boolean;
 }
 
-export default function Dashboard({ lessons, progress, onSelectLesson, executedCount }: DashboardProps) {
+export default function Dashboard({ lessons, progress, onSelectLesson, executedCount, isAdmin }: DashboardProps) {
+  const [adminOverride, setAdminOverride] = useState<boolean>(true);
   const completedCount = Object.values(progress).filter(p => p === 'completed').length;
   const inProgressCount = Object.values(progress).filter(p => p === 'in_progress').length;
   const percentComplete = Math.round((completedCount / lessons.length) * 100);
@@ -53,6 +56,20 @@ export default function Dashboard({ lessons, progress, onSelectLesson, executedC
       description: 'Unlocked Object-Oriented Programming principles',
       unlocked: progress[14] === 'completed',
       icon: <Play className="w-5 h-5 text-emerald-400" />
+    },
+    {
+      id: 'api_architect',
+      title: 'API Architect',
+      description: 'Mastered HTTP Methods, Status Codes, and JSON',
+      unlocked: progress[17] === 'completed',
+      icon: <Layers className="w-5 h-5 text-purple-400" />
+    },
+    {
+      id: 'web_dev',
+      title: 'Web Developer',
+      description: 'Built APIs utilizing the FastAPI web framework',
+      unlocked: progress[18] === 'completed',
+      icon: <Trophy className="w-5 h-5 text-amber-400" />
     }
   ];
 
@@ -177,17 +194,37 @@ export default function Dashboard({ lessons, progress, onSelectLesson, executedC
 
       {/* Lesson Index Roadmap */}
       <div className="space-y-6">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <h2 className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-sky-400" />
             Learning roadmap ({lessons.length} Modules)
           </h2>
+          
+          {isAdmin && (
+            <div className="flex items-center gap-3 bg-indigo-950/30 border border-indigo-900/40 px-3.5 py-2 rounded-xl text-xs font-bold text-indigo-300 shrink-0 select-none">
+              <ShieldAlert className="w-4 h-4 text-indigo-400 animate-pulse" />
+              <span>Admin Lock Bypass</span>
+              <button 
+                onClick={() => setAdminOverride(!adminOverride)}
+                className={`w-9 h-5 rounded-full transition-colors relative border border-white/5 cursor-pointer flex items-center ${
+                  adminOverride ? 'bg-indigo-500' : 'bg-slate-800'
+                }`}
+                title="Toggle admin lock bypass"
+              >
+                <span 
+                  className={`w-3.5 h-3.5 rounded-full bg-white shadow-sm transition-all absolute ${
+                    adminOverride ? 'right-0.5' : 'left-0.5'
+                  }`} 
+                />
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {lessons.map((lesson) => {
             const status = progress[lesson.id] || 'not_started';
-            const isUnlocked = lesson.id === 1 || progress[lesson.id - 1] === 'completed';
+            const isUnlocked = (isAdmin && adminOverride) || lesson.id === 1 || progress[lesson.id - 1] === 'completed';
             
             return (
               <div 

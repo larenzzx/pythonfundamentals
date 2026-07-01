@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../hooks/useAuth';
 import ConfirmationModal from './ui/ConfirmationModal';
+import lessonsData from '../data/lessons.json';
 import { 
   Users, Trash2, Shield, UserPlus, Info, Check, 
   UserCheck, AlertCircle, RefreshCw, GraduationCap
@@ -12,7 +13,10 @@ interface ProfileNode {
   email: string;
   role: 'student' | 'admin';
   created_at: string;
+  completed_count?: number;
 }
+
+const lessonsCount = lessonsData.length;
 
 export default function AdminDashboard() {
   const { user: currentUser } = useAuth();
@@ -208,19 +212,20 @@ export default function AdminDashboard() {
                   <th className="px-6 py-3.5 font-bold">Email Address</th>
                   <th className="px-6 py-3.5 font-bold">Joined Date</th>
                   <th className="px-6 py-3.5 font-bold">Authority Role</th>
+                  <th className="px-6 py-3.5 font-bold">Progress</th>
                   <th className="px-6 py-3.5 text-right font-bold">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5 text-slate-300">
                 {loading ? (
                   <tr>
-                    <td colSpan={4} className="px-6 py-8 text-center text-slate-500 animate-pulse">
+                    <td colSpan={5} className="px-6 py-8 text-center text-slate-500 animate-pulse">
                       Loading user directory...
                     </td>
                   </tr>
                 ) : usersList.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-6 py-8 text-center text-slate-500 italic">
+                    <td colSpan={5} className="px-6 py-8 text-center text-slate-500 italic">
                       No users registered. Use the Invite guide to invite your first user.
                     </td>
                   </tr>
@@ -239,6 +244,22 @@ export default function AdminDashboard() {
                         }`}>
                           {usr.role}
                         </span>
+                      </td>
+                      <td className="px-6 py-4 text-slate-400">
+                        <div className="flex flex-col gap-1.5 max-w-[120px]">
+                          <div className="flex items-center gap-1 text-[10px] font-mono">
+                            <span className="text-white font-bold">{usr.completed_count || 0}</span>
+                            <span className="text-slate-600">/</span>
+                            <span>{lessonsCount}</span>
+                            <span className="text-sky-400 font-bold ml-auto">{Math.round(((usr.completed_count || 0) / lessonsCount) * 100)}%</span>
+                          </div>
+                          <div className="w-full h-1.5 bg-slate-950 border border-white/5 rounded-full overflow-hidden">
+                            <div 
+                              className="h-full bg-gradient-to-r from-sky-400 to-indigo-500 rounded-full transition-all duration-300"
+                              style={{ width: `${Math.min(100, Math.round(((usr.completed_count || 0) / lessonsCount) * 100))}%` }}
+                            />
+                          </div>
+                        </div>
                       </td>
                       <td className="px-6 py-4 text-right flex items-center justify-end gap-2.5">
                         {usr.id !== currentUser?.id ? (

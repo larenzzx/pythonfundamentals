@@ -1,16 +1,26 @@
 # lesson10_tuples_sets_collections.py
 
-# Lesson 10: Tuples, Sets & Collections Deep Dive
-# You already know lists and dicts. Now let's cover the other
-# important data structures: tuples, sets, and some advanced
-# collection techniques.
-
-# =============================================
-# PART 1: TUPLES
-# =============================================
-# A tuple is like a list, but it is IMMUTABLE (cannot be changed).
-# Use parentheses () instead of square brackets [].
-# Tuples are faster than lists and protect data from being modified.
+# ### Lesson 10: Advanced Collections (Tuples & Sets)
+# In addition to lists and dictionaries, Python has other built-in collections designed for specific data relationships.
+# 
+# #### 1. Tuples (Immutable Sequences)
+# A **tuple** is an ordered collection, similar to a list, but **immutable** (cannot be modified, added to, or deleted after creation).
+# - **Syntax**: Uses parentheses `()`.
+# - **Example**: `coordinates = (40.7128, -74.0060)`
+# - **Use Case**: Safe read-only data, dictionary keys, and fixed constants.
+# 
+# #### 2. Sets (Unique Collections)
+# A **set** is an unordered collection of **unique** elements. Duplicate entries are automatically filtered out.
+# - **Syntax**: Uses curly braces `{}`.
+# - **Example**: `colors = {"red", "green", "blue", "red"}` (only keeps red once)
+# - **Operations**:
+#   - `set.add(item)`: Adds an item.
+#   - Set math: `union()` (combines sets), `intersection()` (finds common items), `difference()` (items in one set but not the other).
+# 
+# #### 3. Useful Collections Module
+# Python provides advanced data structures in the `collections` module:
+# - `Counter`: Counts occurrences of items in a sequence.
+# - `deque`: Double-ended queue for fast appends/pops on both ends.
 
 coordinates = (10, 20)
 print("Coordinates:", coordinates)
@@ -18,10 +28,10 @@ print("X:", coordinates[0])
 print("Y:", coordinates[1])
 
 # You can access items by index, just like lists.
-# But you CANNOT change, add, or remove items.
-# coordinates[0] = 99  # This would cause a TypeError
+# But you CANNOT change, `add`, or remove items.
+# coordinates[0] = 99  # This would cause a `TypeError`
 
-# A tuple with one item needs a trailing comma.
+# A `tuple` with one item needs a trailing comma.
 single_item = ("hello",)  # The comma is required
 print("Single item tuple:", single_item)
 print("Type:", type(single_item))
@@ -49,27 +59,27 @@ locations = {
 }
 print("Origin location:", locations[(0, 0)])
 
-# Common tuple methods: count() and index()
+# Common `tuple` methods: count() and index()
 scores = (90, 85, 90, 70, 90)
 print("Count of 90:", scores.count(90))
 print("Index of 85:", scores.index(85))
 
 # When to use tuples vs lists:
-# - Use a tuple when data should NOT change (coordinates, RGB colors, dates)
-# - Use a list when data needs to change (shopping cart, to-do list)
+# - Use a `tuple` when data should NOT change (coordinates, RGB colors, dates)
+# - Use a `list` when data needs to change (shopping cart, to-do `list`)
 
 # =============================================
-# PART 2: SETS
+# #### Exercise 2
 # =============================================
-# A set is an unordered collection of UNIQUE items.
+# A `set` is an unordered collection of UNIQUE items.
 # Sets automatically remove duplicates.
-# Use curly braces {} or the set() constructor.
+# Use curly braces {} or the `set`() constructor.
 
 fruits = {"apple", "banana", "cherry", "apple"}
 print("Fruits set:", fruits)  # "apple" appears only once
 
 # You cannot access items by index (unordered).
-# print(fruits[0])  # TypeError
+# print(fruits[0])  # `TypeError`
 
 # Adding items
 fruits.add("mango")
@@ -96,10 +106,10 @@ print("Intersection method:", set_a.intersection(set_b))
 print("Difference:", set_a - set_b)      # {1, 2, 3}
 print("Difference method:", set_a.difference(set_b))
 
-# Symmetric difference: items in either set, but NOT both
+# Symmetric difference: items in either `set`, but NOT both
 print("Symmetric diff:", set_a ^ set_b)  # {1, 2, 3, 6, 7, 8}
 
-# Removing duplicates from a list using sets
+# Removing duplicates from a `list` using sets
 numbers = [1, 2, 2, 3, 3, 3, 4, 4, 5]
 unique_numbers = list(set(numbers))
 print("Unique numbers:", unique_numbers)
@@ -109,7 +119,7 @@ print("Is 3 in set_a?", 3 in set_a)  # True
 print("Is 99 in set_a?", 99 in set_a)  # False
 
 # =============================================
-# PART 3: NESTED DATA STRUCTURES
+# #### Exercise 3
 # =============================================
 # You can combine lists, dicts, tuples, and sets in powerful ways.
 
@@ -148,11 +158,11 @@ for name, score in grades:
     print(name, "scored", score)
 
 # =============================================
-# PART 4: *args AND **kwargs
+# #### Exercise 4
 # =============================================
 # These let functions accept any number of arguments.
 
-# *args collects extra positional arguments into a tuple.
+# *args collects extra positional arguments into a `tuple`.
 def add_all(*args):
     total = 0
     for num in args:
@@ -183,12 +193,12 @@ full_function("Alex", 1, 2, 3, city="NYC", role="student")
 # =============================================
 print("============Activity Section==========")
 
-# Exercise 1: Tuple Basics
-# Create a tuple called rgb with three values: 255, 128, 0.
+# #### Exercise 1
+# Create a tuple called `rgb` with three values: 255, 128, 0.
 # Print each value using indexing.
 # Try to change the first value (observe the error, then comment it out).
 
-# Exercise 2: Set Operations
+# #### Exercise 2
 # Create two sets:
 #   python_students = {"Alex", "Ana", "Luis", "Sara"}
 #   java_students = {"Ana", "Sara", "Tom", "Joe"}
@@ -197,42 +207,42 @@ print("============Activity Section==========")
 #   - Students in EITHER course (union)
 #   - Students in Python but NOT Java (difference)
 
-# Exercise 3: Remove Duplicates
-# Given the list [5, 3, 5, 2, 3, 1, 2, 4, 1],
-# Use a set to remove duplicates, then convert back to a list.
+# #### Exercise 3
+# Given the `list` [5, 3, 5, 2, 3, 1, 2, 4, 1],
+# Use a set to remove duplicates, then convert back to a `list`.
 # Print the result sorted in ascending order.
 
-# Exercise 4: Nested Data
+# #### Exercise 4
 # Create a dictionary called inventory.
 # It should have at least 3 items, each with:
 #   - "name": item name
-#   - "price": item price
+#   - "`price`": item `price`
 #   - "quantity": how many in stock
-# Loop through and print each item's total value (price * quantity).
+# Loop through and print each item's total value (`price` * quantity).
 
-# Exercise 5: *args and **kwargs
-# Create a function called describe_pet.
+# #### Exercise 5
+# Create a function called `describe_pet`.
 # It should accept the pet's name as a normal parameter.
 # It should accept any number of traits using *args.
 # It should accept any extra info using **kwargs.
 # Print all the information nicely.
-# Call it like: describe_pet("Buddy", "friendly", "fluffy", age=3, breed="Lab")
+# Call it like: `describe_pet`("Buddy", "friendly", "fluffy", age=3, breed="Lab")
 
 # =============================================
 # MINI CHALLENGE: Contact Book
 # =============================================
 print("============Mini Challenge==========")
 
-# Build a contact book using a dictionary.
+# Build a `contact` book using a dictionary.
 # Each key is a person's name.
-# Each value is a dictionary with: phone, email, and city.
+# Each value is a dictionary with: phone, email, and `city`.
 #
 # Features:
-# 1. Add a contact
-# 2. Look up a contact by name
-# 3. Delete a contact
+# 1. Add a `contact`
+# 2. Look up a `contact` by name
+# 3. Delete a `contact`
 # 4. Print all contacts
-# 5. Find all contacts in a given city
+# 5. Find all contacts in a given `city`
 #
 # Use a while loop with a menu so the user can keep choosing.
 # Use error handling for invalid menu choices and missing contacts.

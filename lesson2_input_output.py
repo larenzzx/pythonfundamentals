@@ -1,10 +1,25 @@
 # lesson2_input_output.py
 
-# Lesson 2: Input and Output
-# Output means showing information to the user.
-# Input means getting information from the user.
+# ### Lesson 2: Interactive Input & Output
+# Real-world programs are interactive—they take information from the user, process it, and output the result.
+# 
+# #### 1. Standard Output: `print()`
+# We already know `print()` displays messages.
+# - You can print strings directly: `print("Hello!")`
+# - You can print variables: `print(course)`
+# 
+# #### 2. User Input: `input()`
+# The `input()` function lets the program ask the user to type something.
+# - **Syntax**: `variable = input("Prompt message: ")`
+# - **CRITICAL NOTE**: The `input()` function *always* returns the typed data as a string (`str`), even if the user types a number!
+# 
+# #### 3. Type Casting (Data Conversion)
+# Because `input()` always gives you text, you must convert it to a number if you want to perform calculations. This is called **Type Casting**:
+# - `int(value)`: Converts a string to a whole number. E.g., `age = int(input("Age: "))`
+# - `float(value)`: Converts a string to a decimal number. E.g., `price = float(input("Price: "))`
+# 
+# > **Warning**: If you try to convert a non-number string (like `"apple"`) using `int()`, Python will raise a `ValueError` and crash!
 
-# print() is used for output.
 print("Welcome to Lesson 2!")
 
 # You can print text directly.
@@ -22,11 +37,11 @@ student_name = input("Enter your name: ")
 print("Hello, " + student_name)
 
 # If you want a number, convert the input.
-# int() converts text to a whole number.
+# `int()`() converts text to a whole number.
 age = int(input("Enter your age: "))
 print("Your age is:", age)
 
-# float() converts text to a decimal number.
+# `float()`() converts text to a decimal number.
 price = float(input("Enter a price: "))
 print("The price is:", price)
 
@@ -39,23 +54,23 @@ print("Nice! Your favorite food is", favorite_food)
 print("============Activity Section==========")
 # =========================
 
-# Exercise 1:
-# Ask the user to enter their city.
-# Store the answer in a variable called city.
+# #### Exercise 1
+# **Ask the user to enter their `city`.**
+# Store the answer in a variable called `city`.
 
-# Exercise 2:
-# Ask the user to enter their favorite color.
+# #### Exercise 2
+# **Ask the user to enter their favorite color.**
 # Store the answer in a variable called favorite_color.
 
-# Exercise 3:
-# Ask the user to enter their birth year.
-# Convert it to an integer and store it in a variable called birth_year.
+# #### Exercise 3
+# **Ask the user to enter their birth year.**
+# Convert it to an integer and store it in a variable called `birth_year`.
 
-# Exercise 4:
-# Ask the user to enter the price of any item.
-# Convert it to a float and store it in a variable called item_price.
+# #### Exercise 4
+# **Ask the user to enter the `price` of any item.**
+# Convert it to a `float()` and store it in a variable called item_price.
 
-# Exercise 5:
+# #### Exercise 5
 # Print all answers with clear labels.
 
 # =========================

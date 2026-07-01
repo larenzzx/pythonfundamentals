@@ -1,9 +1,30 @@
 # lesson6_lists.py
 
-# Lesson 6: Lists
-# A list stores multiple values in one variable.
-
-# Lists use square brackets.
+# ### Lesson 6: Lists (Data Collections)
+# A **list** is an ordered collection that stores multiple items in a single variable. Lists are mutable, meaning they can be modified after creation.
+# 
+# #### 1. Creating and Accessing Lists
+# Lists use square brackets `[]` with items separated by commas:
+# - **Example**: `fruits = ["apple", "banana", "cherry"]`
+# - **Indexing**: Items are indexed starting at `0`.
+#   - First item: `fruits[0]` (`"apple"`)
+#   - Last item: `fruits[-1]` (`"cherry"`)
+# 
+# #### 2. Adding Elements
+# - `list.append(item)`: Adds the item to the *end* of the list.
+# - `list.insert(index, item)`: Inserts the item at the specific *index*, pushing subsequent items back.
+# 
+# #### 3. Removing Elements
+# - `list.remove(value)`: Removes the first item that matches `value`.
+# - `list.pop(index)`: Removes and returns the item at `index`. If no index is specified, it removes the *last* item.
+# 
+# #### 4. Useful List Utilities
+# - `len(list)`: Returns the number of elements in the list.
+# - You can iterate over items easily using a `for` loop:
+#   ```python
+#   for fruit in fruits:
+#       print(fruit)
+#   ```
 
 fruits = ["apple", "banana", "cherry"]
 
@@ -21,7 +42,7 @@ print("Third fruit:", fruits[2])   # cherry
 fruits[1] = "mango"
 print("Updated fruits:", fruits)
 
-# append() adds an item to the end of a list.
+# append() adds an item to the end of a `list`.
 
 fruits.append("orange")
 print("After append:", fruits)
@@ -42,11 +63,11 @@ print("After remove:", fruits)
 fruits.pop()
 print("After pop:", fruits)
 
-# len() gives the number of items in a list.
+# len() gives the number of items in a `list`.
 
 print("Number of fruits:", len(fruits))
 
-# You can loop through a list.
+# You can loop through a `list`.
 
 for fruit in fruits:
     print("Fruit item:", fruit)
@@ -64,36 +85,36 @@ print("Likes Python:", student[2])
 print("============Activity Section==========")
 # =========================
 
-# Exercise 1:
-# Create a list called favorite_foods with three foods.
-# Print the whole list.
+# #### Exercise 1
+# Create a list called `favorite_foods` with three foods.
+# Print the whole `list`.
 
-# Exercise 2:
-# Print the first item in favorite_foods.
+# #### Exercise 2
+# Print the first item in `favorite_foods`.
 
-# Exercise 3:
-# Change the second item in favorite_foods to a new food.
-# Print the updated list.
+# #### Exercise 3
+# Change the second item in `favorite_foods` to a new food.
+# Print the updated `list`.
 
-# Exercise 4:
-# Add a new food to favorite_foods using append().
-# Print the updated list.
+# #### Exercise 4
+# Add a new food to `favorite_foods` using append().
+# Print the updated `list`.
 
-# Exercise 5:
-# Remove one food from favorite_foods using remove().
-# Print the updated list.
+# #### Exercise 5
+# Remove one food from `favorite_foods` using remove().
+# Print the updated `list`.
 
-# Exercise 6:
-# Use a for loop to print each food in favorite_foods.
+# #### Exercise 6
+# Use a for loop to print each food in `favorite_foods`.
 
 # =========================
 # Mini Challenge
 print("============Mini Challenge==========")
 # =========================
 
-# Build a simple shopping list program.
-# Create an empty list called shopping_list.
-# Ask the user to enter three items.
-# Add each item to shopping_list using append().
-# Print the final shopping list.
+# **Build a simple shopping `list` program.**
+# Create an empty list called `shopping_list`.
+# **Ask the user to enter three items.**
+# Add each item to `shopping_list` using append().
+# Print the final shopping `list`.
 # Then use a for loop to print each item one by one.

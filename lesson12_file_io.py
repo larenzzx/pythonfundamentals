@@ -1,22 +1,26 @@
 # lesson12_file_io.py
 
-# Lesson 12: File I/O - Reading & Writing Files
-# Programs need to save data permanently. Files let you do that.
-# This lesson covers reading from and writing to files.
+# ### Lesson 12: File Operations (File I/O)
+# File handling allows your programs to persist data by reading from and writing to files on the hard drive.
+# 
+# #### 1. Opening and Closing Files
+# - `open(filename, mode)`: Opens a file. Modes include:
+#   - `'r'`: Read (default). Opens file for reading; raises error if file doesn't exist.
+#   - `'w'`: Write. Opens file for writing; *overwrites* existing content or creates a new file.
+#   - `'a'`: Append. Opens file for adding text to the *end* of the file without deleting existing content.
+# 
+# #### 2. Context Manager (`with` statement)
+# Always use the `with` statement when working with files. It ensures the file is automatically closed when the code block finishes, even if errors occur.
+# ```python
+# with open("notes.txt", "r") as file:
+#     content = file.read()
+# ```
+# 
+# #### 3. Reading Methods
+# - `file.read()`: Reads the entire file into a single string.
+# - `file.readline()`: Reads one line at a time.
+# - `file.readlines()`: Reads all lines and returns them as a list of strings.
 
-# =============================================
-# PART 1: WRITING TO FILES
-# =============================================
-
-# open() opens a file. The second argument is the mode:
-# "w" = write (creates new file or OVERWRITES existing)
-# "a" = append (adds to the end of existing file)
-# "r" = read (default mode)
-
-# Always use 'with' -- it automatically closes the file for you.
-# If you don't use 'with', you must call file.close() manually.
-
-# Writing a simple file
 with open("my_first_file.txt", "w") as file:
     file.write("Hello, World!\n")
     file.write("This is my first file.\n")
@@ -36,7 +40,7 @@ with open("my_first_file.txt", "a") as file:
 print("Lines appended!")
 
 # =============================================
-# PART 2: READING FROM FILES
+# #### Exercise 2
 # =============================================
 
 # Method 1: read() -- reads the ENTIRE file as one string
@@ -45,7 +49,7 @@ with open("my_first_file.txt", "r") as file:
     print("--- read() output ---")
     print(content)
 
-# Method 2: readlines() -- reads all lines into a list
+# Method 2: readlines() -- reads all lines into a `list`
 with open("my_first_file.txt", "r") as file:
     lines_list = file.readlines()
     print("--- readlines() output ---")
@@ -66,7 +70,7 @@ with open("my_first_file.txt", "r") as file:
         print("Line:", line.strip())  # strip() removes the \n
 
 # =============================================
-# PART 3: WORKING WITH FILE PATHS
+# #### Exercise 3
 # =============================================
 import os
 
@@ -89,7 +93,7 @@ print("Is file?", os.path.isfile("my_first_file.txt"))
 print("Is directory?", os.path.isdir("my_first_file.txt"))
 
 # =============================================
-# PART 4: READING AND PROCESSING DATA
+# #### Exercise 4
 # =============================================
 
 # Create a sample data file
@@ -122,7 +126,7 @@ highest_name = max(scores, key=lambda name: scores[name])
 print(f"Highest: {highest_name} with {scores[highest_name]}")
 
 # =============================================
-# PART 5: CSV-STYLE FILE HANDLING
+# #### Exercise 5
 # =============================================
 # CSV = Comma Separated Values. Very common data format.
 
@@ -151,7 +155,7 @@ with open("students.csv", "r") as file:
         print(f"  {row[0]} is {row[1]} years old, grade: {row[2]}")
 
 # =============================================
-# PART 6: JSON FILE HANDLING
+# #### Exercise 6
 # =============================================
 # JSON is the most common format for storing structured data.
 import json
@@ -181,7 +185,7 @@ print("Name:", loaded["name"])
 print("Courses:", loaded["courses"])
 
 # =============================================
-# PART 7: ERROR HANDLING WITH FILES
+# #### Exercise 7
 # =============================================
 
 # Always handle file errors -- files might not exist or be accessible.
@@ -201,32 +205,32 @@ except Exception as e:
 # =============================================
 print("============Activity Section==========")
 
-# Exercise 1: Write and Read
+# #### Exercise 1
 # Create a file called "about_me.txt".
 # Write 5 lines about yourself (name, age, hobbies, etc.).
 # Read it back and print each line with a line number.
 
-# Exercise 2: Log File
+# #### Exercise 2
 # Create a function called log_message.
 # It should accept a message string.
 # It should append the message to "log.txt" with a timestamp.
 # Hint: from datetime import datetime; datetime.now()
 # Call it 3 times with different messages, then read the file.
 
-# Exercise 3: Word Frequency
+# #### Exercise 3
 # Create a file called "story.txt" with a short paragraph.
 # Read it and count how many times each word appears.
 # Print the top 5 most common words.
 # Hint: use a dictionary and the .get() method.
 
-# Exercise 4: JSON Config
+# #### Exercise 4
 # Create a JSON config file for a game with:
-#   - player_name, level, health, inventory (list of items)
+#   - player_name, level, health, inventory (`list` of items)
 # Write it to "config.json".
 # Read it back and print a summary.
 # Then modify the level to +1 and save it again.
 
-# Exercise 5: File Copy
+# #### Exercise 5
 # Create a function called copy_file.
 # It should accept a source filename and destination filename.
 # It should read the source and write its contents to the destination.
@@ -237,7 +241,7 @@ print("============Activity Section==========")
 # =============================================
 print("============Mini Challenge==========")
 
-# Build a to-do list that SAVES to a file.
+# Build a to-do `list` that SAVES to a file.
 # The program should:
 # 1. Load existing tasks from "todo.json" on startup.
 # 2. Show a menu:
@@ -248,6 +252,6 @@ print("============Mini Challenge==========")
 #    - Save and quit
 # 3. Save all tasks to "todo.json" when quitting.
 #
-# Each task should have: id, description, done (True/False)
-# Use JSON to store the list of tasks.
+# Each task should have: id, description, done (`True`/`False`)
+# Use JSON to store the `list` of tasks.
 # Use error handling for invalid input and missing files.

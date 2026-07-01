@@ -326,5 +326,98 @@ assert '@' in code, "Use a decorator (@) to modify function behaviors."
 `,
       errorMessage: "Create a timing or logging decorator and apply it to a heavy execution function."
     }
+  },
+  17: {
+    activity: {
+      pythonCode: `
+import json
+assert 'user_profile' in globals(), "Variable 'user_profile' is not defined."
+assert isinstance(user_profile, dict), "user_profile must be a dictionary."
+assert user_profile.get('username') == 'coder123', "user_profile username value is incorrect."
+assert user_profile.get('email') == 'coder@py.org', "user_profile email value is incorrect."
+
+assert 'post_json' in globals(), "Variable 'post_json' is not defined."
+assert isinstance(post_json, str), "post_json must be a JSON string."
+loaded_post = json.loads(post_json)
+assert 'title' in loaded_post and 'body' in loaded_post, "post_data dictionary must contain 'title' and 'body' keys."
+
+assert 'check_http_status' in globals(), "Function 'check_http_status' is not defined."
+assert check_http_status(200) == "Success", "check_http_status(200) should return 'Success'"
+assert check_http_status(201) == "Success", "check_http_status(201) should return 'Success'"
+assert check_http_status(404) == "Client Error", "check_http_status(404) should return 'Client Error'"
+assert check_http_status(500) == "Server Error", "check_http_status(500) should return 'Server Error'"
+`,
+      errorMessage: "Make sure you parse 'api_payload' to 'user_profile', serialize 'post_data' to 'post_json', and return correct status labels in 'check_http_status'."
+    },
+    challenge: {
+      pythonCode: `
+assert 'route_request' in globals(), "Function 'route_request' is not defined."
+
+res_code, res_body = route_request("GET", "/users", "")
+assert res_code == 200, f"Expected status code 200, got {res_code}"
+assert "users" in res_body, "Expected 'users' in GET response body"
+
+res_code, res_body = route_request("POST", "/users", '{"name": "Charlie"}')
+assert res_code == 201, f"Expected status code 201, got {res_code}"
+assert "Created" in res_body, "Expected 'Created' in valid POST response"
+
+res_code, res_body = route_request("POST", "/users", 'invalid-json')
+assert res_code == 400, f"Expected status code 400 for invalid JSON, got {res_code}"
+
+res_code, res_body = route_request("POST", "/users", '{"age": 30}')
+assert res_code == 400, f"Expected status code 400 for missing name, got {res_code}"
+
+res_code, res_body = route_request("GET", "/unknown", "")
+assert res_code == 404, f"Expected status code 404, got {res_code}"
+`,
+      errorMessage: "Ensure 'route_request' implements GET /users, POST /users (with validation), and handles 400/404 errors appropriately."
+    }
+  },
+  18: {
+    activity: {
+      pythonCode: `
+assert 'app' in globals(), "FastAPI app instance 'app' is not defined."
+assert hasattr(app, 'routes'), "app must be a FastAPI instance."
+
+assert ('GET', '/health') in app.routes, "GET route for '/health' is not registered."
+health_func = app.routes[('GET', '/health')]
+assert health_func() == {"status": "ok"}, "GET '/health' should return {'status': 'ok'}."
+
+assert 'UserSignUp' in globals(), "Pydantic model 'UserSignUp' is not defined."
+assert isinstance(UserSignUp, type), "UserSignUp must be a class."
+user_test = UserSignUp(username="testuser", email="test@domain.com")
+assert getattr(user_test, 'username') == 'testuser', "UserSignUp must have a 'username' attribute."
+assert getattr(user_test, 'email') == 'test@domain.com', "UserSignUp must have an 'email' attribute."
+`,
+      errorMessage: "Make sure you instantiate 'app = FastAPI()', register GET '/health', and declare the Pydantic 'UserSignUp' class."
+    },
+    challenge: {
+      pythonCode: `
+assert 'app' in globals(), "FastAPI app instance 'app' is not defined."
+assert 'Product' in globals(), "Pydantic model 'Product' is not defined."
+assert 'products_db' in globals(), "List 'products_db' is not defined."
+assert isinstance(products_db, list), "products_db must be a list."
+
+assert ('POST', '/products') in app.routes, "POST route for '/products' is not registered."
+assert ('GET', '/products') in app.routes, "GET route for '/products' is not registered."
+
+post_func = app.routes[('POST', '/products')]
+get_func = app.routes[('GET', '/products')]
+
+products_db.clear()
+
+test_prod = Product(name="Laptop", price=999.99)
+post_res = post_func(test_prod)
+
+assert len(products_db) == 1, "POST route should add the product to products_db."
+assert products_db[0]['name'] == "Laptop", "Product name in database is incorrect."
+assert products_db[0]['price'] == 999.99, "Product price in database is incorrect."
+
+get_res = get_func()
+assert isinstance(get_res, list), "GET route must return a list."
+assert len(get_res) == 1, "GET route should return list containing the added product."
+`,
+      errorMessage: "Make sure you define 'Product' (Pydantic), GET/POST '/products' routes, and correctly add incoming products to the 'products_db' list."
+    }
   }
 };
